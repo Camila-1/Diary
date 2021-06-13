@@ -5,9 +5,9 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.pchpsky.diary.login.LoginFragment" />
+        android:name="com.pchpsky.diary.auth.login.LoginFragment" />
 
     <fragment
         android:id="@+id/signup"
-        android:name="com.pchpsky.diary.signup.SignUpFragment" />
+        android:name="com.pchpsky.diary.auth.signup.SignUpFragment" />
 </navigation>

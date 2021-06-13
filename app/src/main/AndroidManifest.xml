@@ -12,6 +12,12 @@
         android:theme="@style/Theme.Diary"
         tools:ignore="AllowBackup">
         <activity
+            android:name=".launch.LaunchActivity"
+            android:exported="true" />
+        <activity
+            android:name=".auth.AuthActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

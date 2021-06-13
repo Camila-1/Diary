@@ -1,4 +1,4 @@
-package com.pchpsky.diary.signup
+package com.pchpsky.diary.auth.signup
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
