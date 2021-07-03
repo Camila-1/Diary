@@ -1,4 +1,4 @@
-package com.pchpsky.diary.auth.login
+package com.pchpsky.diary.screens.auth.login
 
 import androidx.compose.runtime.Composable
 

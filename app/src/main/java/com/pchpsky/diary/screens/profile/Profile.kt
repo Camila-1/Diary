@@ -1,4 +1,4 @@
-package com.pchpsky.diary.profile
+package com.pchpsky.diary.screens.profile
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController

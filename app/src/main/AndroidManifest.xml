@@ -12,10 +12,10 @@
         android:theme="@style/Theme.Diary"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".launch.LaunchActivity"
+            android:name=".screens.launch.LaunchActivity"
             android:exported="true" />
         <activity
-            android:name=".auth.AuthActivity"
+            android:name=".screens.auth.AuthActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

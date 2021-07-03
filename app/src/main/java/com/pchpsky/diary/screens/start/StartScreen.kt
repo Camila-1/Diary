@@ -1,4 +1,4 @@
-package com.pchpsky.diary.start
+package com.pchpsky.diary.screens.start
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

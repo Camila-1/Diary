@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import com.pchpsky.diary.home.home
+import com.pchpsky.diary.screens.home.home
 
 class MainActivity : AppCompatActivity() {
 
