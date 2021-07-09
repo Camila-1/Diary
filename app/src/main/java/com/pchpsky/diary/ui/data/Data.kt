@@ -1,4 +1,4 @@
-package com.pchpsky.diary.screens.data
+package com.pchpsky.diary.ui.data
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable

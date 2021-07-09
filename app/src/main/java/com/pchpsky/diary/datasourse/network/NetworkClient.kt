@@ -5,8 +5,9 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloException
 import com.pchpsky.schema.CurrentUserQuery
+import javax.inject.Inject
 
-class NetworkClient(private val apolloClient: ApolloClient) {
+class NetworkClient @Inject constructor(private val apolloClient: ApolloClient) {
 
     suspend fun user(): CurrentUserQuery.Data? {
         return try {

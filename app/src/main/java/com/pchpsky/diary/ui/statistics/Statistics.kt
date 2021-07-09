@@ -1,4 +1,4 @@
-package com.pchpsky.diary.screens.statistics
+package com.pchpsky.diary.ui.statistics
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController

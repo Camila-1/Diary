@@ -1,4 +1,4 @@
-package com.pchpsky.diary.screens.launch
+package com.pchpsky.diary.ui.launch
 
 import com.pchpsky.schema.CurrentUserQuery
 

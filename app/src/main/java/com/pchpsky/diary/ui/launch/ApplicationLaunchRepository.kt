@@ -1,11 +1,9 @@
-package com.pchpsky.diary.screens.launch
+package com.pchpsky.diary.ui.launch
 
 import android.util.Log
 import com.pchpsky.diary.datasourse.network.NetworkClient
 import com.pchpsky.schema.CurrentUserQuery
 import kotlinx.coroutines.*
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 
 class ApplicationLaunchRepository(private val networkClient: NetworkClient) : LaunchRepository {
