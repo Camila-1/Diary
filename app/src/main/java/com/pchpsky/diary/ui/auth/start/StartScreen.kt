@@ -24,7 +24,7 @@ import com.pchpsky.diary.ui.theme.lightGreen
 @Composable
 fun StartScreen(
     navController: NavController
-){
+) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier.width(250.dp)
@@ -34,7 +34,10 @@ fun StartScreen(
                 text = "Login",
                 color = lightGreen,
                 onClick = { navController.navigate(AuthRoute.LOGIN.route) })
-            loginButton(text = "Signup", color = green, onClick = { navController.navigate(AuthRoute.SIGNUP.route) })
+            loginButton(
+                text = "Signup",
+                color = green,
+                onClick = { navController.navigate(AuthRoute.SIGNUP.route) })
         }
     }
 
@@ -48,7 +51,9 @@ fun loginButton(text: String, color: Color, onClick: () -> Unit) {
             backgroundColor = color,
             disabledBackgroundColor = color
         ),
-        onClick = { onClick.invoke() },
+        onClick = {
+            onClick.invoke()
+                  },
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 12.dp)
@@ -64,7 +69,12 @@ fun logoGroup() {
     val image = painterResource(R.drawable.ic_logo)
     Row(verticalAlignment = Alignment.Bottom, modifier = Modifier.padding(bottom = 40.dp)) {
         Image(painter = image, contentDescription = null, modifier = Modifier.width(83.dp))
-        Text(text = "Diary", color = Color.White, fontSize = 50.sp, modifier = Modifier.padding(bottom = 10.dp, start = 15.dp))
+        Text(
+            text = "Diary",
+            color = Color.White,
+            fontSize = 50.sp,
+            modifier = Modifier.padding(bottom = 10.dp, start = 15.dp)
+        )
     }
 }
 
