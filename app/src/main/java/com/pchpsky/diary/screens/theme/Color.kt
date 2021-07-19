@@ -1,4 +1,4 @@
-package com.pchpsky.diary.ui.theme
+package com.pchpsky.diary.screens.theme
 
 import androidx.compose.ui.graphics.Color
 

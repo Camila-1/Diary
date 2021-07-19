@@ -1,4 +1,4 @@
-package com.pchpsky.diary.ui.launch
+package com.pchpsky.diary.screens.launch
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

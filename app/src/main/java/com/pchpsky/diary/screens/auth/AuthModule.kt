@@ -1,4 +1,4 @@
-package com.pchpsky.diary.ui.launch
+package com.pchpsky.diary.screens.auth
 
 import com.pchpsky.diary.datasourse.network.NetworkClient
 import dagger.Module
@@ -7,13 +7,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module
 @InstallIn(SingletonComponent::class)
-class LaunchModule {
+@Module
+class AuthModule {
 
     @Singleton
     @Provides
-    fun provideLaunchRepository(networkClient: NetworkClient): LaunchRepository {
-        return ApplicationLaunchRepository(networkClient)
+    fun provideAuthRepository(networkClient: NetworkClient): AuthRepository {
+        return AppAuthRepository(networkClient)
     }
 }

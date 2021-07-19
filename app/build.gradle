@@ -49,6 +49,8 @@ android {
     }
 
     composeOptions {
+        kotlinCompilerVersion = "1.5.10"
+
         kotlinCompilerExtensionVersion "$jetpack_compose_version"
     }
 

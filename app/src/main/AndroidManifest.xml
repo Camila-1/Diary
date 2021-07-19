@@ -13,12 +13,12 @@
         tools:ignore="AllowBackup"
         android:name=".DiaryApplication">
         <activity
-            android:name=".ui.launch.LaunchActivity"
+            android:name=".screens.launch.LaunchActivity"
             android:exported="true">
 
         </activity>
         <activity
-            android:name=".ui.auth.AuthActivity"
+            android:name=".screens.auth.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

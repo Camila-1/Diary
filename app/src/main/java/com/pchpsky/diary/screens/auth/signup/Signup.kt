@@ -1,5 +1,6 @@
-package com.pchpsky.diary.ui.auth.signup
+package com.pchpsky.diary.screens.auth.signup
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -9,35 +10,52 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pchpsky.diary.ui.theme.blue
-import com.pchpsky.diary.ui.theme.green
+import com.pchpsky.diary.screens.auth.AppAuthViewModel
+import com.pchpsky.diary.screens.auth.AuthViewModel
+import com.pchpsky.diary.screens.theme.blue
+import com.pchpsky.diary.screens.theme.green
+
 
 @Composable
-fun SignUp() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+fun SignUp(viewModel: AuthViewModel) {
+    Form(viewModel)
+}
+
+@Composable
+private fun Form(viewModel: AuthViewModel?) {
+    val email = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+
+    Box(
+        modifier = Modifier.fillMaxSize().background(Color.Black),
+        contentAlignment = Alignment.Center
+    ) {
         Column(
             modifier = Modifier.width(250.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(text = "Create Account", color = Color.White, fontSize = 33.sp)
-            EmailInputField()
-            PasswordInputField()
+            EmailInputField(email)
+            PasswordInputField(password)
             ConfirmPasswordInputField()
-            SignUpButton("Submit", onClick = {}, color = green)
+            SignUpButton(
+                "Submit",
+                onClick = { viewModel?.createUser(email.value, password.value) },
+                color = green
+            )
         }
     }
 }
 
 @Composable
-fun EmailInputField() {
-    var email by remember { mutableStateOf("") }
-
+fun EmailInputField(value: MutableState<String>) {
 
     OutlinedTextField(
-        value = email,
-        onValueChange = { email = it },
+        value = value.value,
+        onValueChange = { value.value = it },
         modifier = Modifier.fillMaxWidth(1f).height(60.dp),
         textStyle = TextStyle(color = Color.White),
         label = { Text(text = "Email", color = Color.White) },
@@ -50,20 +68,18 @@ fun EmailInputField() {
 }
 
 @Composable
-fun PasswordInputField() {
-    var email by remember { mutableStateOf("") }
-
+fun PasswordInputField(value: MutableState<String>) {
 
     OutlinedTextField(
-        value = email,
-        onValueChange = { email = it },
+        value = value.value,
+        onValueChange = { value.value = it },
         modifier = Modifier.fillMaxWidth(1f).height(60.dp),
         textStyle = TextStyle(color = Color.White),
         label = { Text(text = "Password", color = Color.White) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = blue,
             unfocusedBorderColor = Color.White
-        )
+        ),
     )
 }
 
@@ -107,5 +123,5 @@ fun SignUpButton(text: String, color: Color, onClick: () -> Unit) {
 @Preview
 @Composable
 fun DefaultPreview() {
-    SignUp()
+    Form(null)
 }

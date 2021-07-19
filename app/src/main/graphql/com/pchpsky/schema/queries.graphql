@@ -4,3 +4,11 @@ query CurrentUser {
         email
     }
 }
+
+mutation CreateUser($email: String!, $password: String!) {
+    user: createSession(email: $email, password: $password) {
+        user {
+            email
+        }
+    }
+}

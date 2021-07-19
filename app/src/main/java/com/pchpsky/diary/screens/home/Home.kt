@@ -1,4 +1,4 @@
-package com.pchpsky.diary.ui.home
+package com.pchpsky.diary.screens.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

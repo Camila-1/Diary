@@ -1,6 +1,7 @@
-package com.pchpsky.diary.ui.auth.start
+package com.pchpsky.diary.screens.auth.start
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -18,14 +19,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.R
 import com.pchpsky.diary.navigation.AuthRoute
-import com.pchpsky.diary.ui.theme.green
-import com.pchpsky.diary.ui.theme.lightGreen
+import com.pchpsky.diary.screens.theme.green
+import com.pchpsky.diary.screens.theme.lightGreen
 
 @Composable
 fun StartScreen(
     navController: NavController
 ) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(modifier = Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier.width(250.dp)
         ) {

@@ -1,4 +1,4 @@
-package com.pchpsky.diary.ui.launch
+package com.pchpsky.diary.screens.launch
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
