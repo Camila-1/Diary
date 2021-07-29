@@ -1,4 +1,4 @@
-package com.pchpsky.diary.screens.auth.signup
+package com.pchpsky.diary.screens.auth.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,24 +10,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.pchpsky.diary.screens.auth.AppAuthViewModel
+import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.theme.blue
 import com.pchpsky.diary.screens.theme.green
-
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun SignUp(viewModel: AuthViewModel) {
-    Form(viewModel)
-}
-
-@Composable
-private fun Form(viewModel: AuthViewModel?) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
+
+    val uiState: AuthState by viewModel?.uiState?.collectAsState()!!
 
     Box(
         modifier = Modifier.fillMaxSize().background(Color.Black),
@@ -37,8 +33,7 @@ private fun Form(viewModel: AuthViewModel?) {
             modifier = Modifier.width(250.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(text = "Create Account", color = Color.White, fontSize = 33.sp)
-            EmailInputField(email)
+            EmailInputField(email, uiState)
             PasswordInputField(password)
             ConfirmPasswordInputField()
             SignUpButton(
@@ -51,7 +46,7 @@ private fun Form(viewModel: AuthViewModel?) {
 }
 
 @Composable
-fun EmailInputField(value: MutableState<String>) {
+fun EmailInputField(value: MutableState<String>, state: AuthState) {
 
     OutlinedTextField(
         value = value.value,
@@ -59,11 +54,12 @@ fun EmailInputField(value: MutableState<String>) {
         modifier = Modifier.fillMaxWidth(1f).height(60.dp),
         textStyle = TextStyle(color = Color.White),
         label = { Text(text = "Email", color = Color.White) },
-//        placeholder = { Text("Enter Email", color = Color.White) },
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = blue,
             unfocusedBorderColor = Color.White
-        )
+        ),
+        isError = state is AuthState.ValidationError,
+        singleLine = true
     )
 }
 
@@ -119,9 +115,11 @@ fun SignUpButton(text: String, color: Color, onClick: () -> Unit) {
         Text(text)
     }
 }
-
 @Preview
 @Composable
-fun DefaultPreview() {
-    Form(null)
+fun SignUpPreview() {
+    SignUp(object : AuthViewModel {
+        override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
+        override fun createUser(email: String, password: String) {}
+    })
 }

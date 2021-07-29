@@ -11,9 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.navigation.AuthRoute
-import com.pchpsky.diary.screens.auth.login.Login
-import com.pchpsky.diary.screens.auth.signup.SignUp
-import com.pchpsky.diary.screens.auth.start.StartScreen
+import com.pchpsky.diary.screens.auth.ui.Login
+import com.pchpsky.diary.screens.auth.ui.SignUp
+import com.pchpsky.diary.screens.auth.ui.StartScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

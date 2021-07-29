@@ -1,10 +1,11 @@
-package com.pchpsky.diary.screens.auth.login
+package com.pchpsky.diary.screens.auth.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Password
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,17 +15,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.theme.blue
 import com.pchpsky.diary.screens.theme.lightGreen
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun Login(viewModel: AuthViewModel) {
-    Form(viewModel)
-}
-
-@Composable
-private fun Form(viewModel: AuthViewModel?) {
     Box(modifier = Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier.width(250.dp),
@@ -42,7 +41,6 @@ private fun Form(viewModel: AuthViewModel?) {
 fun EmailInputField() {
     var email by remember { mutableStateOf("") }
 
-
     OutlinedTextField(
         value = email,
         onValueChange = { email = it },
@@ -53,7 +51,7 @@ fun EmailInputField() {
             focusedBorderColor = blue,
             unfocusedBorderColor = Color.White,
         ),
-        trailingIcon = { Icon(Icons.Outlined.Password, "") }
+        trailingIcon = { Icon(Icons.Outlined.Email, "") }
     )
 }
 
@@ -71,7 +69,8 @@ fun PasswordInputField() {
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = blue,
             unfocusedBorderColor = Color.White
-        )
+        ),
+        trailingIcon = { Icon(Icons.Outlined.Password, "") }
     )
 }
 
@@ -96,6 +95,10 @@ fun LoginButton(text: String, color: Color, onClick: () -> Unit) {
 
 @Composable
 @Preview
-fun defaultPreview() {
-    Form(null)
+fun LoginPreview() {
+    Login(object : AuthViewModel {
+        override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
+        override fun createUser(email: String, password: String) {}
+
+    })
 }

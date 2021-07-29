@@ -1,4 +1,4 @@
-package com.pchpsky.diary.screens.auth.start
+package com.pchpsky.diary.screens.auth.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -81,6 +81,6 @@ fun logoGroup() {
 
 @Preview
 @Composable
-fun defaultPreview() {
+fun StartScreenPreview() {
     StartScreen(rememberNavController())
 }

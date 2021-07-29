@@ -1,7 +1,10 @@
 package com.pchpsky.diary.screens.auth
 
-import com.pchpsky.schema.CreateUserMutation
+import kotlinx.coroutines.flow.StateFlow
 
 interface AuthViewModel {
-    fun createUser(email: String, password: String): CreateUserMutation.Data?
+
+    val uiState: StateFlow<AuthState>
+
+    fun createUser(email: String, password: String)
 }

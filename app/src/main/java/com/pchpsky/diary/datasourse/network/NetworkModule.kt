@@ -2,17 +2,13 @@ package com.pchpsky.diary.datasourse.network
 
 import android.content.Context
 import com.apollographql.apollo.ApolloClient
-import com.pchpsky.diary.DiaryApplication
-import com.pchpsky.diary.di.ApplicationComponent
+import com.pchpsky.diary.exceptions.handlers.NetworkErrorHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dagger.hilt.migration.DisableInstallInCheck
 import okhttp3.OkHttpClient
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -31,7 +27,11 @@ class NetworkModule {
             .build()
     }
 
+    @Provides
+    @Singleton
+    fun provideErrorHandler() = NetworkErrorHandler()
+
     @Singleton
     @Provides
-    fun provideNetworkClient(apolloClient: ApolloClient) = NetworkClient(apolloClient)
+    fun provideNetworkClient(apolloClient: ApolloClient, errorHandler: NetworkErrorHandler) = NetworkClient(apolloClient, errorHandler)
 }

@@ -6,7 +6,8 @@ query CurrentUser {
 }
 
 mutation CreateUser($email: String!, $password: String!) {
-    user: createSession(email: $email, password: $password) {
+    session: createUser(email: $email, password: $password) {
+        token
         user {
             email
         }
