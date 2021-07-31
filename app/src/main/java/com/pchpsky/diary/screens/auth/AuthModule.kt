@@ -1,5 +1,6 @@
 package com.pchpsky.diary.screens.auth
 
+import com.pchpsky.diary.datasourse.localstorage.DataStoreManager
 import com.pchpsky.diary.datasourse.network.NetworkClient
 import dagger.Module
 import dagger.Provides
@@ -13,7 +14,7 @@ class AuthModule {
 
     @Singleton
     @Provides
-    fun provideAuthRepository(networkClient: NetworkClient): AuthRepository {
-        return AppAuthRepository(networkClient)
+    fun provideAuthRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): AuthRepository {
+        return AppAuthRepository(networkClient, dataStoreManager)
     }
 }

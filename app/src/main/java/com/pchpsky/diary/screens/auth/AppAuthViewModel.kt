@@ -15,22 +15,20 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
     override val uiState: StateFlow<AuthState> = authState
 
     override fun createUser(email: String, password: String) {
+        authState.value = AuthState.Loading
+
         repository.createUser(email, password).fold(
             {
                 when(it) {
-                    is NetworkError.ServerError -> {}
-                    is NetworkError.AuthenticationError -> {
-
-                    }
-                    is NetworkError.ValidationError -> {
-                        authState.value = AuthState.ValidationError(it.fields)
-                    }
-                    else -> {}
+                    is NetworkError.ServerError -> { AuthState.ServerError }
+                    is NetworkError.AuthenticationError -> { AuthState.AuthenticationError }
+                    is NetworkError.ValidationError -> { AuthState.ValidationError(it.fields) }
+                    is NetworkError.SignupSuccessful -> { AuthState.SignupSuccessful }
                 }
             },
             {
-                authState.value = AuthState.SignupSuccessful
+                AuthState.SignupSuccessful
             }
-        )
+        ).also { authState.value = it }
     }
 }

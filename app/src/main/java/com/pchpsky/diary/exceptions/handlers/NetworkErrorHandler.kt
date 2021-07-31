@@ -34,7 +34,7 @@ class NetworkErrorHandler {
                 NetworkError.ValidationError(fields)
             }
             401 -> { NetworkError.AuthenticationError }
-            else -> { NetworkError.UnknownError }
+            else -> { NetworkError.ServerError }
         }
     }
 }

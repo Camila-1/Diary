@@ -8,11 +8,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class AppAuthRepository @Inject constructor(private val networkClient: NetworkClient) : AuthRepository {
+class AppAuthRepository @Inject constructor(
+    private val networkClient: NetworkClient,
+    private val dataStoreManager: com.pchpsky.diary.datasourse.localstorage.DataStoreManager
+    ) : AuthRepository {
 
     override fun createUser(email: String, password: String): Either<NetworkError, CreateUserMutation.Data?> {
         return runBlocking(Dispatchers.IO) {
             networkClient.createUser(email, password).map {
+                it.session?.token?.let { token -> dataStoreManager.saveUserToken(token) }
                 it
             }
         }

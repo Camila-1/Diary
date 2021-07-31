@@ -1,9 +1,12 @@
 package com.pchpsky.diary.screens.auth.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +26,12 @@ fun SignUp(viewModel: AuthViewModel) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
-    val uiState: AuthState by viewModel?.uiState?.collectAsState()!!
+    val uiState: AuthState by viewModel.uiState.collectAsState()
+
+    fun errorFor(key: String): String? {
+        return if (uiState is AuthState.ValidationError) (uiState as AuthState.ValidationError).fields[key]?.get(0)
+        else null
+    }
 
     Box(
         modifier = Modifier.fillMaxSize().background(Color.Black),
@@ -33,34 +41,56 @@ fun SignUp(viewModel: AuthViewModel) {
             modifier = Modifier.width(250.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            EmailInputField(email, uiState)
+            EmailInputField(email, errorFor("email"), uiState)
             PasswordInputField(password)
             ConfirmPasswordInputField()
             SignUpButton(
                 "Submit",
-                onClick = { viewModel?.createUser(email.value, password.value) },
+                onClick = { viewModel.createUser(email.value, password.value) },
                 color = green
             )
         }
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
-fun EmailInputField(value: MutableState<String>, state: AuthState) {
+fun EmailInputField(value: MutableState<String>, errorMessage: String?, state: AuthState) {
 
-    OutlinedTextField(
-        value = value.value,
-        onValueChange = { value.value = it },
-        modifier = Modifier.fillMaxWidth(1f).height(60.dp),
-        textStyle = TextStyle(color = Color.White),
-        label = { Text(text = "Email", color = Color.White) },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = blue,
-            unfocusedBorderColor = Color.White
-        ),
-        isError = state is AuthState.ValidationError,
-        singleLine = true
-    )
+    var isError by remember(errorMessage) { mutableStateOf(errorMessage != null) }
+
+    Column {
+        OutlinedTextField(
+            value = value.value,
+            onValueChange = {
+                isError = false
+                value.value = it
+            },
+            modifier = Modifier.fillMaxWidth(1f).height(60.dp),
+
+            textStyle = TextStyle(color = Color.White),
+            label = { Text(text = "Email", color = Color.White) },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = blue,
+                unfocusedBorderColor = Color.White
+            ),
+            isError = isError,
+            singleLine = true,
+            trailingIcon = {
+                if (isError)
+                    Icon(Icons.Filled.Error,"error", tint = MaterialTheme.colors.error)
+            }
+        )
+
+        if (isError) {
+            Text(
+                text = errorMessage ?: "",
+                color = MaterialTheme.colors.error,
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+    }
 }
 
 @Composable
@@ -119,7 +149,8 @@ fun SignUpButton(text: String, color: Color, onClick: () -> Unit) {
 @Composable
 fun SignUpPreview() {
     SignUp(object : AuthViewModel {
-        override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
+        override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(
+            mapOf("email" to arrayListOf("error message"))))
         override fun createUser(email: String, password: String) {}
     })
 }

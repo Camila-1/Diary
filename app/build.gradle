@@ -114,5 +114,8 @@ dependencies {
     //Arrow
     implementation "io.arrow-kt:arrow-core:$arrow_version"
     implementation "io.arrow-kt:arrow-syntax:$arrow_version"
-    kapt    "io.arrow-kt:arrow-meta:$arrow_version"
+    kapt "io.arrow-kt:arrow-meta:$arrow_version"
+
+    //DataStore SharedPreferences
+    implementation("androidx.datastore:datastore-preferences:1.0.0-rc02")
 }
