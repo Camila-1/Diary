@@ -11,6 +11,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,9 +46,11 @@ fun SignUp(viewModel: AuthViewModel) {
             EmailInputField(email, errorFor("email"), uiState)
             PasswordInputField(password)
             ConfirmPasswordInputField()
-            SignUpButton(
+            SubmitButton(
                 "Submit",
-                onClick = { viewModel.createUser(email.value, password.value) },
+                onClick = {
+                    viewModel.createUser(email.value, password.value)
+                },
                 color = green
             )
         }
@@ -66,7 +70,7 @@ fun EmailInputField(value: MutableState<String>, errorMessage: String?, state: A
                 isError = false
                 value.value = it
             },
-            modifier = Modifier.fillMaxWidth(1f).height(60.dp),
+            modifier = Modifier.fillMaxWidth(1f).height(60.dp).semantics{ contentDescription = "email_input_field" },
 
             textStyle = TextStyle(color = Color.White),
             label = { Text(text = "Email", color = Color.White) },
@@ -128,7 +132,7 @@ fun ConfirmPasswordInputField() {
 }
 
 @Composable
-fun SignUpButton(text: String, color: Color, onClick: () -> Unit) {
+fun SubmitButton(text: String, color: Color, onClick: () -> Unit) {
     Button(
         enabled = true,
         colors = ButtonDefaults.buttonColors(
