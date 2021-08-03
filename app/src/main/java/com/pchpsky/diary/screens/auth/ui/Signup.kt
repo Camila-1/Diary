@@ -1,6 +1,7 @@
 package com.pchpsky.diary.screens.auth.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,11 +12,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.pchpsky.diary.MainActivity
+import com.pchpsky.diary.screens.auth.AuthActivity
 import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.theme.blue
@@ -29,10 +33,16 @@ fun SignUp(viewModel: AuthViewModel) {
     val password = remember { mutableStateOf("") }
 
     val uiState: AuthState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     fun errorFor(key: String): String? {
         return if (uiState is AuthState.ValidationError) (uiState as AuthState.ValidationError).fields[key]?.get(0)
         else null
+    }
+
+    if (uiState is AuthState.SignupSuccessful) {
+        context.startActivity(Intent(context, MainActivity::class.java))
+        (context as AuthActivity).finish()
     }
 
     Box(

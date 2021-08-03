@@ -9,25 +9,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun home() {
+fun Home() {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        loginButton("insulin", Color.Blue, {})
-        loginButton("glucose", Color.Blue, {})
-        loginButton("water", Color.Blue, {})
-        loginButton("eating", Color.Blue, {})
-        loginButton("sport", Color.Blue, {})
+        LoginButton("insulin", Color.Blue, {})
+        LoginButton("glucose", Color.Blue, {})
+        LoginButton("water", Color.Blue, {})
+        LoginButton("eating", Color.Blue, {})
+        LoginButton("sport", Color.Blue, {})
     }
 }
 
 @Composable
-fun loginButton(text: String, color: Color, onClick: () -> Unit) {
+fun LoginButton(text: String, color: Color, onClick: () -> Unit) {
     Button(
         enabled = true,
         colors = ButtonDefaults.buttonColors(
@@ -43,4 +44,10 @@ fun loginButton(text: String, color: Color, onClick: () -> Unit) {
     ) {
         Text(text)
     }
+}
+
+@Composable
+@Preview
+fun HomePreview() {
+    Home()
 }

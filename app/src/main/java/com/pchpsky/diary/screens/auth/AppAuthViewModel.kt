@@ -23,7 +23,6 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
                     is NetworkError.ServerError -> { AuthState.ServerError }
                     is NetworkError.AuthenticationError -> { AuthState.AuthenticationError }
                     is NetworkError.ValidationError -> { AuthState.ValidationError(it.fields) }
-                    is NetworkError.SignupSuccessful -> { AuthState.SignupSuccessful }
                 }
             },
             {
