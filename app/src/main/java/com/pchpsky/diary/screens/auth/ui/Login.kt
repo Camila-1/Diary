@@ -98,7 +98,6 @@ fun LoginButton(text: String, color: Color, onClick: () -> Unit) {
 fun LoginPreview() {
     Login(object : AuthViewModel {
         override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
-        override fun createUser(email: String, password: String) {}
-
+        override fun createUser(email: String, password: String, passwordConfirmation: String) {}
     })
 }

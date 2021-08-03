@@ -14,7 +14,11 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
 
     override val uiState: StateFlow<AuthState> = authState
 
-    override fun createUser(email: String, password: String) {
+    override fun createUser(email: String, password: String, passwordConfirmation: String) {
+        if (password != passwordConfirmation) {
+            authState.value = AuthState.PasswordDoesNotConfirmed
+            return
+        }
         authState.value = AuthState.Loading
 
         repository.createUser(email, password).fold(

@@ -6,5 +6,5 @@ interface AuthViewModel {
 
     val uiState: StateFlow<AuthState>
 
-    fun createUser(email: String, password: String)
+    fun createUser(email: String, password: String,passwordConfirmation: String)
 }
