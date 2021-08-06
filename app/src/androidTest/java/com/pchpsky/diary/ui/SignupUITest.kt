@@ -2,6 +2,7 @@ package com.pchpsky.diary.ui
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import com.pchpsky.diary.screens.auth.AppAuthViewModel
 import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.auth.ui.SignUp
@@ -18,7 +19,8 @@ class SignupScreenTest {
     private val viewModelDependency = object : AuthViewModel {
         override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(
             mapOf("email" to arrayListOf("error message"))))
-        override fun createUser(email: String, password: String) {}
+
+        override fun createUser(email: String, password: String, passwordConfirmation: String) {}
     }
 
     @Test

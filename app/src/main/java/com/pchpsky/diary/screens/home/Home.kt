@@ -19,11 +19,11 @@ fun Home() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LoginButton("insulin", Color.Blue, {})
-        LoginButton("glucose", Color.Blue, {})
-        LoginButton("water", Color.Blue, {})
-        LoginButton("eating", Color.Blue, {})
-        LoginButton("sport", Color.Blue, {})
+        LoginButton("insulin", Color.Blue) {}
+        LoginButton("glucose", Color.Blue) {}
+        LoginButton("water", Color.Blue) {}
+        LoginButton("eating", Color.Blue) {}
+        LoginButton("sport", Color.Blue) {}
     }
 }
 
