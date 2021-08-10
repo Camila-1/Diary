@@ -19,18 +19,18 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pchpsky.diary.MainActivity
 import com.pchpsky.diary.screens.auth.AuthActivity
 import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
+import com.pchpsky.diary.screens.auth.fakeViewModel
 import com.pchpsky.diary.screens.theme.blue
 import com.pchpsky.diary.screens.theme.green
 
 data class AuthError(var isError: Boolean = true, var errorMessage: String?)
 
 @Composable
-fun SignUp(viewModel: AuthViewModel = viewModel()) {
+fun SignUp(viewModel: AuthViewModel) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val passwordConfirmation = remember { mutableStateOf("") }
@@ -170,24 +170,8 @@ fun openHomeScreen(context: Context) {
     (context as AuthActivity).finish()
 }
 
-//@Preview
-//@Composable
-//fun SignUpPreview() {
-//    SignUp(object : AuthViewModel {
-//        override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(
-//            mapOf("email" to arrayListOf("error message"))))
-//        override fun createUser(email: String, password: String, passwordConfirmation: String) {}
-//    })
-//}
-
 @Preview
 @Composable
 fun SignUpPreview() {
-    SignUp()
-}
-
-@Composable
-fun viewModelForPreview(): AuthViewModel {
-    val viewModel: AuthViewModel by viewModel()
-    return viewModel
+    SignUp(fakeViewModel)
 }

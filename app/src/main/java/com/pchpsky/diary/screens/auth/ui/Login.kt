@@ -15,12 +15,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
+import com.pchpsky.diary.screens.auth.FakeViewModel
 import com.pchpsky.diary.screens.theme.blue
 import com.pchpsky.diary.screens.theme.lightGreen
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun Login(viewModel: AuthViewModel) {
@@ -96,8 +94,5 @@ fun LoginButton(text: String, color: Color, onClick: () -> Unit) {
 @Composable
 @Preview
 fun LoginPreview() {
-    Login(object : AuthViewModel {
-        override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
-        override fun createUser(email: String, password: String, passwordConfirmation: String) {}
-    })
+    Login(FakeViewModel)
 }

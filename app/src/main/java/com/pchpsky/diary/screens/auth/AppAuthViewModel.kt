@@ -35,3 +35,9 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
         ).also { authState.value = it }
     }
 }
+
+
+object FakeViewModel : AuthViewModel {
+    override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
+    override fun createUser(email: String, password: String, passwordConfirmation: String) {}
+}
