@@ -20,14 +20,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.MainActivity
+import com.pchpsky.diary.composables.TextField
 import com.pchpsky.diary.screens.auth.AuthActivity
 import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
-import com.pchpsky.diary.screens.auth.fakeViewModel
+import com.pchpsky.diary.screens.auth.FakeViewModel
 import com.pchpsky.diary.screens.theme.blue
 import com.pchpsky.diary.screens.theme.green
 
-data class AuthError(var isError: Boolean = true, var errorMessage: String?)
+data class AuthError(var isError: Boolean = true, var errorMessage: String? = null)
 
 @Composable
 fun SignUp(viewModel: AuthViewModel) {
@@ -39,11 +40,23 @@ fun SignUp(viewModel: AuthViewModel) {
     @Composable
     fun errorFor(key: String): MutableState<AuthError> {
         return remember { mutableStateOf(
-            if(uiState is AuthState.ValidationError) {
-                AuthError(errorMessage = (uiState as AuthState.ValidationError).fields[key]?.get(0))
-            } else AuthError(false, null)
+            when(uiState) {
+                is AuthState.ValidationError -> {
+                    AuthError(errorMessage = (uiState as AuthState.ValidationError).fields[key]?.get(0))
+                }
+                is AuthState.PasswordDoesNotConfirmed -> {
+                    AuthError(errorMessage = "Does not mach password")
+                }
+                else -> AuthError(false, null)
+            }
         ) }
     }
+
+//    fun errorFor(key: String): AuthError {
+//        return if(uiState is AuthState.ValidationError) {
+//            AuthError(errorMessage = (uiState as AuthState.ValidationError).fields[key]?.get(0))
+//        } else AuthError(false, null)
+//    }
 
     if (uiState is AuthState.SignupSuccessful) {
         val context = LocalContext.current
@@ -60,12 +73,7 @@ fun SignUp(viewModel: AuthViewModel) {
         ) {
             EmailInputField(email, errorFor("email"))
             PasswordInputField(password, errorFor("password"))
-            ConfirmPasswordInputField(passwordConfirmation, remember { mutableStateOf(
-                AuthError(
-                    isError = uiState is AuthState.PasswordDoesNotConfirmed,
-                    errorMessage = "Does not mach password"
-                )
-            ) })
+            ConfirmPasswordInputField(passwordConfirmation, errorFor(""))
             SubmitButton(
                 "Submit",
                 onClick = {
@@ -81,31 +89,23 @@ fun SignUp(viewModel: AuthViewModel) {
 @Composable
 fun EmailInputField(value: MutableState<String>, error: MutableState<AuthError>) {
 
-    TextField(value, "Email", error.value)
-
-    if (error.value.isError and (error.value.errorMessage != null)) {
-        ErrorMessage(error.value.errorMessage)
-    }
+    TextField(value, "Email", error)
+    if (error.value.isError) ErrorMessage(error)
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun PasswordInputField(value: MutableState<String>, error: MutableState<AuthError>) {
 
-    TextField(value, "Password", error.value)
-
-    if (error.value.isError and (error.value.errorMessage != null)) {
-        ErrorMessage(error.value.errorMessage)
-    }
+    TextField(value, "Password", error)
+    if (error.value.isError) ErrorMessage(error)
 }
 
 @Composable
 fun ConfirmPasswordInputField(value: MutableState<String>, error: MutableState<AuthError>) {
 
-    TextField(value, "Confirm Password", error.value)
-
-    if (error.value.isError and (error.value.errorMessage != null)) {
-        ErrorMessage(error.value.errorMessage)
-    }
+    TextField(value, "Confirm Password", error)
+    if (error.value.isError) ErrorMessage(error)
 }
 
 @Composable
@@ -128,40 +128,12 @@ fun SubmitButton(text: String, color: Color, onClick: () -> Unit) {
 }
 
 @Composable
-fun TextField(value: MutableState<String>, label: String, error: AuthError) {
-
-    Column {
-        OutlinedTextField(
-            value = value.value,
-            onValueChange = {
-                error.isError = false
-                value.value = it
-            },
-            modifier = Modifier.fillMaxWidth(1f).height(60.dp).semantics{ contentDescription = "email_input_field" },
-
-            textStyle = TextStyle(color = Color.White),
-            label = { Text(text = label, color = Color.White) },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = blue,
-                unfocusedBorderColor = Color.White
-            ),
-            isError = error.isError,
-            singleLine = true,
-            trailingIcon = {
-                if (error.isError)
-                    Icon(Icons.Filled.Error,"error", tint = MaterialTheme.colors.error)
-            }
-        )
-    }
-}
-
-@Composable
-fun ErrorMessage(errorMessage: String?) {
+fun ErrorMessage(error: MutableState<AuthError>) {
     Text(
-        text = errorMessage ?: "",
+        text = error.value.errorMessage ?: "",
         color = MaterialTheme.colors.error,
         style = MaterialTheme.typography.caption,
-        modifier = Modifier.padding(start = 16.dp)
+        modifier = Modifier.padding(start = 16.dp).background(Color.White)
     )
 }
 
@@ -173,5 +145,5 @@ fun openHomeScreen(context: Context) {
 @Preview
 @Composable
 fun SignUpPreview() {
-    SignUp(fakeViewModel)
+    SignUp(FakeViewModel)
 }

@@ -10,16 +10,16 @@ import javax.inject.Inject
 @HiltViewModel
 class AppAuthViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel(), AuthViewModel {
 
-    private val authState: MutableStateFlow<AuthState> = MutableStateFlow(AuthState.None)
+    private val _uiState: MutableStateFlow<AuthState> = MutableStateFlow(AuthState.None)
 
-    override val uiState: StateFlow<AuthState> = authState
+    override val uiState: StateFlow<AuthState> = _uiState
 
     override fun createUser(email: String, password: String, passwordConfirmation: String) {
         if (password != passwordConfirmation) {
-            authState.value = AuthState.PasswordDoesNotConfirmed
+            _uiState.value = AuthState.PasswordDoesNotConfirmed
             return
         }
-        authState.value = AuthState.Loading
+        _uiState.value = AuthState.Loading
 
         repository.createUser(email, password).fold(
             {
@@ -32,7 +32,7 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
             {
                 AuthState.SignupSuccessful
             }
-        ).also { authState.value = it }
+        ).also { _uiState.value = it }
     }
 }
 
