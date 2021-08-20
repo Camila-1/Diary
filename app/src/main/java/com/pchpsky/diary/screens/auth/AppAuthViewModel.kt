@@ -15,8 +15,8 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
     override val uiState: StateFlow<AuthState> = _uiState
 
     override fun createUser(email: String, password: String, passwordConfirmation: String) {
-        if (password != passwordConfirmation) {
-            _uiState.value = AuthState.PasswordDoesNotConfirmed
+        if (!password.contentEquals(passwordConfirmation)) {
+            _uiState.value = AuthState.PasswordNotConfirmed
             return
         }
         _uiState.value = AuthState.Loading
