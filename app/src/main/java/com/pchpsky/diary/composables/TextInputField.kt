@@ -2,6 +2,7 @@ package com.pchpsky.diary.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
@@ -11,11 +12,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.screens.theme.blue
 
 @Composable
-fun TextField(value: MutableState<String>, label: String, errorMessage: String?) {
+fun TextField(
+    value: MutableState<String>,
+    label: String, errorMessage: String?,
+    keyboardType: KeyboardType,
+    visualTransformation: VisualTransformation
+) {
 
     var isError by remember(errorMessage) { mutableStateOf(errorMessage != null) }
 
@@ -27,9 +36,10 @@ fun TextField(value: MutableState<String>, label: String, errorMessage: String?)
         },
         modifier = Modifier.fillMaxWidth(1f).height(60.dp)
             .semantics { contentDescription = "email_input_field" },
-
         textStyle = TextStyle(color = Color.White),
         label = { Text(text = label, color = Color.White) },
+        visualTransformation = visualTransformation,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = blue,
             unfocusedBorderColor = Color.White

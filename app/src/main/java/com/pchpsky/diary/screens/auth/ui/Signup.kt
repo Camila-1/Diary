@@ -10,6 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.MainActivity
@@ -64,17 +67,35 @@ fun SignUp(viewModel: AuthViewModel) {
 
 
 
-            TextField(email, "Email", emailErrorMessage)
+            TextField(
+                email,
+                "Email",
+                emailErrorMessage,
+                KeyboardType.Email,
+                VisualTransformation.None
+            )
             if (emailErrorMessage != null) {
                 errorMessage(emailErrorMessage)
             }
 
-            TextField(password, "Password", passwordErrorMessage)
+            TextField(
+                password,
+                "Password",
+                passwordErrorMessage,
+                KeyboardType.Password,
+                PasswordVisualTransformation()
+            )
             if (passwordErrorMessage != null) {
                 errorMessage(passwordErrorMessage)
             }
 
-            TextField(passwordConfirmation, "Confirm Password", confirmationErrorMessage)
+            TextField(
+                passwordConfirmation,
+                "Confirm Password",
+                confirmationErrorMessage,
+                KeyboardType.Password,
+                PasswordVisualTransformation()
+            )
             if (confirmationErrorMessage != null) {
                 errorMessage(confirmationErrorMessage)
             }
