@@ -16,7 +16,7 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
 
     override fun createUser(email: String, password: String, passwordConfirmation: String) {
         if (!password.contentEquals(passwordConfirmation)) {
-            _uiState.value = AuthState.PasswordNotConfirmed
+            _uiState.value = AuthState.ValidationError(mapOf("confirm password" to arrayListOf("Does not mach password")))
             return
         }
         _uiState.value = AuthState.Loading

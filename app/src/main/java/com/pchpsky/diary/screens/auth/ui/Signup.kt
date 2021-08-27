@@ -29,19 +29,9 @@ fun SignUp(viewModel: AuthViewModel) {
     val uiState: AuthState by viewModel.uiState.collectAsState()
 
     fun errorMessageFor(key: String): String? {
-        return when (key) {
-            "email", "password" -> {
-                if (uiState is AuthState.ValidationError)
-                        (uiState as AuthState.ValidationError).fields[key]?.get(0)
-                else null
-            }
-            "confirm password" -> {
-                if (uiState is AuthState.PasswordNotConfirmed) "Does not mach password"
-                else null
-            }
-            else -> null
-        }
-
+        return if (uiState is AuthState.ValidationError)
+            (uiState as AuthState.ValidationError).fields[key]?.get(0)
+        else null
     }
 
     if (uiState is AuthState.SignupSuccessful) {
