@@ -25,7 +25,8 @@ fun TextField(value: MutableState<String>, label: String, errorMessage: String?)
             isError = false
             value.value = it
         },
-        modifier = Modifier.fillMaxWidth(1f).height(60.dp).semantics{ contentDescription = "email_input_field" },
+        modifier = Modifier.fillMaxWidth(1f).height(60.dp)
+            .semantics { contentDescription = "email_input_field" },
 
         textStyle = TextStyle(color = Color.White),
         label = { Text(text = label, color = Color.White) },
@@ -37,7 +38,7 @@ fun TextField(value: MutableState<String>, label: String, errorMessage: String?)
         singleLine = true,
         trailingIcon = {
             if (isError)
-                Icon(Icons.Filled.Error,"error", tint = MaterialTheme.colors.error)
+                Icon(Icons.Filled.Error, "error", tint = MaterialTheme.colors.error)
         }
     )
 }

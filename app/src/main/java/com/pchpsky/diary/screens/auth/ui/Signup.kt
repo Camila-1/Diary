@@ -46,7 +46,7 @@ fun SignUp(viewModel: AuthViewModel) {
             text = message ?: "",
             color = MaterialTheme.colors.error,
             style = MaterialTheme.typography.caption,
-            modifier = Modifier.padding(start = 16.dp).background(Color.White)
+            modifier = Modifier.padding(start = 16.dp)
         )
     }
 
@@ -65,14 +65,19 @@ fun SignUp(viewModel: AuthViewModel) {
 
 
             TextField(email, "Email", emailErrorMessage)
-            errorMessage(emailErrorMessage)
-
+            if (emailErrorMessage != null) {
+                errorMessage(emailErrorMessage)
+            }
 
             TextField(password, "Password", passwordErrorMessage)
-            errorMessage(passwordErrorMessage)
+            if (passwordErrorMessage != null) {
+                errorMessage(passwordErrorMessage)
+            }
 
             TextField(passwordConfirmation, "Confirm Password", confirmationErrorMessage)
-            errorMessage(confirmationErrorMessage)
+            if (confirmationErrorMessage != null) {
+                errorMessage(confirmationErrorMessage)
+            }
 
             Button(
                 enabled = true,

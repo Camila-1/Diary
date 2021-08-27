@@ -6,6 +6,5 @@ sealed class AuthState {
     object None : AuthState()
     object ServerError : AuthState()
     object AuthenticationError : AuthState()
-    object PasswordNotConfirmed : AuthState()
     data class ValidationError(val fields: Map<String, ArrayList<String>>) : AuthState()
 }
