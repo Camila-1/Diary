@@ -20,6 +20,21 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
 
     override val uiState: StateFlow<AuthState> = _uiState
 
+    override fun login(login: String, password: String) {
+        repository.login(login, password).fold(
+            {
+                when(it) {
+                    is NetworkError.ServerError -> { AuthState.ServerError }
+                    is NetworkError.AuthenticationError -> { AuthState.AuthenticationError }
+                    is NetworkError.ValidationError -> { AuthState.ValidationError(it.fields) }
+                }
+            },
+            {
+                AuthState.SignupSuccessful
+            }
+        ).also { _uiState.value = it }
+    }
+
     override fun createUser(email: String, password: String, passwordConfirmation: String) {
         if (!password.contentEquals(passwordConfirmation)) {
             _uiState.value = AuthState.ValidationError(mapOf(FieldKey.CONFIRM_PASSWORD.key to arrayListOf("Does not mach password")))
@@ -46,4 +61,5 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
 object FakeViewModel : AuthViewModel {
     override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
     override fun createUser(email: String, password: String, passwordConfirmation: String) {}
+    override fun login(login: String, password: String) {}
 }

@@ -5,6 +5,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.coroutines.await
 import com.pchpsky.diary.exceptions.NetworkError
 import com.pchpsky.diary.exceptions.handlers.NetworkErrorHandler
+import com.pchpsky.schema.CreateSessionMutation
 import com.pchpsky.schema.CreateUserMutation
 import com.pchpsky.schema.CurrentUserQuery
 import javax.inject.Inject
@@ -14,6 +15,12 @@ class NetworkClient @Inject constructor(private val apolloClient: ApolloClient, 
     suspend fun user(): Either<NetworkError, CurrentUserQuery.Data?> {
         return errorsHandler.withErrorHandler {
             apolloClient.query(CurrentUserQuery()).await()
+        }
+    }
+
+    suspend fun login(email: String, password: String): Either<NetworkError, CreateSessionMutation.Data> {
+        return errorsHandler.withErrorHandler {
+            apolloClient.mutate(CreateSessionMutation(email, password)).await()
         }
     }
 
