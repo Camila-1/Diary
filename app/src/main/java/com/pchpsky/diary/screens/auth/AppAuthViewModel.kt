@@ -7,6 +7,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
+enum class FieldKey(val key: String) {
+    EMAIL("email"),
+    PASSWORD("password"),
+    CONFIRM_PASSWORD("confirm password")
+}
+
 @HiltViewModel
 class AppAuthViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel(), AuthViewModel {
 
@@ -16,7 +22,7 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
 
     override fun createUser(email: String, password: String, passwordConfirmation: String) {
         if (!password.contentEquals(passwordConfirmation)) {
-            _uiState.value = AuthState.ValidationError(mapOf("confirm password" to arrayListOf("Does not mach password")))
+            _uiState.value = AuthState.ValidationError(mapOf(FieldKey.CONFIRM_PASSWORD.key to arrayListOf("Does not mach password")))
             return
         }
         _uiState.value = AuthState.Loading
