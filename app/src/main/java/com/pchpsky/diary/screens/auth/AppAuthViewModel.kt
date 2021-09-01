@@ -21,6 +21,7 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
     override val uiState: StateFlow<AuthState> = _uiState
 
     override fun login(login: String, password: String) {
+        _uiState.value = AuthState.Loading
         repository.login(login, password).fold(
             {
                 when(it) {

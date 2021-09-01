@@ -50,7 +50,7 @@ fun SignUp(viewModel: AuthViewModel) {
     ) {
         Column(
             modifier = Modifier.width(250.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(text = stringResource(R.string.sign_up), color = Color.White, fontSize = 40.sp)
             EmailTextField(email, errorMessageFor(FieldKey.EMAIL.key))
@@ -77,9 +77,6 @@ fun EmailTextField(email: MutableState<String>, errorMessage: String?) {
         KeyboardType.Email,
         VisualTransformation.None
     )
-    if (errorMessage != null) {
-        ErrorMessage(errorMessage)
-    }
 }
 
 @Composable
@@ -91,9 +88,6 @@ fun PasswordTextField(password: MutableState<String>, errorMessage: String?) {
         KeyboardType.Password,
         PasswordVisualTransformation()
     )
-    if (errorMessage != null) {
-        ErrorMessage(errorMessage)
-    }
 }
 
 @Composable
@@ -105,9 +99,6 @@ fun ConfirmPasswordTextField(confirmPassword: MutableState<String>, errorMessage
         KeyboardType.Password,
         PasswordVisualTransformation()
     )
-    if (errorMessage != null) {
-        ErrorMessage(errorMessage)
-    }
 }
 
 fun openHomeScreen(context: Context) {

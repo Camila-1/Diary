@@ -3,7 +3,6 @@ package com.pchpsky.diary.screens.auth.ui
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
@@ -26,7 +25,6 @@ import com.pchpsky.diary.composables.TextField
 import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.auth.FakeViewModel
-import com.pchpsky.diary.screens.auth.FieldKey
 import com.pchpsky.diary.screens.theme.green
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
