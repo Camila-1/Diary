@@ -25,7 +25,7 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
             {
                 when(it) {
                     is NetworkError.ServerError -> { AuthState.ServerError }
-                    is NetworkError.AuthenticationError -> { AuthState.AuthenticationError }
+                    is NetworkError.AuthenticationError -> { AuthState.AuthenticationError(it.message) }
                     is NetworkError.ValidationError -> { AuthState.ValidationError(it.fields) }
                 }
             },
@@ -46,7 +46,7 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
             {
                 when(it) {
                     is NetworkError.ServerError -> { AuthState.ServerError }
-                    is NetworkError.AuthenticationError -> { AuthState.AuthenticationError }
+                    is NetworkError.AuthenticationError -> { AuthState.AuthenticationError(it.message) }
                     is NetworkError.ValidationError -> { AuthState.ValidationError(it.fields) }
                 }
             },

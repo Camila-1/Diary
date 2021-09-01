@@ -1,7 +1,11 @@
 package com.pchpsky.diary.screens.auth.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,22 +28,31 @@ import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.auth.FakeViewModel
 import com.pchpsky.diary.screens.auth.FieldKey
 import com.pchpsky.diary.screens.theme.green
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun Login(viewModel: AuthViewModel) {
     val login = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val uiState: AuthState by viewModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    fun errorMessageFor(key: String): String? {
-        return if (uiState is AuthState.ValidationError)
-            (uiState as AuthState.ValidationError).fields[key]?.get(0)
-        else null
-    }
+    SnackbarHost(
+        hostState = snackbarHostState,
+        modifier = Modifier,
+    )
 
     if (uiState is AuthState.SignupSuccessful) {
         val context = LocalContext.current
         openHomeScreen(context)
+    }
+
+    if (uiState is AuthState.AuthenticationError) {
+        rememberCoroutineScope().launch(Dispatchers.Main) {
+            snackbarHostState.showSnackbar((uiState as AuthState.AuthenticationError).message)
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center) {
@@ -48,8 +61,8 @@ fun Login(viewModel: AuthViewModel) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(text = stringResource(R.string.sign_in), color = Color.White, fontSize = 40.sp)
-            LoginTextField(login, errorMessageFor(FieldKey.EMAIL.key))
-            LoginPasswordTextField(password, errorMessageFor(FieldKey.PASSWORD.key))
+            LoginTextField(login, null)
+            LoginPasswordTextField(password, null)
             AuthButton(
                 stringResource(R.string.login),
                 onClick = {
@@ -84,9 +97,6 @@ fun LoginPasswordTextField(password: MutableState<String>, errorMessage: String?
         KeyboardType.Password,
         PasswordVisualTransformation()
     )
-    if (errorMessage != null) {
-        ErrorMessage(errorMessage)
-    }
 }
 @Composable
 @Preview

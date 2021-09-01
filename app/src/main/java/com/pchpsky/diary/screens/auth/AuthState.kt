@@ -5,6 +5,6 @@ sealed class AuthState {
     object SignupSuccessful : AuthState()
     object None : AuthState()
     object ServerError : AuthState()
-    object AuthenticationError : AuthState()
+    data class AuthenticationError(val message: String) : AuthState()
     data class ValidationError(val fields: Map<String, ArrayList<String>>) : AuthState()
 }

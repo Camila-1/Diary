@@ -33,7 +33,7 @@ class NetworkErrorHandler {
                 }.toMap()
                 NetworkError.ValidationError(fields)
             }
-            401 -> { NetworkError.AuthenticationError }
+            401 -> { NetworkError.AuthenticationError(error.message) }
             else -> { NetworkError.ServerError }
         }
     }

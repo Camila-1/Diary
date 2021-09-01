@@ -21,7 +21,8 @@ import com.pchpsky.diary.screens.theme.blue
 @Composable
 fun TextField(
     value: MutableState<String>,
-    label: String, errorMessage: String?,
+    label: String,
+    errorMessage: String?,
     keyboardType: KeyboardType,
     visualTransformation: VisualTransformation
 ) {
