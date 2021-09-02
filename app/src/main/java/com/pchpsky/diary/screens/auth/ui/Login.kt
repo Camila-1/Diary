@@ -1,10 +1,8 @@
 package com.pchpsky.diary.screens.auth.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
@@ -27,7 +25,6 @@ import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.auth.FakeViewModel
 import com.pchpsky.diary.screens.theme.green
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -43,38 +40,33 @@ fun Login(viewModel: AuthViewModel) {
         openHomeScreen(context)
     }
 
-    @Composable
-    fun ErrorSnackBar(scaffoldState: ScaffoldState, coroutineScope: CoroutineScope) {
-        if (uiState is AuthState.AuthenticationError) {
-            Scaffold(
-                scaffoldState = scaffoldState,
-                modifier = Modifier
+    Scaffold(scaffoldState = scaffoldState) {
+        Box(modifier = Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center) {
+            Column(
+                modifier = Modifier.width(250.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                coroutineScope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        (uiState as AuthState.AuthenticationError).message,
-                    )
-                }
-            }
-        }
-    }
+                Text(text = stringResource(R.string.sign_in), color = Color.White, fontSize = 40.sp)
+                LoginTextField(login, null)
+                LoginPasswordTextField(password, null)
+                AuthButton(
+                    stringResource(R.string.login),
+                    onClick = {
+                        scope.launch {
+                            viewModel.login(login.value, password.value)
+                        }
+                    },
+                    color = green
+                )
 
-    Box(modifier = Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center) {
-        Column(
-            modifier = Modifier.width(250.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            Text(text = stringResource(R.string.sign_in), color = Color.White, fontSize = 40.sp)
-            LoginTextField(login, null)
-            LoginPasswordTextField(password, null)
-            AuthButton(
-                stringResource(R.string.login),
-                onClick = {
-                      viewModel.login(login.value, password.value)
-                },
-                color = green
-            )
-            ErrorSnackBar(scaffoldState, scope)
+            }
+    }
+        if (uiState is AuthState.AuthenticationError) {
+            scope.launch {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    (uiState as AuthState.AuthenticationError).message,
+                )
+            }
         }
     }
 }

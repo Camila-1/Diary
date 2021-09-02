@@ -20,8 +20,9 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
 
     override val uiState: StateFlow<AuthState> = _uiState
 
-    override fun login(login: String, password: String) {
+    override suspend fun login(login: String, password: String) {
         _uiState.value = AuthState.Loading
+
         repository.login(login, password).fold(
             {
                 when(it) {
@@ -62,5 +63,5 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
 object FakeViewModel : AuthViewModel {
     override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
     override fun createUser(email: String, password: String, passwordConfirmation: String) {}
-    override fun login(login: String, password: String) {}
+    override suspend fun login(login: String, password: String) {}
 }

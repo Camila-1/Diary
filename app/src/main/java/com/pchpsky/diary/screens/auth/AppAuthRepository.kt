@@ -14,10 +14,9 @@ class AppAuthRepository @Inject constructor(
     private val dataStoreManager: com.pchpsky.diary.datasourse.localstorage.DataStoreManager
     ) : AuthRepository {
 
-    override fun login(login: String, password: String): Either<NetworkError, CreateSessionMutation.Data?> {
-        return runBlocking(Dispatchers.IO) {
-            networkClient.login(login, password)
-        }
+    override suspend fun login(login: String, password: String): Either<NetworkError, CreateSessionMutation.Data?> {
+        return networkClient.login(login, password)
+
     }
 
     override fun createUser(email: String, password: String): Either<NetworkError, CreateUserMutation.Data?> {

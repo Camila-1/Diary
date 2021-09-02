@@ -24,9 +24,7 @@ class AuthActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Scaffold {
-                AuthNavHost(rememberNavController())
-            }
+            AuthNavHost(rememberNavController())
 
         }
     }
