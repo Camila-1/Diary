@@ -3,9 +3,10 @@ package com.pchpsky.diary.screens.auth.ui
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,30 +27,35 @@ import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.auth.FakeViewModel
 import com.pchpsky.diary.screens.theme.green
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun Login(viewModel: AuthViewModel) {
     val login = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val uiState: AuthState by viewModel.uiState.collectAsState()
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    SnackbarHost(
-        hostState = snackbarHostState,
-        modifier = Modifier,
-    )
+    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberScaffoldState()
 
     if (uiState is AuthState.SignupSuccessful) {
         val context = LocalContext.current
         openHomeScreen(context)
     }
 
-    if (uiState is AuthState.AuthenticationError) {
-        rememberCoroutineScope().launch(Dispatchers.Main) {
-            snackbarHostState.showSnackbar((uiState as AuthState.AuthenticationError).message)
+    @Composable
+    fun ErrorSnackBar(scaffoldState: ScaffoldState, coroutineScope: CoroutineScope) {
+        if (uiState is AuthState.AuthenticationError) {
+            Scaffold(
+                scaffoldState = scaffoldState,
+                modifier = Modifier
+            ) {
+                coroutineScope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        (uiState as AuthState.AuthenticationError).message,
+                    )
+                }
+            }
         }
     }
 
@@ -68,6 +74,7 @@ fun Login(viewModel: AuthViewModel) {
                 },
                 color = green
             )
+            ErrorSnackBar(scaffoldState, scope)
         }
     }
 }
