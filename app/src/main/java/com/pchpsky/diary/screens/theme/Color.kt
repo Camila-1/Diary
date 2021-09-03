@@ -1,6 +1,7 @@
 package com.pchpsky.diary.screens.theme
 
 import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
 import androidx.compose.ui.graphics.Color
 
 val lightGreen = Color(0xff5D9A0F)
@@ -10,8 +11,13 @@ val backgroundDark = Color(0xff0D1A26)
 
 val DarkColors = darkColors(
     background = backgroundDark,
-    error = Color.Red
+    error = Color.Red,
+    primary = green,
+    secondary = lightGreen,
+
 )
+
+val LightColors = lightColors()
 
 
 

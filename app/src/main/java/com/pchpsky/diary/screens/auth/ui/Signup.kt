@@ -53,7 +53,7 @@ fun SignUp(viewModel: AuthViewModel) {
             modifier = Modifier.width(250.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(text = stringResource(R.string.sign_up), color = Color.White, fontSize = 40.sp)
+            Text(text = stringResource(R.string.sign_up), style = MaterialTheme.typography.h2)
             EmailTextField(email, errorMessageFor(FieldKey.EMAIL.key))
             PasswordTextField(password, errorMessageFor(FieldKey.PASSWORD.key))
             ConfirmPasswordTextField(confirmPassword, errorMessageFor(FieldKey.CONFIRM_PASSWORD.key))

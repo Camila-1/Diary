@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.R
@@ -73,8 +73,7 @@ fun logoGroup() {
         Image(painter = image, contentDescription = null, modifier = Modifier.width(83.dp))
         Text(
             text = "Diary",
-            color = Color.White,
-            fontSize = 50.sp,
+            style = MaterialTheme.typography.h1,
             modifier = Modifier.padding(bottom = 10.dp, start = 15.dp)
         )
     }

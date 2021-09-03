@@ -9,11 +9,12 @@ fun DiaryTheme(
     darkTheme: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colors = DarkColors
+    val colors = if (darkTheme) DarkColors else LightColors
 
     MaterialTheme(
         colors = colors,
-        content = content
+        content = content,
+        typography = typography
     )
 }
 
@@ -21,4 +22,8 @@ object DiaryTheme {
     val colors: Colors
     @Composable
     get() = MaterialTheme.colors
+
+    val typography
+    @Composable
+    get() = MaterialTheme.typography
 }

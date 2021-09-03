@@ -47,7 +47,7 @@ fun Login(viewModel: AuthViewModel) {
                 modifier = Modifier.width(250.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(text = stringResource(R.string.sign_in), color = Color.White, fontSize = 40.sp)
+                Text(text = stringResource(R.string.sign_in), style = DiaryTheme.typography.h2)
                 LoginTextField(login, null)
                 LoginPasswordTextField(password, null)
                 AuthButton(
