@@ -24,6 +24,7 @@ import com.pchpsky.diary.composables.AuthButton
 import com.pchpsky.diary.composables.ErrorMessage
 import com.pchpsky.diary.composables.TextField
 import com.pchpsky.diary.screens.auth.*
+import com.pchpsky.diary.screens.theme.DiaryTheme
 import com.pchpsky.diary.screens.theme.green
 
 @Composable
@@ -45,7 +46,7 @@ fun SignUp(viewModel: AuthViewModel) {
     }
 
     Box(
-        modifier = Modifier.fillMaxSize().background(Color.Black),
+        modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background),
         contentAlignment = Alignment.Center
     ) {
         Column(

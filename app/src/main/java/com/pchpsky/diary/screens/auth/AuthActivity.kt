@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,6 +13,7 @@ import com.pchpsky.diary.navigation.AuthRoute
 import com.pchpsky.diary.screens.auth.ui.Login
 import com.pchpsky.diary.screens.auth.ui.SignUp
 import com.pchpsky.diary.screens.auth.ui.StartScreen
+import com.pchpsky.diary.screens.theme.DiaryTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,8 +24,9 @@ class AuthActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AuthNavHost(rememberNavController())
-
+            DiaryTheme(darkTheme = true) {
+                AuthNavHost(rememberNavController())
+            }
         }
     }
 

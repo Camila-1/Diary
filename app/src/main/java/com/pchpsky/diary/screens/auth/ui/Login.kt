@@ -24,6 +24,7 @@ import com.pchpsky.diary.composables.TextField
 import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.auth.FakeViewModel
+import com.pchpsky.diary.screens.theme.DiaryTheme
 import com.pchpsky.diary.screens.theme.green
 import kotlinx.coroutines.launch
 
@@ -41,7 +42,7 @@ fun Login(viewModel: AuthViewModel) {
     }
 
     Scaffold(scaffoldState = scaffoldState) {
-        Box(modifier = Modifier.fillMaxSize().background(Color.Black), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background), contentAlignment = Alignment.Center) {
             Column(
                 modifier = Modifier.width(250.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
