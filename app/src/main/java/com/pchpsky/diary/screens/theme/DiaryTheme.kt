@@ -14,7 +14,8 @@ fun DiaryTheme(
     MaterialTheme(
         colors = colors,
         content = content,
-        typography = typography
+        typography = typography,
+        shapes = shapes
     )
 }
 
@@ -26,4 +27,8 @@ object DiaryTheme {
     val typography
     @Composable
     get() = MaterialTheme.typography
+
+    val shapes
+    @Composable
+    get() = MaterialTheme.shapes
 }
