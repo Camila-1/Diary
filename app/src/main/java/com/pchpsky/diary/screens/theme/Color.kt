@@ -19,6 +19,13 @@ val DarkColors = darkColors(
 
 val LightColors = lightColors()
 
+class DiaryColors(
+    greenButton: Color,
+    lightGreenButton: Color,
+    background: Color,
+
+)
+
 
 
 

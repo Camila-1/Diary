@@ -17,6 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.pchpsky.diary.screens.theme.DiaryTheme
 import com.pchpsky.diary.screens.theme.blue
 
 @Composable
@@ -45,10 +46,12 @@ fun TextField(
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = blue,
-                unfocusedBorderColor = Color.White
+                unfocusedBorderColor = Color.White,
+                cursorColor = Color.White
             ),
             isError = isError,
             singleLine = true,
+            shape = DiaryTheme.shapes.small,
             trailingIcon = {
                 if (isError)
                     Icon(Icons.Filled.Error, "error", tint = MaterialTheme.colors.error)
