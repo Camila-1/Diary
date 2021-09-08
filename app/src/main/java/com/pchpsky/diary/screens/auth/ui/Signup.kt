@@ -4,12 +4,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -17,15 +15,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.pchpsky.diary.MainActivity
 import com.pchpsky.diary.R
 import com.pchpsky.diary.composables.AuthButton
-import com.pchpsky.diary.composables.ErrorMessage
 import com.pchpsky.diary.composables.TextField
 import com.pchpsky.diary.screens.auth.*
-import com.pchpsky.diary.screens.theme.DiaryTheme
-import com.pchpsky.diary.screens.theme.green
+import com.pchpsky.diary.theme.DiaryTheme
+import com.pchpsky.diary.theme.green
 
 @Composable
 fun SignUp(viewModel: AuthViewModel) {

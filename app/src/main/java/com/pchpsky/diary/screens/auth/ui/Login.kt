@@ -22,8 +22,8 @@ import com.pchpsky.diary.composables.TextField
 import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.auth.FakeViewModel
-import com.pchpsky.diary.screens.theme.DiaryTheme
-import com.pchpsky.diary.screens.theme.green
+import com.pchpsky.diary.theme.DiaryTheme
+import com.pchpsky.diary.theme.green
 import kotlinx.coroutines.launch
 
 @Composable

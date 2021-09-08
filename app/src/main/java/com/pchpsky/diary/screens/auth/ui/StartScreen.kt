@@ -19,9 +19,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.R
 import com.pchpsky.diary.navigation.AuthRoute
-import com.pchpsky.diary.screens.theme.DiaryTheme
-import com.pchpsky.diary.screens.theme.green
-import com.pchpsky.diary.screens.theme.lightGreen
+import com.pchpsky.diary.theme.DiaryTheme
+import com.pchpsky.diary.theme.green
+import com.pchpsky.diary.theme.lightGreen
 
 @Composable
 fun StartScreen(

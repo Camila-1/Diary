@@ -1,4 +1,4 @@
-package com.pchpsky.diary.screens.theme
+package com.pchpsky.diary.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

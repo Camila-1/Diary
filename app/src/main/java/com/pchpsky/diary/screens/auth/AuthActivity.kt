@@ -1,5 +1,6 @@
 package com.pchpsky.diary.screens.auth
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,8 +14,10 @@ import com.pchpsky.diary.navigation.AuthRoute
 import com.pchpsky.diary.screens.auth.ui.Login
 import com.pchpsky.diary.screens.auth.ui.SignUp
 import com.pchpsky.diary.screens.auth.ui.StartScreen
-import com.pchpsky.diary.screens.theme.DiaryTheme
+import com.pchpsky.diary.theme.DiaryTheme
 import dagger.hilt.android.AndroidEntryPoint
+import android.view.WindowManager
+
 
 @AndroidEntryPoint
 class AuthActivity : ComponentActivity() {
@@ -23,6 +26,14 @@ class AuthActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        }
+
+
         setContent {
             DiaryTheme(darkTheme = true) {
                 AuthNavHost(rememberNavController())
