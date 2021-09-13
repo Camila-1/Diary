@@ -49,5 +49,4 @@ class AuthActivity : ComponentActivity() {
             composable(AuthRoute.SIGNUP.route) { SignUp(viewModel) }
         }
     }
-
 }

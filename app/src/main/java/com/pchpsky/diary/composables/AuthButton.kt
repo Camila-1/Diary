@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
-fun AuthButton(text: String, color: Color, onClick: () -> Unit) {
+fun AuthButton(text: String, color: Color, modifier: Modifier, onClick: () -> Unit) {
     Button(
         enabled = true,
         colors = ButtonDefaults.buttonColors(
@@ -21,11 +21,12 @@ fun AuthButton(text: String, color: Color, onClick: () -> Unit) {
             disabledBackgroundColor = color
         ),
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 12.dp)
             .height(40.dp),
         shape = DiaryTheme.shapes.large
+
     ) {
         Text(text)
     }

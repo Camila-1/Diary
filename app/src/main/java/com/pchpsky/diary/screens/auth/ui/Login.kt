@@ -50,6 +50,7 @@ fun Login(viewModel: AuthViewModel) {
                 LoginPasswordTextField(password, null)
                 AuthButton(
                     stringResource(R.string.login),
+                    modifier = Modifier,
                     onClick = {
                         scope.launch {
                             viewModel.login(login.value, password.value)
