@@ -1,8 +1,9 @@
 package com.pchpsky.diary.theme
 
-import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun DiaryTheme(
@@ -11,18 +12,27 @@ fun DiaryTheme(
 ) {
     val colors = if (darkTheme) DarkColors else LightColors
 
-    MaterialTheme(
-        colors = colors,
-        content = content,
-        typography = typography,
-        shapes = shapes
-    )
+    val sysUiController = rememberSystemUiController()
+    SideEffect {
+        sysUiController.setSystemBarsColor(
+            color = colors.background.copy(alpha = .5f)
+        )
+    }
+
+    ProvideDiaryColors(colors) {
+        MaterialTheme(
+            content = content,
+            typography = typography,
+            shapes = shapes
+        )
+    }
+
 }
 
 object DiaryTheme {
-    val colors: Colors
+    val colors: DiaryColors
     @Composable
-    get() = MaterialTheme.colors
+    get() = LocalDiaryColors.current
 
     val typography
     @Composable
