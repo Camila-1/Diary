@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.R
 import com.pchpsky.diary.composables.AuthButton
 import com.pchpsky.diary.composables.ErrorMessage
@@ -40,7 +41,7 @@ fun Login(viewModel: AuthViewModel) {
     }
 
     Scaffold(scaffoldState = scaffoldState) {
-        Box(modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background).imePadding(), contentAlignment = Alignment.Center) {
             Column(
                 modifier = Modifier.width(250.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -48,18 +49,20 @@ fun Login(viewModel: AuthViewModel) {
                 Text(text = stringResource(R.string.sign_in), style = DiaryTheme.typography.h2)
                 LoginTextField(login, null)
                 LoginPasswordTextField(password, null)
-                AuthButton(
-                    stringResource(R.string.login),
-                    modifier = Modifier,
-                    onClick = {
-                        scope.launch {
-                            viewModel.login(login.value, password.value)
-                        }
-                    },
-                    color = green
-                )
+
 
             }
+
+            AuthButton(
+                stringResource(R.string.login),
+                modifier = Modifier.align(Alignment.BottomCenter),
+                onClick = {
+                    scope.launch {
+                        viewModel.login(login.value, password.value)
+                    }
+                },
+                color = green
+            )
     }
         if (uiState is AuthState.AuthenticationError) {
             scope.launch {

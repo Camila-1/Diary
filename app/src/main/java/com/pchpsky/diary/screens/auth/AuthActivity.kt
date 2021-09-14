@@ -2,6 +2,7 @@ package com.pchpsky.diary.screens.auth
 
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -10,13 +11,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.insets.ProvideWindowInsets
 import com.pchpsky.diary.navigation.AuthRoute
 import com.pchpsky.diary.screens.auth.ui.Login
 import com.pchpsky.diary.screens.auth.ui.SignUp
 import com.pchpsky.diary.screens.auth.ui.StartScreen
 import com.pchpsky.diary.theme.DiaryTheme
 import dagger.hilt.android.AndroidEntryPoint
-import android.view.WindowManager
 
 
 @AndroidEntryPoint
@@ -36,7 +37,9 @@ class AuthActivity : ComponentActivity() {
 
         setContent {
             DiaryTheme(darkTheme = true) {
-                AuthNavHost(rememberNavController())
+                ProvideWindowInsets {
+                    AuthNavHost(rememberNavController())
+                }
             }
         }
     }

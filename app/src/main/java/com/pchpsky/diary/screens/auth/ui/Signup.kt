@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.MainActivity
 import com.pchpsky.diary.R
 import com.pchpsky.diary.composables.AuthButton
@@ -47,7 +48,7 @@ fun SignUp(viewModel: AuthViewModel) {
     }
 
     ConstraintLayout(
-        modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background),
+        modifier = Modifier.fillMaxSize().imePadding().background(DiaryTheme.colors.background),
     ) {
         val (column, button, signup) = createRefs()
 
@@ -134,5 +135,7 @@ fun openHomeScreen(context: Context) {
 @Preview
 @Composable
 fun SignUpPreview() {
-    SignUp(FakeViewModel)
+    DiaryTheme(darkTheme = true) {
+        SignUp(FakeViewModel)
+    }
 }

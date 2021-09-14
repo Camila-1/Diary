@@ -101,6 +101,8 @@ dependencies {
     implementation "androidx.compose.animation:animation:$jetpack_compose_version"
     implementation "androidx.compose.compiler:compiler:$jetpack_compose_version"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.10.0"
+    implementation "com.google.accompanist:accompanist-insets:0.10.0"
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:28.0.1')
