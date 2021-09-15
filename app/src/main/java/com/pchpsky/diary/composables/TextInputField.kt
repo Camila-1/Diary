@@ -41,12 +41,13 @@ fun TextField(
             modifier = Modifier.fillMaxWidth(1f).height(60.dp)
                 .semantics { contentDescription = "email_input_field" },
             textStyle = TextStyle(color = Color.White),
-            label = { Text(text = label, color = Color.White) },
+            label = { Text(text = label, color = if (isError) Color.Red else Color.White) },
             visualTransformation = visualTransformation,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = blue,
                 unfocusedBorderColor = Color.White,
+                errorLabelColor = Color.Red,
                 cursorColor = Color.White
             ),
             isError = isError,
@@ -55,7 +56,7 @@ fun TextField(
             trailingIcon = {
                 if (isError)
                     Icon(Icons.Filled.Error, "error", tint = MaterialTheme.colors.error)
-            }
+            },
         )
         Text(
             text = if (isError) errorMessage!! else "",
