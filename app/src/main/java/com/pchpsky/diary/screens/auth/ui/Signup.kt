@@ -50,14 +50,14 @@ fun SignUp(viewModel: AuthViewModel) {
     ConstraintLayout(
         modifier = Modifier.fillMaxSize().imePadding().background(DiaryTheme.colors.background),
     ) {
-        val (column, button, signup) = createRefs()
+        val (column, button, signUpTitle) = createRefs()
 
         Text(
             text = stringResource(R.string.sign_up),
             style = MaterialTheme.typography.h2,
             modifier = Modifier
-                .constrainAs(signup) {
-                    top.linkTo(parent.top, 35.dp)
+                .constrainAs(signUpTitle) {
+                    top.linkTo(parent.top, 40.dp)
                     start.linkTo(parent.start, 40.dp)
                 }
         )
@@ -65,7 +65,7 @@ fun SignUp(viewModel: AuthViewModel) {
         Column(
             modifier = Modifier
                 .constrainAs(column) {
-                    top.linkTo(signup.bottom, 20.dp)
+                    top.linkTo(signUpTitle.bottom, 20.dp)
                     start.linkTo(parent.start, 40.dp)
                     end.linkTo(parent.end, 40.dp)
                     width = Dimension.fillToConstraints
