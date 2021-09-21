@@ -1,5 +1,6 @@
 package com.pchpsky.diary.screens.launch
 
+import com.pchpsky.diary.datasourse.localstorage.DataStoreManager
 import com.pchpsky.diary.datasourse.network.NetworkClient
 import dagger.Module
 import dagger.Provides
@@ -13,7 +14,7 @@ class LaunchModule {
 
     @Singleton
     @Provides
-    fun provideLaunchRepository(networkClient: NetworkClient): LaunchRepository {
-        return AppLaunchRepository(networkClient)
+    fun provideLaunchRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): LaunchRepository {
+        return AppLaunchRepository(networkClient, dataStoreManager)
     }
 }

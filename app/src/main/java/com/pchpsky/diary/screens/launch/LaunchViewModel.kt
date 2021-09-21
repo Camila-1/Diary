@@ -1,19 +1,12 @@
 package com.pchpsky.diary.screens.launch
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import arrow.core.Either
+import com.pchpsky.diary.exceptions.NetworkError
+import com.pchpsky.schema.CurrentUserQuery
 
-@HiltViewModel
-class LaunchViewModel @Inject constructor(private val repository: LaunchRepository) : ViewModel() {
+interface LaunchViewModel {
 
+    suspend fun userLoggedIn(): Either<NetworkError, CurrentUserQuery.Data?>
 
-
-    suspend fun userExists(): Boolean {
-        return withContext(Dispatchers.IO) {
-            repository.user() != null
-        }
-    }
+    suspend fun token(): String?
 }

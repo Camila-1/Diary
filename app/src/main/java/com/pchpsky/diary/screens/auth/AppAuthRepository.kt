@@ -1,6 +1,7 @@
 package com.pchpsky.diary.screens.auth
 
 import arrow.core.Either
+import com.pchpsky.diary.datasourse.localstorage.DataStoreManager
 import com.pchpsky.diary.datasourse.network.NetworkClient
 import com.pchpsky.diary.exceptions.NetworkError
 import com.pchpsky.schema.CreateSessionMutation
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 class AppAuthRepository @Inject constructor(
     private val networkClient: NetworkClient,
-    private val dataStoreManager: com.pchpsky.diary.datasourse.localstorage.DataStoreManager
+    private val dataStoreManager: DataStoreManager
     ) : AuthRepository {
 
     override suspend fun login(login: String, password: String): Either<NetworkError, CreateSessionMutation.Data?> {

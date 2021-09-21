@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,6 +26,7 @@ class AuthActivity : ComponentActivity() {
 
     private val viewModel: AppAuthViewModel by viewModels()
 
+    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,6 +46,7 @@ class AuthActivity : ComponentActivity() {
         }
     }
 
+    @ExperimentalComposeUiApi
     @Composable
     fun AuthNavHost(navController: NavHostController) {
         NavHost(navController, AuthRoute.START.route) {

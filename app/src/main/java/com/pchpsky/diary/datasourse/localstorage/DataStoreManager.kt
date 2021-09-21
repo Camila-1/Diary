@@ -28,10 +28,10 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
-    fun userToken(): Flow<String> {
+    fun userToken(): Flow<String?> {
         return dataStore.data.catch { exception ->
             if (exception is IOException) emit(emptyPreferences())
             else throw exception
-        }.map { it[PreferencesKeys.USER_TOKEN] ?: ""}
+        }.map { it[PreferencesKeys.USER_TOKEN] }
     }
 }
