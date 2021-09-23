@@ -1,23 +1,20 @@
 package com.pchpsky.diary.screens.auth.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.pchpsky.diary.R
+import com.pchpsky.diary.composables.LogoGroup
 import com.pchpsky.diary.navigation.AuthRoute
 import com.pchpsky.diary.theme.DiaryTheme
 import com.pchpsky.diary.theme.green
@@ -31,12 +28,12 @@ fun StartScreen(
         Column(
             modifier = Modifier.width(250.dp)
         ) {
-            logoGroup()
-            loginButton(
+            LogoGroup(modifier = Modifier.padding(bottom = 40.dp))
+            LoginButton(
                 text = "Login",
                 color = lightGreen,
                 onClick = { navController.navigate(AuthRoute.LOGIN.route) })
-            loginButton(
+            LoginButton(
                 text = "Signup",
                 color = green,
                 onClick = { navController.navigate(AuthRoute.SIGNUP.route) })
@@ -46,7 +43,7 @@ fun StartScreen(
 }
 
 @Composable
-fun loginButton(text: String, color: Color, onClick: () -> Unit) {
+fun LoginButton(text: String, color: Color, onClick: () -> Unit) {
     Button(
         enabled = true,
         colors = ButtonDefaults.buttonColors(
@@ -63,19 +60,6 @@ fun loginButton(text: String, color: Color, onClick: () -> Unit) {
         shape = RoundedCornerShape(50)
     ) {
         Text(text)
-    }
-}
-
-@Composable
-fun logoGroup() {
-    val image = painterResource(R.drawable.ic_logo)
-    Row(verticalAlignment = Alignment.Bottom, modifier = Modifier.padding(bottom = 40.dp)) {
-        Image(painter = image, contentDescription = null, modifier = Modifier.width(83.dp))
-        Text(
-            text = "Diary",
-            style = MaterialTheme.typography.h1,
-            modifier = Modifier.padding(bottom = 10.dp, start = 15.dp)
-        )
     }
 }
 
