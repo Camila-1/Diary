@@ -1,6 +1,8 @@
 package com.pchpsky.diary.screens.settings.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.RadioButton
@@ -54,7 +56,16 @@ fun GlucoseGroup() {
             ) {
                 items.forEach { item ->
                     Row(
-                        modifier = Modifier.padding(start = 30.dp),
+                        modifier = Modifier
+                            .padding(start = 30.dp)
+                            .fillMaxWidth()
+                            .background(Color.Transparent, DiaryTheme.shapes.small)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) {
+                            rememberedObserver.value = item
+                        },
                     ) {
                         RadioButton(
                             selected = rememberedObserver.value == item,
