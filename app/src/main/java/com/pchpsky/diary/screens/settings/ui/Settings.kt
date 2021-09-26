@@ -5,8 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
@@ -95,7 +95,7 @@ fun GlucoseGroup() {
 fun InsulinGroup() {
 
     val insulins = mapOf<Color, String>(
-        Color.Blue to "Insulin 1",
+        Color.Black to "Insulin 1",
         Color.Red to "Insulin 2",
         Color.Yellow to "Insulin 3"
     )
@@ -109,12 +109,29 @@ fun InsulinGroup() {
     ) {
         Column {
 
-            Text(
-                text = "Insulin",
-                style = DiaryTheme.typography.h2,
-                color = Color.White,
-                modifier = Modifier.padding(top = 20.dp, start = 30.dp)
-            )
+            Row(
+                modifier = Modifier.padding(top = 20.dp, start = 30.dp, end = 30.dp).fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Insulin",
+                    style = DiaryTheme.typography.h2,
+                    color = Color.White,
+                )
+
+                IconButton(
+                    onClick = {}
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        contentDescription = "",
+                        tint =Color.White,
+                        modifier = Modifier.size(25.dp)
+                    )
+                }
+            }
+
+
 
             Column(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
