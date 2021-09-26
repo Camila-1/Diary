@@ -4,10 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.RadioButton
-import androidx.compose.material.RadioButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,10 +20,12 @@ import com.pchpsky.diary.theme.DiaryTheme
 @Composable
 fun Settings() {
 
-    ConstraintLayout(
+    Column (
         modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background)
     ) {
+
         GlucoseGroup()
+        InsulinGroup()
     }
 }
 
@@ -86,6 +87,60 @@ fun GlucoseGroup() {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun InsulinGroup() {
+
+    val insulins = mapOf<Color, String>(
+        Color.Blue to "Insulin 1",
+        Color.Red to "Insulin 2",
+        Color.Yellow to "Insulin 3"
+    )
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(10.dp),
+        backgroundColor = Color(0xff484848).copy(0.8f),
+    ) {
+        Column {
+
+            Text(
+                text = "Insulin",
+                style = DiaryTheme.typography.h2,
+                color = Color.White,
+                modifier = Modifier.padding(top = 20.dp, start = 30.dp)
+            )
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier.padding(top = 30.dp, bottom = 20.dp)
+            ) {
+                insulins.forEach { (color, name) ->
+
+                    Row(
+                        modifier = Modifier.padding(start = 30.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .background(color, CircleShape)
+                                .width(15.dp)
+                                .height(15.dp)
+                        )
+                        Text(
+                            text = name,
+                            modifier = Modifier.padding(start = 25.dp),
+                            style = DiaryTheme.typography.body1,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+
         }
     }
 }
