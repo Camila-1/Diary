@@ -8,5 +8,6 @@ enum class AuthRoute(val route: String) {
 
 enum class MainRout(val route: String) {
     HOME("home"),
-    SETTINGS("settings")
+    SETTINGS("settings"),
+    INSULIN_SETTINGS("insulin settings")
 }

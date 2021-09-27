@@ -15,17 +15,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.pchpsky.diary.navigation.MainRout
+import com.pchpsky.diary.screens.settings.AppSettingsViewModel
 import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
-fun Settings() {
+fun Settings(
+    navController: NavHostController,
+    viewModel: AppSettingsViewModel = viewModel()
+) {
 
     Column (
         modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background)
     ) {
 
         GlucoseGroup()
-        InsulinGroup()
+        InsulinGroup {
+            navController.navigate(MainRout.INSULIN_SETTINGS.route)
+        }
     }
 }
 
@@ -92,13 +101,17 @@ fun GlucoseGroup() {
 }
 
 @Composable
-fun InsulinGroup() {
+fun InsulinGroup(onEditClick: () -> Unit) {
 
-    val insulins = mapOf<Color, String>(
-        Color.Black to "Insulin 1",
-        Color.Red to "Insulin 2",
-        Color.Yellow to "Insulin 3"
-    )
+    val insulins = remember {
+        mutableStateOf(
+            mapOf<Color, String>(
+                Color.Black to "Insulin 1",
+                Color.Red to "Insulin 2",
+                Color.Yellow to "Insulin 3"
+            )
+        )
+    }
 
     Card(
         modifier = Modifier
@@ -120,24 +133,25 @@ fun InsulinGroup() {
                 )
 
                 IconButton(
-                    onClick = {}
+                    onClick = {
+                        onEditClick()
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
                         contentDescription = "",
                         tint =Color.White,
-                        modifier = Modifier.size(25.dp)
+                        modifier = Modifier.size(25.dp),
                     )
                 }
             }
-
-
 
             Column(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 modifier = Modifier.padding(top = 30.dp, bottom = 20.dp)
             ) {
-                insulins.forEach { (color, name) ->
+
+                insulins.value.forEach { (color, name) ->
 
                     Row(
                         modifier = Modifier.padding(start = 30.dp)
@@ -161,6 +175,8 @@ fun InsulinGroup() {
         }
     }
 }
+
+
 
 @Preview
 @Composable

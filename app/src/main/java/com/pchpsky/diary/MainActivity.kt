@@ -17,6 +17,7 @@ import com.pchpsky.diary.composables.drawer.Drawer
 import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.home.Home
 import com.pchpsky.diary.screens.home.HomeViewModel
+import com.pchpsky.diary.screens.settings.ui.InsulinSettings
 import com.pchpsky.diary.screens.settings.ui.Settings
 import com.pchpsky.diary.theme.DiaryTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,7 +62,8 @@ class MainActivity : ComponentActivity() {
     fun MainNavHost(navController: NavHostController) {
         NavHost(navController, MainRout.HOME.route) {
             composable(MainRout.HOME.route) { Home(navController) }
-            composable(MainRout.SETTINGS.route) { Settings() }
+            composable(MainRout.SETTINGS.route) { Settings(navController) }
+            composable(MainRout.INSULIN_SETTINGS.route) { InsulinSettings() }
         }
     }
 }
