@@ -12,17 +12,10 @@ class SignupScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-//    private val viewModelDependency = object : AuthViewModel {
-//        override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(
-//            mapOf("email" to arrayListOf("error message"))))
-//
-//        override fun createUser(email: String, password: String, passwordConfirmation: String) {}
-//    }
-
     @Test
     fun errorIcon_displayedWhenError() {
         composeTestRule.setContent {
-            SignUp(FakeViewModel)
+            SignUp()
         }
 
         composeTestRule.onNodeWithText("Submit").performClick().assertExists("must not be blank")
@@ -32,7 +25,7 @@ class SignupScreenTest {
     @Test
     fun submitButton_callCreateUserOnClick() {
         composeTestRule.setContent {
-            SignUp(FakeViewModel)
+            SignUp()
         }
 
         composeTestRule.onNodeWithText("Submit").performClick()

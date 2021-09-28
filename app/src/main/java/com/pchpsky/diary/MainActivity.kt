@@ -3,7 +3,6 @@ package com.pchpsky.diary
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -16,7 +15,6 @@ import com.pchpsky.diary.composables.TopBar
 import com.pchpsky.diary.composables.drawer.Drawer
 import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.home.Home
-import com.pchpsky.diary.screens.home.HomeViewModel
 import com.pchpsky.diary.screens.settings.ui.InsulinSettings
 import com.pchpsky.diary.screens.settings.ui.Settings
 import com.pchpsky.diary.theme.DiaryTheme
@@ -24,8 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val viewModel: HomeViewModel by viewModels()
 
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -15,17 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.settings.AppSettingsViewModel
 import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
 fun Settings(
-    navController: NavHostController,
-    viewModel: AppSettingsViewModel = viewModel()
+    navController: NavHostController
 ) {
+    val viewModel: AppSettingsViewModel = hiltViewModel()
 
     Column (
         modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background)
@@ -181,6 +182,6 @@ fun InsulinGroup(onEditClick: () -> Unit) {
 @Preview
 @Composable
 fun SettingsPreview() {
-    GlucoseGroup()
+    Settings(rememberNavController())
 }
 

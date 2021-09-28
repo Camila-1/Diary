@@ -12,8 +12,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.composables.ColorPicker
 import com.pchpsky.diary.screens.settings.AppSettingsViewModel
 import com.pchpsky.diary.theme.DiaryTheme
@@ -21,7 +23,9 @@ import com.pchpsky.diary.theme.blue
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 
 @Composable
-fun InsulinSettings(viewModel: AppSettingsViewModel = viewModel()) {
+fun InsulinSettings() {
+
+    val viewModel: AppSettingsViewModel = hiltViewModel()
 
     val insulinName = remember { mutableStateOf("") }
     val insulinColor = remember { mutableStateOf(Color.White) }
@@ -70,4 +74,10 @@ fun AddInsulin(name: MutableState<String>, color: MutableState<Color>) {
             modifier = Modifier.padding(start = 15.dp)
         )
     }
+}
+
+@Preview
+@Composable
+fun InsulinSettingsPreview() {
+    Settings(rememberNavController())
 }

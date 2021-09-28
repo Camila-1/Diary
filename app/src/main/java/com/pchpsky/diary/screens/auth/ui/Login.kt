@@ -1,5 +1,6 @@
 package com.pchpsky.diary.screens.auth.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
@@ -19,21 +20,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.R
 import com.pchpsky.diary.composables.AuthButton
 import com.pchpsky.diary.composables.ErrorMessage
 import com.pchpsky.diary.composables.TextField
+import com.pchpsky.diary.screens.auth.AppAuthViewModel
 import com.pchpsky.diary.screens.auth.AuthState
-import com.pchpsky.diary.screens.auth.AuthViewModel
-import com.pchpsky.diary.screens.auth.FakeViewModel
 import com.pchpsky.diary.theme.DiaryTheme
 import com.pchpsky.diary.theme.green
 import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalComposeUiApi
 @Composable
-fun Login(viewModel: AuthViewModel) {
+fun Login() {
+
+    val viewModel: AppAuthViewModel = hiltViewModel()
+
     val login = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val uiState: AuthState by viewModel.uiState.collectAsState()
@@ -130,5 +135,7 @@ fun LoginPasswordTextField(password: MutableState<String>, errorMessage: String?
 @Composable
 @Preview
 fun LoginPreview() {
-    Login(FakeViewModel)
+    DiaryTheme(darkTheme = true) {
+        Login()
+    }
 }
