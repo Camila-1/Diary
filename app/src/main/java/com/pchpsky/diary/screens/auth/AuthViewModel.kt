@@ -6,6 +6,6 @@ interface AuthViewModel {
 
     val uiState: StateFlow<AuthState>
 
-    fun createUser(email: String, password: String,passwordConfirmation: String)
+    suspend fun createUser(email: String, password: String, passwordConfirmation: String)
     suspend fun login(login: String, password: String)
 }

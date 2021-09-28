@@ -29,6 +29,7 @@ import com.pchpsky.diary.composables.TextField
 import com.pchpsky.diary.screens.auth.*
 import com.pchpsky.diary.theme.DiaryTheme
 import com.pchpsky.diary.theme.green
+import kotlinx.coroutines.launch
 
 @Composable
 fun SignUp() {
@@ -39,6 +40,7 @@ fun SignUp() {
     val password = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("") }
     val uiState: AuthState by viewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
 
     fun errorMessageFor(key: String): String? {
         return if (uiState is AuthState.ValidationError)
@@ -93,7 +95,9 @@ fun SignUp() {
                 },
             color = green,
         ) {
-            viewModel.createUser(email.value, password.value, confirmPassword.value)
+            scope.launch {
+                viewModel.createUser(email.value, password.value, confirmPassword.value)
+            }
         }
     }
 }

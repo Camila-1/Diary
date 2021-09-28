@@ -7,6 +7,6 @@ import com.pchpsky.schema.CreateUserMutation
 
 interface AuthRepository {
 
-    fun createUser(email: String, password: String): Either<NetworkError, CreateUserMutation.Data?>
+    suspend fun createUser(email: String, password: String): Either<NetworkError, CreateUserMutation.Data?>
     suspend fun login(login: String, password: String): Either<NetworkError, CreateSessionMutation.Data?>
 }

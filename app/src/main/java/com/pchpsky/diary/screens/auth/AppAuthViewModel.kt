@@ -37,7 +37,7 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
         ).also { _uiState.value = it }
     }
 
-    override fun createUser(email: String, password: String, passwordConfirmation: String) {
+    override suspend fun createUser(email: String, password: String, passwordConfirmation: String) {
         if (!password.contentEquals(passwordConfirmation)) {
             _uiState.value = AuthState.ValidationError(mapOf(FieldKey.CONFIRM_PASSWORD.key to arrayListOf("Does not mach password")))
             return
@@ -62,6 +62,6 @@ class AppAuthViewModel @Inject constructor(private val repository: AuthRepositor
 
 object FakeViewModel : AuthViewModel {
     override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
-    override fun createUser(email: String, password: String, passwordConfirmation: String) {}
+    override suspend fun createUser(email: String, password: String, passwordConfirmation: String) {}
     override suspend fun login(login: String, password: String) {}
 }

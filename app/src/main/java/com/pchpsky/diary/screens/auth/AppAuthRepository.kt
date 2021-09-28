@@ -20,12 +20,10 @@ class AppAuthRepository @Inject constructor(
 
     }
 
-    override fun createUser(email: String, password: String): Either<NetworkError, CreateUserMutation.Data?> {
-        return runBlocking(Dispatchers.IO) {
-            networkClient.createUser(email, password).map {
-                it.session?.token?.let { token -> dataStoreManager.saveUserToken(token) }
-                it
-            }
+    override suspend fun createUser(email: String, password: String): Either<NetworkError, CreateUserMutation.Data?> {
+        return networkClient.createUser(email, password).map {
+            it.session?.token?.let { token -> dataStoreManager.saveUserToken(token) }
+            it
         }
     }
 }
