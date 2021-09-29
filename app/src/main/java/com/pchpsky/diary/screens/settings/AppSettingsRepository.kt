@@ -11,7 +11,11 @@ class AppSettingsRepository(
     dataStoreManager: DataStoreManager
 ) : SettingsRepository {
 
-    suspend fun createInsulin(color: String, name: String): Either<NetworkError, CreateInsulinMutation.Data> {
+    override suspend fun createInsulin(color: String, name: String): Either<NetworkError, CreateInsulinMutation.Data> {
         return networkClient.createInsulin(color, name)
+    }
+
+    override fun saveInsulin(id: String, color: String, name: String) {
+
     }
 }

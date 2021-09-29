@@ -20,21 +20,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.MainActivity
 import com.pchpsky.diary.R
 import com.pchpsky.diary.composables.AuthButton
 import com.pchpsky.diary.composables.TextField
 import com.pchpsky.diary.screens.auth.*
+import com.pchpsky.diary.screens.auth.interfaces.Signup
 import com.pchpsky.diary.theme.DiaryTheme
 import com.pchpsky.diary.theme.green
 import kotlinx.coroutines.launch
 
-@Composable
-fun SignUp() {
 
-    val viewModel: AppAuthViewModel = hiltViewModel()
+@Composable
+fun SignUp(viewModel: Signup) {
 
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -144,6 +143,6 @@ fun openHomeScreen(context: Context) {
 @Composable
 fun SignUpPreview() {
     DiaryTheme(darkTheme = true) {
-        SignUp()
+        SignUp(FakeAuthViewModel)
     }
 }

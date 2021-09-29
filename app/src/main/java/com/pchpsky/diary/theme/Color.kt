@@ -34,16 +34,19 @@ class DiaryColors(
     backgroundDrawer: Color
 ) {
     var background by mutableStateOf(background)
-    private set
+        private set
 
     var primary by mutableStateOf(primary)
-    private set
+        private set
 
     var error by mutableStateOf(error)
+        private set
 
     var secondary by mutableStateOf(secondary)
+        private set
 
     var backgroundDrawer by mutableStateOf(backgroundDrawer)
+        private set
 
     fun copy(): DiaryColors = DiaryColors(
         background = backgroundDark,
@@ -67,7 +70,7 @@ fun ProvideDiaryColors(
     diaryColors: DiaryColors,
     content: @Composable () -> Unit
 ) {
-    val colors = remember{ diaryColors.copy() }
+    val colors = remember{ diaryColors }
     colors.update(diaryColors)
     CompositionLocalProvider(LocalDiaryColors provides colors, content = content)
 }

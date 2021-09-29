@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,6 +16,7 @@ import com.pchpsky.diary.composables.TopBar
 import com.pchpsky.diary.composables.drawer.Drawer
 import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.home.Home
+import com.pchpsky.diary.screens.settings.SettingsViewModel
 import com.pchpsky.diary.screens.settings.ui.InsulinSettings
 import com.pchpsky.diary.screens.settings.ui.Settings
 import com.pchpsky.diary.theme.DiaryTheme
@@ -58,8 +60,13 @@ class MainActivity : ComponentActivity() {
     fun MainNavHost(navController: NavHostController) {
         NavHost(navController, MainRout.HOME.route) {
             composable(MainRout.HOME.route) { Home(navController) }
-            composable(MainRout.SETTINGS.route) { Settings(navController) }
-            composable(MainRout.INSULIN_SETTINGS.route) { InsulinSettings() }
+            composable(MainRout.SETTINGS.route) {
+                Settings(
+                    navController,
+                    viewModel<SettingsViewModel>()
+                )
+            }
+            composable(MainRout.INSULIN_SETTINGS.route) { InsulinSettings(viewModel<SettingsViewModel>()) }
         }
     }
 }

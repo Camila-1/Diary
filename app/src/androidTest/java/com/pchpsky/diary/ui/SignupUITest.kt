@@ -2,7 +2,7 @@ package com.pchpsky.diary.ui
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.pchpsky.diary.screens.auth.FakeViewModel
+import com.pchpsky.diary.screens.auth.FakeAuthViewModel
 import com.pchpsky.diary.screens.auth.ui.SignUp
 import org.junit.Rule
 import org.junit.Test
@@ -15,7 +15,7 @@ class SignupScreenTest {
     @Test
     fun errorIcon_displayedWhenError() {
         composeTestRule.setContent {
-            SignUp()
+            SignUp(FakeAuthViewModel)
         }
 
         composeTestRule.onNodeWithText("Submit").performClick().assertExists("must not be blank")
@@ -25,7 +25,7 @@ class SignupScreenTest {
     @Test
     fun submitButton_callCreateUserOnClick() {
         composeTestRule.setContent {
-            SignUp()
+            SignUp(FakeAuthViewModel)
         }
 
         composeTestRule.onNodeWithText("Submit").performClick()

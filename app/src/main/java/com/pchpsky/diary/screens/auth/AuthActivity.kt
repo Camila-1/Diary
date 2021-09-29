@@ -24,6 +24,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AuthActivity : ComponentActivity() {
 
+    val viewModel: AuthViewModel by viewModels()
+
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +51,8 @@ class AuthActivity : ComponentActivity() {
     fun AuthNavHost(navController: NavHostController) {
         NavHost(navController, AuthRoute.START.route) {
             composable(AuthRoute.START.route) { StartScreen(navController) }
-            composable(AuthRoute.LOGIN.route) { Login() }
-            composable(AuthRoute.SIGNUP.route) { SignUp() }
+            composable(AuthRoute.LOGIN.route) { Login(viewModel) }
+            composable(AuthRoute.SIGNUP.route) { SignUp(viewModel) }
         }
     }
 }

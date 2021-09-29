@@ -4,60 +4,69 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.*
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.composables.ColorPicker
-import com.pchpsky.diary.screens.settings.AppSettingsViewModel
+import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
+import com.pchpsky.diary.screens.settings.interfaces.InsulinSettings
 import com.pchpsky.diary.theme.DiaryTheme
 import com.pchpsky.diary.theme.blue
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import kotlinx.coroutines.launch
 
 @Composable
-fun InsulinSettings() {
+fun InsulinSettings(viewModel: InsulinSettings) {
 
-    val viewModel: AppSettingsViewModel = hiltViewModel()
 
     val insulinName = remember { mutableStateOf("") }
     val insulinColor = remember { mutableStateOf(Color.White) }
+    val scope = rememberCoroutineScope()
+    val uiState = viewModel.uiState
 
     Column(
-        modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(DiaryTheme.colors.background)
     ) {
-        AddInsulin(insulinName, insulinColor)
+
+        AddInsulin(insulinName, insulinColor) {
+            scope.launch {
+                viewModel.addInsulin(insulinColor.value.toString(), insulinName.value)
+            }
+        }
     }
 }
 
 @Composable
-fun AddInsulin(name: MutableState<String>, color: MutableState<Color>) {
+fun AddInsulin(name: MutableState<String>, color: MutableState<Color>, onAddClick: () -> Unit) {
 
     val dialogState = rememberMaterialDialogState()
     ColorPicker(dialogState, color)
 
     Row(
         modifier = Modifier
-            .padding(20.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .fillMaxWidth()
+            .padding(start = 10.dp, top = 20.dp, end = 0.dp),
+        horizontalArrangement = Arrangement.SpaceAround
     ) {
 
         Box(
             modifier = Modifier
                 .background(color.value, CircleShape)
-                .width(40.dp)
-                .height(40.dp)
+                .width(30.dp)
+                .height(30.dp)
                 .clickable {
                     dialogState.show()
                 }
+                .align(Alignment.CenterVertically)
         )
 
         OutlinedTextField(
@@ -71,13 +80,27 @@ fun AddInsulin(name: MutableState<String>, color: MutableState<Color>) {
                 textColor = Color.White,
                 cursorColor = Color.White
             ),
-            modifier = Modifier.padding(start = 15.dp)
+            modifier = Modifier.padding(start = 10.dp)
         )
+
+        IconButton(
+            onClick = onAddClick,
+            modifier = Modifier.then(Modifier.size(50.dp)).align(Alignment.CenterVertically)
+        ) {
+            Icon(
+                Icons.Filled.Add,
+                "",
+                tint = Color.White,
+                modifier = Modifier.size(30.dp),
+            )
+        }
     }
 }
 
 @Preview
 @Composable
 fun InsulinSettingsPreview() {
-    Settings(rememberNavController())
+    DiaryTheme {
+        InsulinSettings(FakeSettingsViewModel)
+    }
 }
