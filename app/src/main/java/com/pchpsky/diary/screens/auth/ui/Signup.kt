@@ -26,14 +26,14 @@ import com.pchpsky.diary.R
 import com.pchpsky.diary.composables.AuthButton
 import com.pchpsky.diary.composables.TextField
 import com.pchpsky.diary.screens.auth.*
-import com.pchpsky.diary.screens.auth.interfaces.Signup
+import com.pchpsky.diary.screens.auth.interfaces.SignupViewModel
 import com.pchpsky.diary.theme.DiaryTheme
 import com.pchpsky.diary.theme.green
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun SignUp(viewModel: Signup) {
+fun SignUp(viewModel: SignupViewModel) {
 
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }

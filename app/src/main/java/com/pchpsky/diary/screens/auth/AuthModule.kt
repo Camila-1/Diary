@@ -13,6 +13,6 @@ class AuthModule {
 
     @Provides
     fun provideAuthRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): AuthRepository {
-        return AppAuthRepository(networkClient, dataStoreManager)
+        return AuthRepository(networkClient, dataStoreManager)
     }
 }

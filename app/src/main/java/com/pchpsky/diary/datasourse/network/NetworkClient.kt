@@ -12,7 +12,10 @@ import com.pchpsky.schema.type.BloodGlucoseUnits
 import com.pchpsky.schema.type.SettingsInput
 import javax.inject.Inject
 
-class NetworkClient @Inject constructor(private val apolloClient: ApolloClient, private val errorsHandler: NetworkErrorHandler) {
+class NetworkClient @Inject constructor(
+    private val apolloClient: ApolloClient,
+    private val errorsHandler: NetworkErrorHandler
+) {
 
     suspend fun user(): Either<NetworkError, CurrentUserQuery.Data?> {
         return errorsHandler.withErrorHandler {
@@ -20,25 +23,38 @@ class NetworkClient @Inject constructor(private val apolloClient: ApolloClient, 
         }
     }
 
-    suspend fun login(email: String, password: String): Either<NetworkError, CreateSessionMutation.Data> {
+    suspend fun login(
+        email: String,
+        password: String
+    ): Either<NetworkError, CreateSessionMutation.Data> {
         return errorsHandler.withErrorHandler {
             apolloClient.mutate(CreateSessionMutation(email, password)).await()
         }
     }
 
-    suspend fun createUser(email: String, password: String): Either<NetworkError, CreateUserMutation.Data> {
+    suspend fun createUser(
+        email: String,
+        password: String
+    ): Either<NetworkError, CreateUserMutation.Data> {
         return errorsHandler.withErrorHandler {
             apolloClient.mutate(CreateUserMutation(email, password)).await()
         }
     }
 
-    suspend fun createInsulin(color: String, name: String): Either<NetworkError, CreateInsulinMutation.Data> {
+    suspend fun createInsulin(
+        color: String,
+        name: String
+    ): Either<NetworkError, CreateInsulinMutation.Data> {
         return errorsHandler.withErrorHandler {
             apolloClient.mutate(CreateInsulinMutation(color, name)).await()
         }
     }
 
-    suspend fun updateInsulin(id: String, color: String, name: String): Either<NetworkError, UpdateInsulinMutation.Data> {
+    suspend fun updateInsulin(
+        id: String,
+        color: String,
+        name: String
+    ): Either<NetworkError, UpdateInsulinMutation.Data> {
         return errorsHandler.withErrorHandler {
             apolloClient.mutate(UpdateInsulinMutation(id, color, name)).await()
         }
@@ -54,7 +70,15 @@ class NetworkClient @Inject constructor(private val apolloClient: ApolloClient, 
         val bloodGlucoseUnits = BloodGlucoseUnits.safeValueOf(glucoseUnits.name)
 
         return errorsHandler.withErrorHandler {
-            apolloClient.mutate(UpdateSettingsMutation(SettingsInput(Input.fromNullable(bloodGlucoseUnits)))).await()
+            apolloClient.mutate(
+                UpdateSettingsMutation(
+                    SettingsInput(
+                        Input.fromNullable(
+                            bloodGlucoseUnits
+                        )
+                    )
+                )
+            ).await()
         }
     }
 }

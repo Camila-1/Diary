@@ -19,13 +19,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
-import com.pchpsky.diary.screens.settings.interfaces.Settings
+import com.pchpsky.diary.screens.settings.interfaces.CurrentSettingsViewModel
 import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
 fun Settings(
     navController: NavHostController,
-    viewModel: Settings
+    viewModel: CurrentSettingsViewModel
 ) {
 
     Column (

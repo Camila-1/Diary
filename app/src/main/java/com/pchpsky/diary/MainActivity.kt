@@ -3,6 +3,7 @@ package com.pchpsky.diary
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -58,15 +59,18 @@ class MainActivity : ComponentActivity() {
     @ExperimentalComposeUiApi
     @Composable
     fun MainNavHost(navController: NavHostController) {
+
+        val settingsViewModel: SettingsViewModel by viewModels()
+
         NavHost(navController, MainRout.HOME.route) {
             composable(MainRout.HOME.route) { Home(navController) }
             composable(MainRout.SETTINGS.route) {
                 Settings(
                     navController,
-                    viewModel<SettingsViewModel>()
+                    settingsViewModel
                 )
             }
-            composable(MainRout.INSULIN_SETTINGS.route) { InsulinSettings(viewModel<SettingsViewModel>()) }
+            composable(MainRout.INSULIN_SETTINGS.route) { InsulinSettings(settingsViewModel) }
         }
     }
 }

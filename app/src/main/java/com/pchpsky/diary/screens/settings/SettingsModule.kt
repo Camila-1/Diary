@@ -14,6 +14,6 @@ class SettingsModule {
 
     @Provides
     fun provideSettingsRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): SettingsRepository {
-        return AppSettingsRepository(networkClient, dataStoreManager)
+        return SettingsRepository(networkClient, dataStoreManager)
     }
 }

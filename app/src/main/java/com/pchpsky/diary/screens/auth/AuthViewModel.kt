@@ -2,8 +2,8 @@ package com.pchpsky.diary.screens.auth
 
 import androidx.lifecycle.ViewModel
 import com.pchpsky.diary.exceptions.NetworkError
-import com.pchpsky.diary.screens.auth.interfaces.Login
-import com.pchpsky.diary.screens.auth.interfaces.Signup
+import com.pchpsky.diary.screens.auth.interfaces.LoginViewModel
+import com.pchpsky.diary.screens.auth.interfaces.SignupViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,7 @@ enum class FieldKey(val key: String) {
 }
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(val repository: AppAuthRepository) : ViewModel(), Login, Signup {
+class AuthViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel(), LoginViewModel, SignupViewModel {
 
     private val _uiState: MutableStateFlow<AuthState> = MutableStateFlow(AuthState.None)
 
@@ -61,7 +61,7 @@ class AuthViewModel @Inject constructor(val repository: AppAuthRepository) : Vie
     }
 }
 
-object FakeAuthViewModel : Login, Signup {
+object FakeAuthViewModel : LoginViewModel, SignupViewModel {
     override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
     override suspend fun createUser(email: String, password: String, passwordConfirmation: String) {}
     override suspend fun login(login: String, password: String) {}

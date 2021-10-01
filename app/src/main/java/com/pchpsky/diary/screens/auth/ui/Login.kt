@@ -27,7 +27,7 @@ import com.pchpsky.diary.composables.ErrorMessage
 import com.pchpsky.diary.composables.TextField
 import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.FakeAuthViewModel
-import com.pchpsky.diary.screens.auth.interfaces.Login
+import com.pchpsky.diary.screens.auth.interfaces.LoginViewModel
 import com.pchpsky.diary.theme.DiaryTheme
 import com.pchpsky.diary.theme.green
 import kotlinx.coroutines.launch
@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalComposeUiApi
 @Composable
-fun Login(viewModel: Login) {
+fun Login(viewModel: LoginViewModel) {
 
     val login = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
