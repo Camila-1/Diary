@@ -6,5 +6,4 @@ import com.pchpsky.schema.CreateInsulinMutation
 
 interface InsulinSettingsRepository {
     suspend fun createInsulin(color: String, name: String): Either<NetworkError, CreateInsulinMutation.Data>
-    fun saveInsulin(id: String, color: String, name: String)
 }

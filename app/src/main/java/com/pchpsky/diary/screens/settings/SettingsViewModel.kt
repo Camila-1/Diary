@@ -29,11 +29,13 @@ class SettingsViewModel @Inject constructor(
 
             },
             {
-                repository.saveInsulin(it.insulin?.id!!, it.insulin.color!!, it.insulin.name!!)
-                _uiState.value = SettingsState.InsulinAdded(it.insulin.color, it.insulin.name)
+                val insulin = it.insulin?.color
+//                _uiState.value = SettingsState.InsulinAdded(it.insulin.color, it.insulin.name)
             }
         )
     }
+
+
 }
 
 object FakeSettingsViewModel : InsulinSettingsViewModel,

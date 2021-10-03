@@ -10,14 +10,11 @@ import com.pchpsky.schema.CreateInsulinMutation
 
 class SettingsRepository(
     val networkClient: NetworkClient,
-    dataStoreManager: DataStoreManager
+    val dataStoreManager: DataStoreManager
 ) : CurrentSettingsRepository, InsulinSettingsRepository {
 
     override suspend fun createInsulin(color: String, name: String): Either<NetworkError, CreateInsulinMutation.Data> {
         return networkClient.createInsulin(color, name)
     }
 
-    override fun saveInsulin(id: String, color: String, name: String) {
-
-    }
 }

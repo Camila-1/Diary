@@ -19,6 +19,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class NetworkModule {
+
+    @Singleton
     @Provides
     fun provideApolloClient(@ApplicationContext context: Context, dataStoreManager: DataStoreManager): ApolloClient {
         var token: String? = null
@@ -37,10 +39,8 @@ class NetworkModule {
     }
 
     @Provides
-    @Singleton
     fun provideErrorHandler() = NetworkErrorHandler()
 
-    @Singleton
     @Provides
     fun provideNetworkClient(apolloClient: ApolloClient, errorHandler: NetworkErrorHandler) = NetworkClient(apolloClient, errorHandler)
 }
