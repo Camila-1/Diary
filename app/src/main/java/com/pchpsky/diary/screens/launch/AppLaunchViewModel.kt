@@ -20,6 +20,4 @@ class AppLaunchViewModel @Inject constructor(private val repository: LaunchRepos
     override suspend fun token(): String? {
         return repository.token().stateIn(CoroutineScope(Dispatchers.IO)).value
     }
-
-
 }

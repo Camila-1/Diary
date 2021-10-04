@@ -1,8 +1,8 @@
 package com.pchpsky.diary.screens.launch
 
 import arrow.core.Either
-import com.pchpsky.diary.datasourse.localstorage.DataStoreManager
-import com.pchpsky.diary.datasourse.network.NetworkClient
+import com.pchpsky.diary.datasource.localstorage.DataStoreManager
+import com.pchpsky.diary.datasource.network.NetworkClient
 import com.pchpsky.diary.exceptions.NetworkError
 import com.pchpsky.schema.CurrentUserQuery
 import kotlinx.coroutines.CoroutineScope

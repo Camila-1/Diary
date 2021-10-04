@@ -1,4 +1,4 @@
-package com.pchpsky.diary.datasourse.network.model
+package com.pchpsky.diary.datasource.network.model
 
 data class Insulin(
     val id: String,

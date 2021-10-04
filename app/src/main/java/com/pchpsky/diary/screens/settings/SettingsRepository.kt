@@ -1,8 +1,8 @@
 package com.pchpsky.diary.screens.settings
 
 import arrow.core.Either
-import com.pchpsky.diary.datasourse.localstorage.DataStoreManager
-import com.pchpsky.diary.datasourse.network.NetworkClient
+import com.pchpsky.diary.datasource.localstorage.DataStoreManager
+import com.pchpsky.diary.datasource.network.NetworkClient
 import com.pchpsky.diary.exceptions.NetworkError
 import com.pchpsky.diary.screens.settings.interfaces.CurrentSettingsRepository
 import com.pchpsky.diary.screens.settings.interfaces.InsulinSettingsRepository

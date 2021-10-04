@@ -1,4 +1,4 @@
-package com.pchpsky.diary.datasourse.localstorage
+package com.pchpsky.diary.datasource.localstorage
 
 import android.content.Context
 import dagger.Module

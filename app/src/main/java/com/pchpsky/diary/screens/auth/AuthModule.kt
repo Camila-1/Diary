@@ -1,7 +1,7 @@
 package com.pchpsky.diary.screens.auth
 
-import com.pchpsky.diary.datasourse.localstorage.DataStoreManager
-import com.pchpsky.diary.datasourse.network.NetworkClient
+import com.pchpsky.diary.datasource.localstorage.DataStoreManager
+import com.pchpsky.diary.datasource.network.NetworkClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

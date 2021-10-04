@@ -1,4 +1,4 @@
-package com.pchpsky.diary.datasourse.network
+package com.pchpsky.diary.datasource.network
 
 import arrow.core.Either
 import com.apollographql.apollo.ApolloClient

@@ -18,6 +18,7 @@ query Settings {
 
 mutation CreateSession($email: String!, $password: String!) {
     session: createSession(email: $email, password: $password) {
+        token
         user {
             email
         }

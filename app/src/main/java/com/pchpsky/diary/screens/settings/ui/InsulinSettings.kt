@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pchpsky.diary.composables.ColorPicker
-import com.pchpsky.diary.datasourse.network.model.Insulin
+import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
 import com.pchpsky.diary.screens.settings.interfaces.InsulinSettingsViewModel
 import com.pchpsky.diary.theme.DiaryTheme
