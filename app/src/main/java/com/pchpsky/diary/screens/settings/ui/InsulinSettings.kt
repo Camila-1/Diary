@@ -1,5 +1,6 @@
 package com.pchpsky.diary.screens.settings.ui
 
+import android.graphics.Color.parseColor
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,14 +11,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pchpsky.diary.composables.ColorPicker
 import com.pchpsky.diary.datasource.network.model.Insulin
+import com.pchpsky.diary.extensions.toHex
 import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
 import com.pchpsky.diary.screens.settings.interfaces.InsulinSettingsViewModel
 import com.pchpsky.diary.theme.DiaryTheme
+import com.pchpsky.diary.theme.yellow
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
 
@@ -26,10 +30,9 @@ fun InsulinSettings(viewModel: InsulinSettingsViewModel) {
 
 
     val insulinName = remember { mutableStateOf("") }
-    val insulinColor = remember { mutableStateOf(Color.Yellow) }
+    val insulinColor = remember { mutableStateOf(Color(Color.Yellow.toArgb()) )}
     val scope = rememberCoroutineScope()
     val uiState = viewModel.uiState
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,7 +41,7 @@ fun InsulinSettings(viewModel: InsulinSettingsViewModel) {
 
         AddInsulin(insulinName, insulinColor) {
             scope.launch {
-                viewModel.addInsulin(insulinColor.value.toString(), insulinName.value)
+                viewModel.addInsulin(insulinColor.value.toHex(), insulinName.value)
             }
         }
     }
@@ -55,6 +58,7 @@ fun AddInsulin(name: MutableState<String>, color: MutableState<Color>, onAddClic
             .fillMaxWidth()
             .padding(start = 10.dp, top = 20.dp, end = 0.dp),
     ) {
+
 
         Box(
             modifier = Modifier
@@ -120,7 +124,7 @@ fun InsulinList(insulins: List<Insulin>) {
             ) {
                 Box(
                     modifier = Modifier
-                        .background(Color(it.color.red, it.color.green, it.color.blue), CircleShape)
+                        .background(Color(parseColor("#${it.color}")), CircleShape)
                         .width(30.dp)
                         .height(30.dp)
                         .align(Alignment.Bottom)

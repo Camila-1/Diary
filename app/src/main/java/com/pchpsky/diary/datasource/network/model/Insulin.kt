@@ -2,12 +2,8 @@ package com.pchpsky.diary.datasource.network.model
 
 data class Insulin(
     val id: String,
-    val name: String,
-    val color: Color
+    val color: String,
+    val name: String
+
 )
 
-data class Color(
-    val red: Float,
-    val green: Float,
-    val blue: Float
-)

@@ -10,6 +10,7 @@ val backgroundDark = Color(0xff060b15)
 val backgroundDrawer = Color(0xff1b1b1b)
 val lightGrey = Color(0xffa1a1aa)
 val errorRed = Color(0xffb71c1c)
+val yellow = Color(0xffffff00)
 
 val DarkColors = DiaryColors(
     background = backgroundDark,
