@@ -19,9 +19,9 @@ import com.pchpsky.diary.composables.ColorPicker
 import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.extensions.toHex
 import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
+import com.pchpsky.diary.screens.settings.SettingsState
 import com.pchpsky.diary.screens.settings.interfaces.InsulinSettingsViewModel
 import com.pchpsky.diary.theme.DiaryTheme
-import com.pchpsky.diary.theme.yellow
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
 
@@ -32,7 +32,9 @@ fun InsulinSettings(viewModel: InsulinSettingsViewModel) {
     val insulinName = remember { mutableStateOf("") }
     val insulinColor = remember { mutableStateOf(Color(Color.Yellow.toArgb()) )}
     val scope = rememberCoroutineScope()
-    val uiState = viewModel.uiState
+    val uiState: SettingsState by viewModel.uiState.collectAsState()
+    val insulins by viewModel.insulins.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,6 +46,8 @@ fun InsulinSettings(viewModel: InsulinSettingsViewModel) {
                 viewModel.addInsulin(insulinColor.value.toHex(), insulinName.value)
             }
         }
+
+        InsulinList(insulins)
     }
 }
 
@@ -114,9 +118,11 @@ fun InsulinList(insulins: List<Insulin>) {
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(30.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+//        insulins.value.add(Insulin("", "#ff003355", "insulin"))
         insulins.forEach {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -124,10 +130,14 @@ fun InsulinList(insulins: List<Insulin>) {
             ) {
                 Box(
                     modifier = Modifier
-                        .background(Color(parseColor("#${it.color}")), CircleShape)
+                        .background(Color(parseColor(it.color)), CircleShape)
                         .width(30.dp)
                         .height(30.dp)
                         .align(Alignment.Bottom)
+                )
+                Text(
+                    text = it.name,
+                    color = DiaryTheme.colors.text
                 )
             }
         }

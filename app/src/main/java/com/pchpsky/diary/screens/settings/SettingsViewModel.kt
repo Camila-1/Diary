@@ -1,6 +1,8 @@
 package com.pchpsky.diary.screens.settings
 
 import androidx.lifecycle.ViewModel
+import com.pchpsky.diary.datasource.network.model.Insulin
+import com.pchpsky.diary.extensions.insulin
 import com.pchpsky.diary.screens.settings.interfaces.InsulinSettingsViewModel
 import com.pchpsky.diary.screens.settings.interfaces.CurrentSettingsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +21,10 @@ class SettingsViewModel @Inject constructor(
 ) : ViewModel(), InsulinSettingsViewModel,
     CurrentSettingsViewModel {
 
+    private var _insulins: MutableStateFlow<List<Insulin>> = MutableStateFlow(emptyList())
+
+    override val insulins: StateFlow<List<Insulin>> = _insulins
+
     private var _uiState: MutableStateFlow<SettingsState> = MutableStateFlow(SettingsState.None)
 
     override val uiState: StateFlow<SettingsState> = _uiState
@@ -29,17 +35,15 @@ class SettingsViewModel @Inject constructor(
 
             },
             {
-                val insulin = it.insulin?.color
-//                _uiState.value = SettingsState.InsulinAdded(it.insulin.color, it.insulin.name)
+                _insulins.value = _insulins.value + it.insulin()
             }
         )
     }
-
-
 }
 
 object FakeSettingsViewModel : InsulinSettingsViewModel,
     CurrentSettingsViewModel {
+    override val insulins: StateFlow<List<Insulin>> = MutableStateFlow(emptyList())
     override val uiState: StateFlow<SettingsState> = MutableStateFlow(SettingsState.None)
     override suspend fun addInsulin(color: String, name: String) {}
 }
