@@ -56,7 +56,7 @@ fun GlucoseGroup() {
         Column {
             Text(
                 text = "Glucose",
-                style = DiaryTheme.typography.h2,
+                style = DiaryTheme.typography.primaryHeader,
                 color = Color.White,
                 modifier = Modifier.padding(top = 20.dp, start = 30.dp)
             )
@@ -70,7 +70,7 @@ fun GlucoseGroup() {
                         modifier = Modifier
                             .padding(start = 30.dp)
                             .fillMaxWidth()
-                            .background(Color.Transparent, DiaryTheme.shapes.small)
+                            .background(Color.Transparent, DiaryTheme.shapes.roundedButton)
                             .clickable(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
@@ -91,7 +91,7 @@ fun GlucoseGroup() {
                         Text(
                             text = item,
                             modifier = Modifier.padding(start = 25.dp),
-                            style = DiaryTheme.typography.body1,
+                            style = DiaryTheme.typography.body,
                             color = Color.White,
                         )
                     }
@@ -129,7 +129,7 @@ fun InsulinGroup(onEditClick: () -> Unit) {
             ) {
                 Text(
                     text = "Insulin",
-                    style = DiaryTheme.typography.h2,
+                    style = DiaryTheme.typography.primaryHeader,
                     color = Color.White,
                 )
 
@@ -166,7 +166,7 @@ fun InsulinGroup(onEditClick: () -> Unit) {
                         Text(
                             text = name,
                             modifier = Modifier.padding(start = 25.dp),
-                            style = DiaryTheme.typography.body1,
+                            style = DiaryTheme.typography.body,
                             color = Color.White
                         )
                     }

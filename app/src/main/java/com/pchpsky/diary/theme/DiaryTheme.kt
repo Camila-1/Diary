@@ -1,7 +1,7 @@
 package com.pchpsky.diary.theme
 
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -15,18 +15,17 @@ fun DiaryTheme(
     val sysUiController = rememberSystemUiController()
     SideEffect {
         sysUiController.setSystemBarsColor(
-            color = colors.background.copy(alpha = .5f)
+            color = colors.background.copy(alpha = .5f),
+            darkIcons = !darkTheme
         )
     }
 
-    ProvideDiaryColors(colors) {
-        MaterialTheme(
-            content = content,
-            typography = typography,
-            shapes = shapes
-        )
-    }
-
+    CompositionLocalProvider(
+        LocalDiaryColors provides colors,
+        LocalDiaryShapes provides shapes,
+        LocalDiaryTypography provides typography,
+        content = content
+    )
 }
 
 object DiaryTheme {
@@ -36,9 +35,10 @@ object DiaryTheme {
 
     val typography
     @Composable
-    get() = MaterialTheme.typography
+    get() = LocalDiaryTypography.current
 
     val shapes
     @Composable
-    get() = MaterialTheme.shapes
+    get() = LocalDiaryShapes.current
 }
+

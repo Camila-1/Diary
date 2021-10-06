@@ -13,7 +13,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
@@ -92,14 +91,14 @@ fun AddInsulin(name: MutableState<String>, color: MutableState<Color>, onAddClic
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = DiaryTheme.colors.focusedInputFieldBorder,
-                unfocusedBorderColor = DiaryTheme.colors.grey,
+                unfocusedBorderColor = DiaryTheme.colors.unfocusedInputFieldBorder,
                 textColor = DiaryTheme.colors.text,
                 cursorColor = DiaryTheme.colors.text
             ),
             modifier = Modifier
                 .padding(start = 10.dp, end = 10.dp)
                 .weight(10f),
-            placeholder = { Text(text = "Name", color = DiaryTheme.colors.grey) }
+            placeholder = { Text(text = "Name", color = DiaryTheme.colors.inputText) }
         )
 
         Button(
@@ -108,7 +107,7 @@ fun AddInsulin(name: MutableState<String>, color: MutableState<Color>, onAddClic
                 .height(35.dp)
                 .align(Alignment.Bottom)
                 .weight(3f),
-            border = BorderStroke(1.dp, DiaryTheme.colors.grey),
+            border = BorderStroke(1.dp, DiaryTheme.colors.unfocusedInputFieldBorder),
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.Transparent,
                 contentColor = Color.White
@@ -140,7 +139,7 @@ fun InsulinList(insulins: List<Insulin>) {
             Text(
                 text = "Insulins",
                 color = Color.White,
-                style = DiaryTheme.typography.h6
+                style = DiaryTheme.typography.primaryHeader
             )
         }
 

@@ -59,12 +59,13 @@ fun SignUp(viewModel: SignupViewModel) {
 
         Text(
             text = stringResource(R.string.sign_up),
-            style = MaterialTheme.typography.h2,
+            style = DiaryTheme.typography.authScreenHeader,
             modifier = Modifier
                 .constrainAs(signUpTitle) {
                     top.linkTo(parent.top, 40.dp)
                     start.linkTo(parent.start, 40.dp)
-                }
+                },
+            color = DiaryTheme.colors.text
         )
 
         Column(

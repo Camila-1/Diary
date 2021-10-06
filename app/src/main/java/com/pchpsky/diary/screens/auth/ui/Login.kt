@@ -55,11 +55,12 @@ fun Login(viewModel: LoginViewModel) {
 
             Text(
                 text = stringResource(R.string.sign_in),
-                style = DiaryTheme.typography.h2,
+                style = DiaryTheme.typography.authScreenHeader,
                 modifier = Modifier.constrainAs(signInTitle) {
                     top.linkTo(parent.top, 40.dp)
                     start.linkTo(parent.start, 40.dp)
-                }
+                },
+                color = DiaryTheme.colors.text
             )
 
             Column(

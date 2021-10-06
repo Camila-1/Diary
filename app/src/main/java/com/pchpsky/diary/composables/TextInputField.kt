@@ -40,19 +40,20 @@ fun TextField(
             },
             modifier = Modifier.fillMaxWidth(1f).height(60.dp)
                 .semantics { contentDescription = "email_input_field" },
-            textStyle = TextStyle(color = DiaryTheme.colors.grey),
-            label = { Text(text = label, color = if (isError) DiaryTheme.colors.error else DiaryTheme.colors.grey) },
+            textStyle = DiaryTheme.typography.textField,
+            label = { Text(text = label, color = if (isError) DiaryTheme.colors.error else DiaryTheme.colors.inputText) },
             visualTransformation = visualTransformation,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = DiaryTheme.colors.focusedInputFieldBorder,
-                unfocusedBorderColor = DiaryTheme.colors.grey,
-                errorLabelColor = Color.Red,
-                cursorColor = DiaryTheme.colors.grey
+                unfocusedBorderColor = DiaryTheme.colors.unfocusedInputFieldBorder,
+                errorLabelColor = DiaryTheme.colors.error,
+                cursorColor = DiaryTheme.colors.unfocusedInputFieldBorder,
+                textColor = DiaryTheme.colors.inputText
             ),
             isError = isError,
             singleLine = true,
-            shape = DiaryTheme.shapes.small,
+            shape = DiaryTheme.shapes.roundedTextField,
             trailingIcon = {
                 if (isError)
                     Icon(Icons.Filled.Error, "error", tint = DiaryTheme.colors.error)

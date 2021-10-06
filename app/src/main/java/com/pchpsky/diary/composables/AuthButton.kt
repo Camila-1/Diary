@@ -25,7 +25,7 @@ fun AuthButton(text: String, color: Color, modifier: Modifier, onClick: () -> Un
             .fillMaxWidth()
             .padding(bottom = 12.dp)
             .height(40.dp),
-        shape = DiaryTheme.shapes.large
+        shape = DiaryTheme.shapes.roundedButton
 
     ) {
         Text(text)

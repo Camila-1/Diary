@@ -17,7 +17,7 @@ fun DrawerView(navController: NavController) {
             },
             modifier = Modifier,
             enabled = true,
-            shape = DiaryTheme.shapes.large,
+            shape = DiaryTheme.shapes.navigationDrawer,
             content = { Text(text = "Settings") }
         )
     }

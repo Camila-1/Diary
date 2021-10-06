@@ -57,7 +57,7 @@ fun LoginButton(text: String, color: Color, onClick: () -> Unit) {
             .fillMaxWidth()
             .padding(bottom = 12.dp)
             .height(40.dp),
-        shape = RoundedCornerShape(50)
+        shape = DiaryTheme.shapes.roundedButton
     ) {
         Text(text)
     }
@@ -66,5 +66,7 @@ fun LoginButton(text: String, color: Color, onClick: () -> Unit) {
 @Preview
 @Composable
 fun StartScreenPreview() {
-    StartScreen(rememberNavController())
+    DiaryTheme {
+        StartScreen(rememberNavController())
+    }
 }

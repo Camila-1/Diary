@@ -13,6 +13,7 @@ val errorRed = Color(0xffb71c1c)
 val yellow = Color(0xffffff00)
 
 val DarkColors = DiaryColors(
+    logo = Color.White,
     background = backgroundDark,
     error = errorRed,
     primary = green,
@@ -20,10 +21,14 @@ val DarkColors = DiaryColors(
     backgroundDrawer = backgroundDrawer,
     text = Color.White,
     inputField = lightGrey,
-    focusedInputField = blue
+    focusedInputFieldBorder = blue,
+    unfocusedInputFieldBorder = lightGrey,
+    inputText = lightGrey,
+    focusedInputFieldLabel = blue
 )
 
 val LightColors = DiaryColors(
+    logo = Color.White,
     background = backgroundDark,
     error = errorRed,
     primary = green,
@@ -31,75 +36,27 @@ val LightColors = DiaryColors(
     backgroundDrawer = backgroundDrawer,
     text = Color.Black,
     inputField = lightGrey,
-    focusedInputField = blue
+    focusedInputFieldBorder = blue,
+    unfocusedInputFieldBorder = lightGrey,
+    inputText = lightGrey,
+    focusedInputFieldLabel = blue
 )
 
-@Stable
-class DiaryColors(
-    background: Color,
-    primary: Color,
-    error: Color,
-    secondary: Color,
-    backgroundDrawer: Color,
-    text: Color,
-    inputField: Color,
-    focusedInputField: Color
-) {
-    var background by mutableStateOf(background)
-        private set
-
-    var primary by mutableStateOf(primary)
-        private set
-
-    var error by mutableStateOf(error)
-        private set
-
-    var secondary by mutableStateOf(secondary)
-        private set
-
-    var backgroundDrawer by mutableStateOf(backgroundDrawer)
-        private set
-
-    var text by mutableStateOf(com.pchpsky.diary.theme.lightGrey)
-    private set
-
-    var grey by mutableStateOf(lightGrey)
-    private set
-
-    var focusedInputFieldBorder by mutableStateOf(blue)
-
-    fun copy(): DiaryColors = DiaryColors(
-        background = backgroundDark,
-        error = Color.Red,
-        primary = green,
-        secondary = lightGreen,
-        backgroundDrawer = backgroundDrawer,
-        text = com.pchpsky.diary.theme.lightGrey,
-        inputField = grey,
-        focusedInputField = blue
+data class DiaryColors(
+    val logo: Color,
+    val background: Color,
+    val primary: Color,
+    val error: Color,
+    val secondary: Color,
+    val backgroundDrawer: Color,
+    val text: Color,
+    val inputField: Color,
+    val focusedInputFieldBorder: Color,
+    val inputText: Color,
+    val unfocusedInputFieldBorder: Color,
+    val focusedInputFieldLabel: Color
     )
 
-    fun update(other: DiaryColors) {
-        background = other.background
-        error = other.error
-        primary = other.primary
-        secondary = other.secondary
-        backgroundDrawer = other.backgroundDrawer
-        text = other.text
-        grey = other.grey
-        focusedInputFieldBorder = other.focusedInputFieldBorder
-    }
-}
-
-@Composable
-fun ProvideDiaryColors(
-    diaryColors: DiaryColors,
-    content: @Composable () -> Unit
-) {
-    val colors = remember{ diaryColors }
-    colors.update(diaryColors)
-    CompositionLocalProvider(LocalDiaryColors provides colors, content = content)
-}
 
 val LocalDiaryColors = staticCompositionLocalOf<DiaryColors> {
     error("No DiaryColors provided")
