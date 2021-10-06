@@ -7,6 +7,7 @@ import com.pchpsky.diary.exceptions.NetworkError
 import com.pchpsky.diary.screens.settings.interfaces.CurrentSettingsRepository
 import com.pchpsky.diary.screens.settings.interfaces.InsulinSettingsRepository
 import com.pchpsky.schema.CreateInsulinMutation
+import com.pchpsky.schema.InsulinsQuery
 
 class SettingsRepository(
     val networkClient: NetworkClient,
@@ -17,4 +18,7 @@ class SettingsRepository(
         return networkClient.createInsulin(color, name)
     }
 
+    override suspend fun insulins(): Either<NetworkError, InsulinsQuery.Data> {
+        return networkClient.insulins()
+    }
 }

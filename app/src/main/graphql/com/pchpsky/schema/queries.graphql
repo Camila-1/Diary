@@ -16,6 +16,16 @@ query Settings {
     }
 }
 
+query Insulins {
+    settings {
+        insulins {
+            id
+            name
+            color
+        }
+    }
+}
+
 mutation CreateSession($email: String!, $password: String!) {
     session: createSession(email: $email, password: $password) {
         token

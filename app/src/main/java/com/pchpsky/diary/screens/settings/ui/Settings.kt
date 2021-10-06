@@ -51,7 +51,7 @@ fun GlucoseGroup() {
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(10.dp),
-        backgroundColor = Color(0xff484848).copy(0.8f),
+        backgroundColor = Color(0xff333333).copy(0.8f),
     ) {
         Column {
             Text(
@@ -119,7 +119,7 @@ fun InsulinGroup(onEditClick: () -> Unit) {
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(10.dp),
-        backgroundColor = Color(0xff484848).copy(0.8f),
+        backgroundColor = Color(0xff333333).copy(0.8f),
     ) {
         Column {
 

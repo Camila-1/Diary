@@ -50,6 +50,12 @@ class NetworkClient @Inject constructor(
         }
     }
 
+    suspend fun insulins(): Either<NetworkError, InsulinsQuery.Data> {
+        return errorsHandler.withErrorHandler {
+            apolloClient.query(InsulinsQuery()).await()
+        }
+    }
+
     suspend fun updateInsulin(
         id: String,
         color: String,

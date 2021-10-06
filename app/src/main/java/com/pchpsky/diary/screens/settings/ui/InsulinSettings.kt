@@ -5,11 +5,15 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +39,11 @@ fun InsulinSettings(viewModel: InsulinSettingsViewModel) {
     val uiState: SettingsState by viewModel.uiState.collectAsState()
     val insulins by viewModel.insulins.collectAsState()
 
-    Column(
+    scope.launch {
+        viewModel.insulins()
+    }
+
+    Column (
         modifier = Modifier
             .fillMaxSize()
             .background(DiaryTheme.colors.background)
@@ -44,6 +52,8 @@ fun InsulinSettings(viewModel: InsulinSettingsViewModel) {
         AddInsulin(insulinName, insulinColor) {
             scope.launch {
                 viewModel.addInsulin(insulinColor.value.toHex(), insulinName.value)
+                insulinName.value = ""
+                insulinColor.value = Color(Color.Yellow.toArgb())
             }
         }
 
@@ -60,7 +70,7 @@ fun AddInsulin(name: MutableState<String>, color: MutableState<Color>, onAddClic
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 10.dp, top = 20.dp, end = 0.dp),
+            .padding(start = 10.dp, top = 20.dp, end = 20.dp, bottom = 20.dp),
     ) {
 
 
@@ -116,29 +126,47 @@ fun AddInsulin(name: MutableState<String>, color: MutableState<Color>, onAddClic
 @Composable
 fun InsulinList(insulins: List<Insulin>) {
 
-    Column(
+    val listState = rememberLazyListState()
+
+    LazyColumn(
+        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 15.dp),
+        verticalArrangement = Arrangement.spacedBy(15.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(30.dp),
-        verticalArrangement = Arrangement.SpaceBetween
+            .fillMaxWidth(),
+        state = listState
     ) {
-//        insulins.value.add(Insulin("", "#ff003355", "insulin"))
-        insulins.forEach {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+
+        item {
+            Text(
+                text = "Insulins",
+                color = Color.White,
+                style = DiaryTheme.typography.h6
+            )
+        }
+
+        items(insulins) { insulin ->
+            Card(
+                backgroundColor = Color(0xff333333),
+                modifier = Modifier
+                    .wrapContentSize(Alignment.Center)
             ) {
-                Box(
-                    modifier = Modifier
-                        .background(Color(parseColor(it.color)), CircleShape)
-                        .width(30.dp)
-                        .height(30.dp)
-                        .align(Alignment.Bottom)
-                )
-                Text(
-                    text = it.name,
-                    color = DiaryTheme.colors.text
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(12.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .background(Color(parseColor(insulin.color)), CircleShape)
+                            .width(30.dp)
+                            .height(30.dp)
+                            .align(Alignment.Bottom)
+                    )
+                    Text(
+                        text = insulin.name,
+                        color = DiaryTheme.colors.text,
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+                }
             }
         }
     }

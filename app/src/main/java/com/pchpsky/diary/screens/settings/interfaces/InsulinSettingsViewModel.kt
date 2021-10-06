@@ -9,4 +9,5 @@ interface InsulinSettingsViewModel {
     val uiState: StateFlow<SettingsState>
 
     suspend fun addInsulin(color: String, name: String)
+    suspend fun insulins()
 }
