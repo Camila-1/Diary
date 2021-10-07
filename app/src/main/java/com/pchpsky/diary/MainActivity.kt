@@ -12,8 +12,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.pchpsky.diary.composables.TopBar
-import com.pchpsky.diary.composables.drawer.Drawer
+import com.pchpsky.diary.components.TopBar
+import com.pchpsky.diary.components.drawer.Drawer
 import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.home.Home
 import com.pchpsky.diary.screens.settings.SettingsViewModel
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            DiaryTheme(darkTheme = false) {
+            DiaryTheme {
                 Surface {
                     val scaffoldState =
                         rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))

@@ -1,4 +1,4 @@
-package com.pchpsky.diary.composables
+package com.pchpsky.diary.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState

@@ -1,4 +1,4 @@
-package com.pchpsky.diary.composables.drawer
+package com.pchpsky.diary.components.drawer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,8 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.pchpsky.diary.composables.LogoGroup
-import com.pchpsky.diary.screens.drawer.NavDrawerItem
+import com.pchpsky.diary.components.LogoGroup
 import com.pchpsky.diary.theme.DiaryTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -29,7 +28,7 @@ fun Drawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: N
     )
 
     Column(
-        modifier = Modifier.background(color = DiaryTheme.colors.backgroundDrawer).fillMaxSize()
+        modifier = Modifier.background(color = DiaryTheme.colors.drawerBackground).fillMaxSize()
     ) {
         LogoGroup(
             modifier = Modifier.padding(top = 50.dp, bottom = 30.dp, start = 10.dp)

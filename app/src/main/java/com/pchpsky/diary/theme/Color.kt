@@ -7,10 +7,11 @@ val lightGreen = Color(0xff5D9A0F)
 val green = Color(0xff29771C)
 val blue = Color(0xff60A5FF)
 val backgroundDark = Color(0xff060b15)
-val backgroundDrawer = Color(0xff1b1b1b)
+val drawerBackground = Color(0xff1b1b1b)
 val lightGrey = Color(0xffa1a1aa)
 val errorRed = Color(0xffb71c1c)
 val yellow = Color(0xffffff00)
+val cardBackground = Color(0xff333333)
 
 val DarkColors = DiaryColors(
     logo = Color.White,
@@ -18,13 +19,14 @@ val DarkColors = DiaryColors(
     error = errorRed,
     primary = green,
     secondary = lightGreen,
-    backgroundDrawer = backgroundDrawer,
+    drawerBackground = drawerBackground,
     text = Color.White,
     inputField = lightGrey,
     focusedInputFieldBorder = blue,
     unfocusedInputFieldBorder = lightGrey,
     inputText = lightGrey,
-    focusedInputFieldLabel = blue
+    focusedInputFieldLabel = blue,
+    cardBackground = cardBackground
 )
 
 val LightColors = DiaryColors(
@@ -33,13 +35,14 @@ val LightColors = DiaryColors(
     error = errorRed,
     primary = green,
     secondary = lightGreen,
-    backgroundDrawer = backgroundDrawer,
+    drawerBackground = drawerBackground,
     text = Color.Black,
     inputField = lightGrey,
     focusedInputFieldBorder = blue,
     unfocusedInputFieldBorder = lightGrey,
     inputText = lightGrey,
-    focusedInputFieldLabel = blue
+    focusedInputFieldLabel = blue,
+    cardBackground = cardBackground
 )
 
 data class DiaryColors(
@@ -48,13 +51,14 @@ data class DiaryColors(
     val primary: Color,
     val error: Color,
     val secondary: Color,
-    val backgroundDrawer: Color,
+    val drawerBackground: Color,
     val text: Color,
     val inputField: Color,
     val focusedInputFieldBorder: Color,
     val inputText: Color,
     val unfocusedInputFieldBorder: Color,
-    val focusedInputFieldLabel: Color
+    val focusedInputFieldLabel: Color,
+    val cardBackground: Color
     )
 
 

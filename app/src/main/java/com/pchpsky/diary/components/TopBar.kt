@@ -1,4 +1,4 @@
-package com.pchpsky.diary.composables
+package com.pchpsky.diary.components
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons

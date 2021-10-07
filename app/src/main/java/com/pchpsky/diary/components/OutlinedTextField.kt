@@ -1,4 +1,4 @@
-package com.pchpsky.diary.composables
+package com.pchpsky.diary.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,18 +10,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.theme.DiaryTheme
-import com.pchpsky.diary.theme.blue
 
 @Composable
-fun TextField(
+fun OutlinedTextField(
     value: MutableState<String>,
     label: String,
     errorMessage: String?,
@@ -31,7 +28,7 @@ fun TextField(
 
     var isError by remember(errorMessage) { mutableStateOf(errorMessage != null) }
 
-    Column() {
+    Column {
         OutlinedTextField(
             value = value.value,
             onValueChange = {

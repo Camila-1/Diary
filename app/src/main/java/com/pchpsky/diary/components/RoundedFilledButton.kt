@@ -1,4 +1,4 @@
-package com.pchpsky.diary.composables
+package com.pchpsky.diary.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
-fun AuthButton(text: String, color: Color, modifier: Modifier, onClick: () -> Unit) {
+fun RoundedFilledButton(text: String, color: Color, modifier: Modifier, onClick: () -> Unit) {
     Button(
         enabled = true,
         colors = ButtonDefaults.buttonColors(

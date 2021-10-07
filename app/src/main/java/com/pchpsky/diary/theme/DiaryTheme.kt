@@ -24,6 +24,7 @@ fun DiaryTheme(
         LocalDiaryColors provides colors,
         LocalDiaryShapes provides shapes,
         LocalDiaryTypography provides typography,
+        LocalDiaryDimens provides  dimens,
         content = content
     )
 }
@@ -40,5 +41,9 @@ object DiaryTheme {
     val shapes
     @Composable
     get() = LocalDiaryShapes.current
+
+    val dimens
+    @Composable
+    get() = LocalDiaryDimens.current
 }
 

@@ -1,4 +1,4 @@
-package com.pchpsky.diary.composables.drawer
+package com.pchpsky.diary.components.drawer
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pchpsky.diary.screens.drawer.NavDrawerItem
 
 @Composable
 fun DrawerItem(item: NavDrawerItem, selected: Boolean, onItemClick: (NavDrawerItem) -> Unit) {

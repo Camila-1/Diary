@@ -1,4 +1,4 @@
-package com.pchpsky.diary.screens.drawer
+package com.pchpsky.diary.components.drawer
 
 import com.pchpsky.diary.R
 

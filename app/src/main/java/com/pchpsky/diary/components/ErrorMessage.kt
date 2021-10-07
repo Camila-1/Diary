@@ -1,4 +1,4 @@
-package com.pchpsky.diary.composables
+package com.pchpsky.diary.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme

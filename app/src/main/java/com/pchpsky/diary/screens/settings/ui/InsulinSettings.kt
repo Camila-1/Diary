@@ -1,24 +1,21 @@
 package com.pchpsky.diary.screens.settings.ui
 
-import android.graphics.Color.parseColor
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.pchpsky.diary.composables.ColorPicker
+import com.pchpsky.diary.components.*
 import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.extensions.toHex
 import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
@@ -28,27 +25,30 @@ import com.pchpsky.diary.theme.DiaryTheme
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
 
+@ExperimentalComposeUiApi
 @Composable
 fun InsulinSettings(viewModel: InsulinSettingsViewModel) {
 
 
     val insulinName = remember { mutableStateOf("") }
-    val insulinColor = remember { mutableStateOf(Color(Color.Yellow.toArgb()) )}
+    val insulinColor = remember { mutableStateOf(Color(Color.Yellow.toArgb())) }
     val scope = rememberCoroutineScope()
     val uiState: SettingsState by viewModel.uiState.collectAsState()
     val insulins by viewModel.insulins.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     scope.launch {
         viewModel.insulins()
     }
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(DiaryTheme.colors.background)
     ) {
 
         AddInsulin(insulinName, insulinColor) {
+            keyboardController?.hide()
             scope.launch {
                 viewModel.addInsulin(insulinColor.value.toHex(), insulinName.value)
                 insulinName.value = ""
@@ -72,53 +72,22 @@ fun AddInsulin(name: MutableState<String>, color: MutableState<Color>, onAddClic
             .padding(start = 10.dp, top = 20.dp, end = 20.dp, bottom = 20.dp),
     ) {
 
+        InsulinColorCircle(color.value, modifier = Modifier.align(Alignment.Bottom))
 
-        Box(
-            modifier = Modifier
-                .background(color.value, CircleShape)
-                .width(30.dp)
-                .height(30.dp)
-                .clickable {
-                    dialogState.show()
-                }
-                .align(Alignment.Bottom)
-        )
-
-        TextField(
-            value = name.value,
-            onValueChange = {
-                name.value = it
-            },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = DiaryTheme.colors.focusedInputFieldBorder,
-                unfocusedBorderColor = DiaryTheme.colors.unfocusedInputFieldBorder,
-                textColor = DiaryTheme.colors.text,
-                cursorColor = DiaryTheme.colors.text
-            ),
+        LinedTextField(
+            value = name,
             modifier = Modifier
                 .padding(start = 10.dp, end = 10.dp)
-                .weight(10f),
-            placeholder = { Text(text = "Name", color = DiaryTheme.colors.inputText) }
+                .weight(10f)
         )
 
-        Button(
-            onClick = onAddClick,
+        RoundedOutlinedButton(
             modifier = Modifier
                 .height(35.dp)
                 .align(Alignment.Bottom)
                 .weight(3f),
-            border = BorderStroke(1.dp, DiaryTheme.colors.unfocusedInputFieldBorder),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Transparent,
-                contentColor = Color.White
-            ),
-
-        ) {
-            Text(
-                text = "Add",
-                fontSize = 12.sp
-            )
-        }
+            onClick = onAddClick
+        )
     }
 }
 
@@ -144,33 +113,12 @@ fun InsulinList(insulins: List<Insulin>) {
         }
 
         items(insulins) { insulin ->
-            Card(
-                backgroundColor = Color(0xff333333),
-                modifier = Modifier
-                    .wrapContentSize(Alignment.Center)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(12.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .background(Color(parseColor(insulin.color)), CircleShape)
-                            .width(30.dp)
-                            .height(30.dp)
-                            .align(Alignment.Bottom)
-                    )
-                    Text(
-                        text = insulin.name,
-                        color = DiaryTheme.colors.text,
-                        modifier = Modifier.align(Alignment.CenterVertically)
-                    )
-                }
-            }
+            InsulinEntry(insulin)
         }
     }
 }
 
+@ExperimentalComposeUiApi
 @Preview
 @Composable
 fun InsulinSettingsPreview() {

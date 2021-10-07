@@ -22,9 +22,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.R
-import com.pchpsky.diary.composables.AuthButton
-import com.pchpsky.diary.composables.ErrorMessage
-import com.pchpsky.diary.composables.TextField
+import com.pchpsky.diary.components.RoundedFilledButton
+import com.pchpsky.diary.components.ErrorMessage
+import com.pchpsky.diary.components.OutlinedTextField
 import com.pchpsky.diary.screens.auth.AuthState
 import com.pchpsky.diary.screens.auth.FakeAuthViewModel
 import com.pchpsky.diary.screens.auth.interfaces.LoginViewModel
@@ -49,8 +49,13 @@ fun Login(viewModel: LoginViewModel) {
         openHomeScreen(context)
     }
 
-    Scaffold(scaffoldState = scaffoldState, snackbarHost = { SnackbarHost(it, modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 50.dp))}) {
-        ConstraintLayout(modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background).imePadding()) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        snackbarHost = { SnackbarHost(it, modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 50.dp)) }) {
+
+        ConstraintLayout(
+            modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background).imePadding()
+        ) {
             val (column, button, signInTitle) = createRefs()
 
             Text(
@@ -78,7 +83,7 @@ fun Login(viewModel: LoginViewModel) {
                 LoginPasswordTextField(password, null)
             }
 
-            AuthButton(
+            RoundedFilledButton(
                 stringResource(R.string.login),
                 modifier = Modifier
                     .constrainAs(button) {
@@ -95,7 +100,7 @@ fun Login(viewModel: LoginViewModel) {
                 },
                 color = green
             )
-    }
+        }
         if (uiState is AuthState.AuthenticationError) {
             scope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
@@ -108,7 +113,7 @@ fun Login(viewModel: LoginViewModel) {
 
 @Composable
 fun LoginTextField(login: MutableState<String>, errorMessage: String?) {
-    TextField(
+    OutlinedTextField(
         login,
         stringResource(R.string.login),
         errorMessage,
@@ -122,7 +127,7 @@ fun LoginTextField(login: MutableState<String>, errorMessage: String?) {
 
 @Composable
 fun LoginPasswordTextField(password: MutableState<String>, errorMessage: String?) {
-    TextField(
+    OutlinedTextField(
         password,
         stringResource(R.string.password),
         errorMessage,
