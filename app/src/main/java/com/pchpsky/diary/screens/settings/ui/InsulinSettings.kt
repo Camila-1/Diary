@@ -1,5 +1,6 @@
 package com.pchpsky.diary.screens.settings.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,14 +21,15 @@ import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.extensions.toHex
 import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
 import com.pchpsky.diary.screens.settings.SettingsState
-import com.pchpsky.diary.screens.settings.interfaces.InsulinSettingsViewModel
+import com.pchpsky.diary.screens.settings.interfaces.InsulinViewModel
 import com.pchpsky.diary.theme.DiaryTheme
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalComposeUiApi
 @Composable
-fun InsulinSettings(viewModel: InsulinSettingsViewModel) {
+fun InsulinSettings(viewModel: InsulinViewModel) {
 
 
     val insulinName = remember { mutableStateOf("") }

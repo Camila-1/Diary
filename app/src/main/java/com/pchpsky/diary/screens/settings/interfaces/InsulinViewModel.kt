@@ -4,7 +4,7 @@ import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.screens.settings.SettingsState
 import kotlinx.coroutines.flow.StateFlow
 
-interface InsulinSettingsViewModel {
+interface InsulinViewModel {
     val insulins: StateFlow<List<Insulin>>
     val uiState: StateFlow<SettingsState>
 

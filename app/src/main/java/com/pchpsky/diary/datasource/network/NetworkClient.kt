@@ -72,8 +72,8 @@ class NetworkClient @Inject constructor(
         }
     }
 
-    suspend fun updateSettings(glucoseUnits: GlucoseUnits): Either<NetworkError, UpdateSettingsMutation.Data> {
-        val bloodGlucoseUnits = BloodGlucoseUnits.safeValueOf(glucoseUnits.name)
+    suspend fun updateSettings(glucoseUnit: String): Either<NetworkError, UpdateSettingsMutation.Data> {
+        val bloodGlucoseUnits = BloodGlucoseUnits.safeValueOf(glucoseUnit)
 
         return errorsHandler.withErrorHandler {
             apolloClient.mutate(
@@ -85,6 +85,12 @@ class NetworkClient @Inject constructor(
                     )
                 )
             ).await()
+        }
+    }
+
+    suspend fun settings(): Either<NetworkError, SettingsQuery.Data> {
+        return errorsHandler.withErrorHandler {
+            apolloClient.query(SettingsQuery()).await()
         }
     }
 }

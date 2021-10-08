@@ -5,4 +5,5 @@ import com.pchpsky.diary.datasource.network.model.Insulin
 sealed class SettingsState() {
     object None : SettingsState()
     data class InsulinAdded(val insulin: Insulin) : SettingsState()
+    data class Settings(val t: String) : SettingsState()
 }
