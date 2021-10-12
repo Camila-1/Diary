@@ -1,6 +1,7 @@
 package com.pchpsky.diary.screens.settings.ui
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,10 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.components.InsulinEntry
+import com.pchpsky.diary.components.ProgressBar
 import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
 import com.pchpsky.diary.screens.settings.GlucoseUnits
+import com.pchpsky.diary.screens.settings.SettingsState
 import com.pchpsky.diary.screens.settings.interfaces.SettingsViewModel
 import com.pchpsky.diary.theme.DiaryTheme
 import kotlinx.coroutines.launch
@@ -31,42 +34,64 @@ fun Settings(
     viewModel: SettingsViewModel
 ) {
     val scope = rememberCoroutineScope()
+    val uiState by viewModel.uiState.collectAsState()
     val glucoseUnit = remember { mutableStateOf("") }
-    glucoseUnit.value = viewModel.glucoseUnit.collectAsState().value
-    val insulins by viewModel.insulins.collectAsState()
+    val insulins = remember { mutableStateOf(emptyList<Insulin>()) }
 
     scope.launch {
         viewModel.settings()
     }
 
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .background(DiaryTheme.colors.background),
-    ) {
+    @Composable
+    fun Screen() {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DiaryTheme.colors.background),
+        ) {
 
-        item {
-            Glucose(glucoseUnit) {
-                scope.launch {
-                    viewModel.updateGlucoseUnit(it)
+            item {
+                Glucose(glucoseUnit) {
+                    scope.launch {
+                        viewModel.updateGlucoseUnit(it)
+                    }
+                }
+            }
+            item {
+                Button(
+                    modifier = Modifier.padding(start = 30.dp),
+                    onClick = { navController.navigate(MainRout.INSULIN_SETTINGS.route) },
+                    shape = DiaryTheme.shapes.roundedButton,
+                    content = {
+                        Text("Insulin Settings")
+                    }
+                )
+            }
+            item {
+                Divider(
+                    color = DiaryTheme.colors.divider,
+                    modifier = Modifier.padding(start = 20.dp, end = 20.dp),
+                    thickness = 1.dp
+                )
+            }
+            item {
+                Insulin(insulins.value) {
+                    navController.navigate(MainRout.INSULIN_SETTINGS.route)
                 }
             }
         }
-        item {
-            Divider(
-                color = DiaryTheme.colors.divider,
-                modifier = Modifier.padding(start = 20.dp, end = 20.dp),
-                thickness = 1.dp
-            )
-        }
-        item {
-            Insulin(insulins) {
-                navController.navigate(MainRout.INSULIN_SETTINGS.route)
-            }
-        }
+    }
 
-
+    if (uiState is SettingsState.Loading) {
+        ProgressBar(true)
+        Log.d("progress", "started")
+    } else if (uiState is SettingsState.Settings) {
+        glucoseUnit.value = (uiState as SettingsState.Settings).glucoseInit
+        insulins.value = (uiState as SettingsState.Settings).insulins
+        ProgressBar(false)
+        Screen()
+        Log.d("progress", "ended ")
     }
 }
 
@@ -119,7 +144,8 @@ fun Glucose(unit: MutableState<String>, onClick: (GlucoseUnits) -> Unit) {
 fun Insulin(insulins: List<Insulin>, onEditClick: () -> Unit) {
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(15.dp)
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 15.dp)
     ) {
         CategoryHeader("Insulin")
 

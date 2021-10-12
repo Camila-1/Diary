@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                     settingsViewModel
                 )
             }
-            composable(MainRout.INSULIN_SETTINGS.route) { InsulinSettings(settingsViewModel) }
+            composable(MainRout.INSULIN_SETTINGS.route) { InsulinSettings(settingsViewModel, navController) }
         }
     }
 }

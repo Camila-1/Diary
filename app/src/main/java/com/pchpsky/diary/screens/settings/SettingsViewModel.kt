@@ -35,7 +35,6 @@ class SettingsViewModel @Inject constructor(
     private var _uiState: MutableStateFlow<SettingsState> = MutableStateFlow(SettingsState.None)
     override val uiState: StateFlow<SettingsState> = _uiState
 
-
     override suspend fun addInsulin(color: String, name: String) {
         repository.createInsulin(color, name).fold(
             {
@@ -59,14 +58,17 @@ class SettingsViewModel @Inject constructor(
     }
 
     override suspend fun settings() {
+        _uiState.value = SettingsState.Loading
         repository.settings().fold(
             {},
             {
-                when(it.settings?.bloodGlucoseUnits?.rawValue!!) {
-                    GlucoseUnits.MMOL_PER_L.name -> _glucoseUnit.value = GlucoseUnits.MMOL_PER_L.unit
-                    GlucoseUnits.MG_PER_DL.name -> _glucoseUnit.value = GlucoseUnits.MG_PER_DL.unit
+                val glucoseUnit = when(it.settings?.bloodGlucoseUnits?.rawValue!!) {
+                    GlucoseUnits.MMOL_PER_L.name -> GlucoseUnits.MMOL_PER_L.unit
+                    GlucoseUnits.MG_PER_DL.name -> GlucoseUnits.MG_PER_DL.unit
+                    else -> {""}
                 }
-                it.insulins()?.let { list -> _insulins.value = list.apply { _insulins.value + it } }
+                val insulins = it.insulins()!!
+                _uiState.value = SettingsState.Settings(insulins, glucoseUnit)
             }
         )
     }

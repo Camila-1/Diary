@@ -16,9 +16,12 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.components.*
 import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.extensions.toHex
+import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
 import com.pchpsky.diary.screens.settings.SettingsState
 import com.pchpsky.diary.screens.settings.interfaces.InsulinViewModel
@@ -29,8 +32,10 @@ import kotlinx.coroutines.launch
 @SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalComposeUiApi
 @Composable
-fun InsulinSettings(viewModel: InsulinViewModel) {
-
+fun InsulinSettings(
+    viewModel: InsulinViewModel,
+    navController: NavController
+) {
 
     val insulinName = remember { mutableStateOf("") }
     val insulinColor = remember { mutableStateOf(Color(Color.Yellow.toArgb())) }
@@ -99,7 +104,7 @@ fun InsulinList(insulins: List<Insulin>) {
     val listState = rememberLazyListState()
 
     LazyColumn(
-        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 15.dp),
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 15.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp),
         modifier = Modifier
             .fillMaxWidth(),
@@ -125,6 +130,6 @@ fun InsulinList(insulins: List<Insulin>) {
 @Composable
 fun InsulinSettingsPreview() {
     DiaryTheme {
-        InsulinSettings(FakeSettingsViewModel)
+        InsulinSettings(FakeSettingsViewModel, rememberNavController())
     }
 }
