@@ -38,10 +38,6 @@ fun Settings(
     val glucoseUnit = remember { mutableStateOf("") }
     val insulins = remember { mutableStateOf(emptyList<Insulin>()) }
 
-    scope.launch {
-        viewModel.settings()
-    }
-
     @Composable
     fun Screen() {
         LazyColumn(
@@ -83,15 +79,17 @@ fun Settings(
         }
     }
 
-    if (uiState is SettingsState.Loading) {
-        ProgressBar(true)
-        Log.d("progress", "started")
-    } else if (uiState is SettingsState.Settings) {
-        glucoseUnit.value = (uiState as SettingsState.Settings).glucoseInit
-        insulins.value = (uiState as SettingsState.Settings).insulins
-        ProgressBar(false)
-        Screen()
-        Log.d("progress", "ended ")
+    when(uiState) {
+        is SettingsState.None -> scope.launch {
+            viewModel.settings()
+        }
+        is SettingsState.Loading -> ProgressBar(true)
+        is SettingsState.Settings -> {
+            glucoseUnit.value = (uiState as SettingsState.Settings).glucoseInit
+            insulins.value = (uiState as SettingsState.Settings).insulins
+            ProgressBar(false)
+            Screen()
+        }
     }
 }
 
@@ -145,7 +143,7 @@ fun Insulin(insulins: List<Insulin>, onEditClick: () -> Unit) {
 
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp),
-        modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 15.dp)
+        modifier = Modifier.padding(bottom = 15.dp, start = 20.dp, end = 20.dp)
     ) {
         CategoryHeader("Insulin")
 
