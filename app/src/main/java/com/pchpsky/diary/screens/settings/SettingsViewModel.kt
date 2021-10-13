@@ -42,6 +42,7 @@ class SettingsViewModel @Inject constructor(
             },
             {
                 _insulins.value = _insulins.value + it.insulin()
+
             }
         )
     }
@@ -52,7 +53,7 @@ class SettingsViewModel @Inject constructor(
 
             },
             {
-                it.insulins()?.let { list -> _insulins.value = list.apply { _insulins.value + it } }
+                _uiState.value = SettingsState.Settings(it.insulins()!!, "")
             }
         )
     }

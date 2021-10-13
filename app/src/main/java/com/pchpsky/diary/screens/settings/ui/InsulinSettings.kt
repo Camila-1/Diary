@@ -41,11 +41,15 @@ fun InsulinSettings(
     val insulinColor = remember { mutableStateOf(Color(Color.Yellow.toArgb())) }
     val scope = rememberCoroutineScope()
     val uiState: SettingsState by viewModel.uiState.collectAsState()
-    val insulins by viewModel.insulins.collectAsState()
+    val insulins = remember { mutableStateOf(emptyList<Insulin>()) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    scope.launch {
-        viewModel.insulins()
+    if(uiState is SettingsState.None) {
+        scope.launch {
+            viewModel.insulins()
+        }
+    } else if (uiState is SettingsState.Settings) {
+        insulins.value = (uiState as SettingsState.Settings).insulins
     }
 
     Column(
@@ -63,7 +67,7 @@ fun InsulinSettings(
             }
         }
 
-        InsulinList(insulins)
+        InsulinList(insulins.value)
     }
 }
 
