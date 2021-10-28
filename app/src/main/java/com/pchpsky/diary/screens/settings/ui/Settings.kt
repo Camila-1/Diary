@@ -1,13 +1,14 @@
 package com.pchpsky.diary.screens.settings.ui
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowForwardIos
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,16 +55,7 @@ fun Settings(
                     }
                 }
             }
-            item {
-                Button(
-                    modifier = Modifier.padding(start = 30.dp),
-                    onClick = { navController.navigate(MainRout.INSULIN_SETTINGS.route) },
-                    shape = DiaryTheme.shapes.roundedButton,
-                    content = {
-                        Text("Insulin Settings")
-                    }
-                )
-            }
+
             item {
                 Divider(
                     color = DiaryTheme.colors.divider,
@@ -97,7 +89,7 @@ fun Settings(
 fun Glucose(unit: MutableState<String>, onClick: (GlucoseUnits) -> Unit) {
 
     Column {
-        CategoryHeader("Glucose")
+        CategoryHeader(modifier = Modifier.padding(top = 20.dp, bottom = 20.dp),"Glucose")
 
         GlucoseUnits.units.forEach {
             Row(
@@ -143,23 +135,54 @@ fun Insulin(insulins: List<Insulin>, onEditClick: () -> Unit) {
 
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp),
-        modifier = Modifier.padding(bottom = 15.dp, start = 20.dp, end = 20.dp)
     ) {
-        CategoryHeader("Insulin")
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                  onEditClick()
+                },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            CategoryHeader(modifier = Modifier, "Insulin")
 
-        insulins.forEach { insulin ->
-            InsulinEntry(insulin)
+            IconButton(
+                onClick = onEditClick,
+                modifier = Modifier.padding(end = 17.dp)
+            ){
+                Icon(
+                    imageVector = Icons.Rounded.ArrowForwardIos,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxHeight().size(25.dp),
+                    tint = Color.White,
+                )
+            }
         }
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(15.dp),
+            modifier = Modifier.padding(bottom = 15.dp, start = 20.dp, end = 20.dp)
+        ) {
+            insulins.forEach { insulin ->
+                InsulinEntry(insulin)
+            }
+        }
+
+
     }
 }
 
 @Composable
-fun CategoryHeader(text: String) {
+fun CategoryHeader(modifier: Modifier, text: String) {
     Text(
         text = text,
-        modifier = Modifier.padding(start = 30.dp, top = 20.dp, bottom = 10.dp),
+        modifier = modifier.padding(start = 30.dp),
         style = DiaryTheme.typography.primaryHeader,
-        color = DiaryTheme.colors.text
+        color = DiaryTheme.colors.text,
     )
 }
 
