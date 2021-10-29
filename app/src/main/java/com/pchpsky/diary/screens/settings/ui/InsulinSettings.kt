@@ -2,6 +2,7 @@ package com.pchpsky.diary.screens.settings.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -88,7 +89,12 @@ fun AddInsulin(name: MutableState<String>, color: MutableState<Color>, onAddClic
             .padding(start = 10.dp, top = 20.dp, end = 20.dp, bottom = 20.dp),
     ) {
 
-        InsulinColorCircle(color.value, modifier = Modifier.align(Alignment.Bottom))
+        InsulinColorCircle(
+            color.value,
+            modifier = Modifier
+                .align(Alignment.Bottom)
+                .clickable { dialogState.show() }
+        )
 
         LinedTextField(
             value = name,
