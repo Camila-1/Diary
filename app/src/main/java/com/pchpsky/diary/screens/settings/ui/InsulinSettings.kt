@@ -21,7 +21,6 @@ import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.components.*
 import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.extensions.toHex
-import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
 import com.pchpsky.diary.screens.settings.SettingsState
 import com.pchpsky.diary.screens.settings.interfaces.InsulinViewModel
@@ -44,12 +43,18 @@ fun InsulinSettings(
     val insulins = remember { mutableStateOf(emptyList<Insulin>()) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    if(uiState is SettingsState.None) {
-        scope.launch {
+    scope.launch {
+        viewModel.insulins()
+    }
+
+    when(uiState) {
+        is SettingsState.None -> scope.launch {
             viewModel.insulins()
         }
-    } else if (uiState is SettingsState.Settings) {
-        insulins.value = (uiState as SettingsState.Settings).insulins
+        is SettingsState.Loading -> ProgressBar(true)
+        is SettingsState.Insulins -> {
+            insulins.value = (uiState as SettingsState.Insulins).insulins
+        }
     }
 
     Column(
@@ -89,7 +94,8 @@ fun AddInsulin(name: MutableState<String>, color: MutableState<Color>, onAddClic
             value = name,
             modifier = Modifier
                 .padding(start = 10.dp, end = 10.dp)
-                .weight(10f)
+                .weight(10f),
+            placeHolder = "Name"
         )
 
         RoundedOutlinedButton(

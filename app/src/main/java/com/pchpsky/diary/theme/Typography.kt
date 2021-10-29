@@ -27,12 +27,12 @@ val typography = DiaryTypography(
     body = TextStyle(
         fontSize = 14.sp,
         fontWeight = FontWeight.W300,
-        fontFamily = FontFamily.SansSerif,
+        fontFamily = FontFamily.SansSerif
     ),
     textField = TextStyle(
         fontSize = 14.sp,
         fontWeight = FontWeight.W300,
-        fontFamily = FontFamily.SansSerif,
+        fontFamily = FontFamily.SansSerif
     )
 )
 

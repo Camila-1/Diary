@@ -6,7 +6,7 @@ import com.pchpsky.diary.screens.settings.SettingsState
 import kotlinx.coroutines.flow.StateFlow
 
 interface SettingsViewModel {
-    val insulins: StateFlow<List<Insulin>>
+    val insulins: List<Insulin>
     val glucoseUnit: StateFlow<String>
     val uiState: StateFlow<SettingsState>
     suspend fun settings()

@@ -7,4 +7,5 @@ sealed class SettingsState() {
     object Loading : SettingsState()
     data class InsulinAdded(val insulin: Insulin) : SettingsState()
     data class Settings(val insulins: List<Insulin>, val glucoseInit: String) : SettingsState()
+    data class Insulins(val insulins: List<Insulin>) : SettingsState()
 }

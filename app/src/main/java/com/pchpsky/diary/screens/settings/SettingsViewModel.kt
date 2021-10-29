@@ -26,8 +26,7 @@ class SettingsViewModel @Inject constructor(
     ) : ViewModel(), InsulinViewModel,
     SettingsViewModel {
 
-    private var _insulins: MutableStateFlow<List<Insulin>> = MutableStateFlow(emptyList())
-    override val insulins: StateFlow<List<Insulin>> = _insulins
+    override var insulins: List<Insulin> = emptyList()
 
     private var _glucoseUnit: MutableStateFlow<String> = MutableStateFlow("")
     override val glucoseUnit: StateFlow<String> = _glucoseUnit
@@ -41,8 +40,7 @@ class SettingsViewModel @Inject constructor(
 
             },
             {
-                _insulins.value = _insulins.value + it.insulin()
-
+                _uiState.value = SettingsState.Insulins(insulins + it.insulin())
             }
         )
     }
@@ -53,7 +51,8 @@ class SettingsViewModel @Inject constructor(
 
             },
             {
-                _uiState.value = SettingsState.Settings(it.insulins()!!, "")
+                insulins = it.insulins()!!
+                _uiState.value = SettingsState.Insulins(insulins)
             }
         )
     }
@@ -81,7 +80,7 @@ class SettingsViewModel @Inject constructor(
 
 object FakeSettingsViewModel : InsulinViewModel,
     SettingsViewModel {
-    override val insulins: StateFlow<List<Insulin>> = MutableStateFlow(emptyList())
+    override var insulins: List<Insulin> = emptyList()
     override val uiState: StateFlow<SettingsState> = MutableStateFlow(SettingsState.None)
     override suspend fun addInsulin(color: String, name: String) {}
     override suspend fun insulins() {}
