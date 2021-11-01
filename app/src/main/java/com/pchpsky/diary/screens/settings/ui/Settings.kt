@@ -45,7 +45,8 @@ fun Settings(
             verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier
                 .fillMaxSize()
-                .background(DiaryTheme.colors.background),
+                .background(DiaryTheme.colors.background)
+                .padding(30.dp),
         ) {
 
             item {
@@ -59,7 +60,6 @@ fun Settings(
             item {
                 Divider(
                     color = DiaryTheme.colors.divider,
-                    modifier = Modifier.padding(start = 20.dp, end = 20.dp),
                     thickness = 1.dp
                 )
             }
@@ -89,12 +89,11 @@ fun Settings(
 fun Glucose(unit: MutableState<String>, onClick: (GlucoseUnits) -> Unit) {
 
     Column {
-        CategoryHeader(modifier = Modifier.padding(top = 20.dp, bottom = 20.dp),"Glucose")
+        CategoryHeader(modifier = Modifier.padding(bottom = 20.dp),"Glucose")
 
         GlucoseUnits.units.forEach {
             Row(
                 modifier = Modifier
-                    .padding(start = 30.dp)
                     .fillMaxWidth()
                     .background(Color.Transparent, DiaryTheme.shapes.roundedButton)
                     .clickable(
@@ -116,7 +115,7 @@ fun Glucose(unit: MutableState<String>, onClick: (GlucoseUnits) -> Unit) {
                         selectedColor = DiaryTheme.colors.primary,
                         unselectedColor = Color.White
                     ),
-                    modifier = Modifier.padding(top = 5.dp, bottom = 5.dp).size(30.dp)
+                    modifier = Modifier.size(30.dp)
                 )
 
                 Text(
@@ -137,35 +136,30 @@ fun Insulin(insulins: List<Insulin>, onEditClick: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(15.dp),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) {
-                  onEditClick()
-                },
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             CategoryHeader(modifier = Modifier, "Insulin")
 
-            IconButton(
-                onClick = onEditClick,
-                modifier = Modifier.padding(end = 17.dp)
-            ){
-                Icon(
-                    imageVector = Icons.Rounded.ArrowForwardIos,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxHeight().size(25.dp),
-                    tint = Color.White,
-                )
-            }
+            Icon(
+                imageVector = Icons.Rounded.ArrowForwardIos,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(25.dp)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) {
+                        onEditClick()
+                    }
+                    .background(Color.Blue),
+                tint = Color.White,
+            )
         }
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(15.dp),
-            modifier = Modifier.padding(bottom = 15.dp, start = 20.dp, end = 20.dp)
+            verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
             insulins.forEach { insulin ->
                 InsulinEntry(insulin)
@@ -180,7 +174,7 @@ fun Insulin(insulins: List<Insulin>, onEditClick: () -> Unit) {
 fun CategoryHeader(modifier: Modifier, text: String) {
     Text(
         text = text,
-        modifier = modifier.padding(start = 30.dp),
+        modifier = modifier,
         style = DiaryTheme.typography.primaryHeader,
         color = DiaryTheme.colors.text,
     )
