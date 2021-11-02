@@ -17,7 +17,6 @@ import com.pchpsky.diary.components.drawer.Drawer
 import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.home.Home
 import com.pchpsky.diary.screens.settings.SettingsViewModel
-import com.pchpsky.diary.screens.settings.ui.InsulinSettings
 import com.pchpsky.diary.screens.settings.ui.Settings
 import com.pchpsky.diary.theme.DiaryTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +68,6 @@ class MainActivity : ComponentActivity() {
                     settingsViewModel
                 )
             }
-            composable(MainRout.INSULIN_SETTINGS.route) { InsulinSettings(settingsViewModel, navController) }
         }
     }
 }

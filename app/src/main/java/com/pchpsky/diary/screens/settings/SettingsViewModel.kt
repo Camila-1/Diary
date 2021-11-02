@@ -1,10 +1,8 @@
 package com.pchpsky.diary.screens.settings
 
 import androidx.lifecycle.ViewModel
-import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.extensions.insulin
 import com.pchpsky.diary.extensions.insulins
-import com.pchpsky.diary.screens.settings.interfaces.InsulinViewModel
 import com.pchpsky.diary.screens.settings.interfaces.SettingsViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,16 +21,11 @@ enum class GlucoseUnits(val unit: String){
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val repository: SettingsRepository
-    ) : ViewModel(), InsulinViewModel,
+    ) : ViewModel(),
     SettingsViewModel {
 
-    override var insulins: List<Insulin> = emptyList()
-
-    private var _glucoseUnit: MutableStateFlow<String> = MutableStateFlow("")
-    override val glucoseUnit: StateFlow<String> = _glucoseUnit
-
-    private var _uiState: MutableStateFlow<SettingsState> = MutableStateFlow(SettingsState.None)
-    override val uiState: StateFlow<SettingsState> = _uiState
+    private var _uiState = MutableStateFlow(SettingsViewState())
+    override val uiState: StateFlow<SettingsViewState> = _uiState
 
     override suspend fun addInsulin(color: String, name: String) {
         repository.createInsulin(color, name).fold(
@@ -40,25 +33,13 @@ class SettingsViewModel @Inject constructor(
 
             },
             {
-                _uiState.value = SettingsState.Insulins(insulins + it.insulin())
-            }
-        )
-    }
-
-    override suspend fun insulins() {
-        repository.insulins().fold(
-            {
-
-            },
-            {
-                insulins = it.insulins()!!
-                _uiState.value = SettingsState.Insulins(insulins)
+                _uiState.value = _uiState.value.copy(_uiState.value.insulins + it.insulin())
             }
         )
     }
 
     override suspend fun settings() {
-        _uiState.value = SettingsState.Loading
+        _uiState.value.loading = true
         repository.settings().fold(
             {},
             {
@@ -68,7 +49,7 @@ class SettingsViewModel @Inject constructor(
                     else -> {""}
                 }
                 val insulins = it.insulins()!!
-                _uiState.value = SettingsState.Settings(insulins, glucoseUnit)
+                _uiState.value = _uiState.value.copy(insulins, glucoseUnit, false)
             }
         )
     }
@@ -78,13 +59,9 @@ class SettingsViewModel @Inject constructor(
     }
 }
 
-object FakeSettingsViewModel : InsulinViewModel,
-    SettingsViewModel {
-    override var insulins: List<Insulin> = emptyList()
-    override val uiState: StateFlow<SettingsState> = MutableStateFlow(SettingsState.None)
+object FakeSettingsViewModel : SettingsViewModel {
+    override val uiState: StateFlow<SettingsViewState> = MutableStateFlow(SettingsViewState())
     override suspend fun addInsulin(color: String, name: String) {}
-    override suspend fun insulins() {}
-    override val glucoseUnit: StateFlow<String> = MutableStateFlow("mmol/gL")
     override suspend fun settings() {}
     override suspend fun updateGlucoseUnit(unit: GlucoseUnits) {}
 }
