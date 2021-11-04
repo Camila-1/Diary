@@ -81,6 +81,11 @@ fun Settings(
                     insulins = viewState.insulins,
                     onEdit = { name, color ->
                         viewModel.showAddInsulinDialog(true, name, color)
+                    },
+                    onDelete = { id ->
+                        scope.launch {
+                            viewModel.deleteInsulin(id)
+                        }
                     }
                 )
             }
@@ -147,7 +152,7 @@ fun Glucose(unit: String, onClick: (GlucoseUnits) -> Unit) {
 }
 
 @Composable
-fun Insulin(insulins: List<Insulin>, onEdit: (String, Color) -> Unit) {
+fun Insulin(insulins: List<Insulin>, onEdit: (String, Color) -> Unit, onDelete: (String) -> Unit) {
 
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp),
@@ -180,7 +185,7 @@ fun Insulin(insulins: List<Insulin>, onEdit: (String, Color) -> Unit) {
                 InsulinEntry(
                     insulin = insulin,
                     onEdit = { onEdit(insulin.name, Color(parseColor(insulin.color))) },
-                    onDelete = {}
+                    onDelete = { onDelete(insulin.id) }
                 )
             }
         }

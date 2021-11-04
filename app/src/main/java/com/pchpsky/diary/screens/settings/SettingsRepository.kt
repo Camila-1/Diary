@@ -11,8 +11,8 @@ import com.pchpsky.schema.InsulinsQuery
 import com.pchpsky.schema.SettingsQuery
 
 class SettingsRepository(
-    val networkClient: NetworkClient,
-    val dataStoreManager: DataStoreManager
+    private val networkClient: NetworkClient,
+    private val dataStoreManager: DataStoreManager
 ) : SettingsRepository, InsulinRepository {
 
     override suspend fun createInsulin(
@@ -27,4 +27,6 @@ class SettingsRepository(
     override suspend fun updateGlucoseUnit(unit: String) {
         networkClient.updateSettings(unit)
     }
+
+    override suspend fun deleteInsulin(id: String) = networkClient.deleteInsulin(id)
 }

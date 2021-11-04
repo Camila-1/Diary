@@ -11,5 +11,6 @@ interface SettingsViewModel {
     suspend fun settings()
     suspend fun updateGlucoseUnit(unit: GlucoseUnits)
     suspend fun addInsulin(color: String, name: String)
+    suspend fun deleteInsulin(id: String)
     fun showAddInsulinDialog(show: Boolean, name: String = "", color: Color = Color(Color.Yellow.toArgb()))
 }

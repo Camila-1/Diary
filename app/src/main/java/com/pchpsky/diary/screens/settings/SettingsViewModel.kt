@@ -34,7 +34,7 @@ class SettingsViewModel @Inject constructor(
 
             },
             {
-                _uiState.value = _uiState.value.copy(_uiState.value.insulins + it.insulin())
+                _uiState.value = _uiState.value.copy(insulins = _uiState.value.insulins.apply { add(it.insulin()) })
             }
         )
     }
@@ -63,12 +63,28 @@ class SettingsViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(editInsulinDialog = EditInsulinDialog(show, name, color))
     }
 
+    override suspend fun deleteInsulin(id: String) {
+        repository.deleteInsulin(id).fold(
+            ifLeft = {
 
+            },
+            ifRight = { data ->
+                val newList = _uiState.value.insulins.apply {
+                    removeIf { it.id == data.insulin?.id }
+                }
+                _uiState.value = _uiState.value.copy(
+                    insulins = newList
+                )
+
+            }
+        )
+    }
 }
 
 object FakeSettingsViewModel : SettingsViewModel {
     override val uiState: StateFlow<SettingsViewState> = MutableStateFlow(SettingsViewState())
     override suspend fun addInsulin(color: String, name: String) {}
+    override suspend fun deleteInsulin(id: String) {}
     override suspend fun settings() {}
     override suspend fun updateGlucoseUnit(unit: GlucoseUnits) {}
     override fun showAddInsulinDialog(show: Boolean, name: String, color: Color) {}

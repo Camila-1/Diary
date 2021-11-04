@@ -23,12 +23,12 @@ fun InsulinsQuery.Data.insulins(): List<Insulin>? {
     }
 }
 
-fun SettingsQuery.Data.insulins(): List<Insulin>? {
+fun SettingsQuery.Data.insulins(): MutableList<Insulin>? {
     return settings?.insulins?.map {
         Insulin(
             id = it?.id!!,
             color = it.color!!,
             name = it.name!!
         )
-    }
+    }?.toMutableList()
 }
