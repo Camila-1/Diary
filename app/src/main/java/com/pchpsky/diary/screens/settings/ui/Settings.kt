@@ -29,11 +29,12 @@ import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.extensions.toHex
 import com.pchpsky.diary.screens.settings.FakeSettingsViewModel
 import com.pchpsky.diary.screens.settings.GlucoseUnits
-import com.pchpsky.diary.screens.settings.SettingsViewState
+import com.pchpsky.diary.screens.settings.EditInsulinDialog
 import com.pchpsky.diary.screens.settings.interfaces.SettingsViewModel
 import com.pchpsky.diary.theme.DiaryTheme
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
+import android.graphics.Color.parseColor
 
 @ExperimentalComposeUiApi
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -52,7 +53,7 @@ fun Settings(
 
     @Composable
     fun Screen() {
-
+        ProgressBar(viewState.loading)
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier
@@ -62,7 +63,7 @@ fun Settings(
         ) {
 
             item {
-                Glucose(mutableStateOf(viewState.glucoseInit)) {
+                Glucose(viewState.glucoseInit) {
                     scope.launch {
                         viewModel.updateGlucoseUnit(it)
                     }
@@ -78,27 +79,31 @@ fun Settings(
             item {
                 Insulin(
                     insulins = viewState.insulins,
-                    onAddClick = {
-//                        ShowDialog { color, name ->
-//                            keyboardController?.hide()
-//                            scope.launch {
-//                                viewModel.addInsulin(color, name)
-////                                insulinName.value = ""
-////                                insulinColor.value = Color(Color.Yellow.toArgb())
-//                            }
-//                        }
+                    onEdit = { name, color ->
+                        viewModel.showAddInsulinDialog(true, name, color)
                     }
                 )
             }
         }
     }
 
-    if (viewState.loading) ProgressBar(viewState.loading)
-    else Screen()
+    ShowDialog(
+        dialog = viewState.editInsulinDialog,
+        onDismiss = { viewModel.showAddInsulinDialog(false) }
+    ) { color, name ->
+        keyboardController?.hide()
+        scope.launch {
+            viewModel.addInsulin(color, name)
+        }
+    }
+
+    Screen()
 }
 
 @Composable
-fun Glucose(unit: MutableState<String>, onClick: (GlucoseUnits) -> Unit) {
+fun Glucose(unit: String, onClick: (GlucoseUnits) -> Unit) {
+
+    var glucoseUnit = unit
 
     Column {
         CategoryHeader(modifier = Modifier.padding(bottom = 20.dp),"Glucose")
@@ -112,14 +117,14 @@ fun Glucose(unit: MutableState<String>, onClick: (GlucoseUnits) -> Unit) {
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() }
                     ) {
-                        unit.value = it.unit
+                        glucoseUnit = it.unit
                         onClick(it)
                     }
             ) {
                 RadioButton(
-                    selected = unit.value == it.unit,
+                    selected = glucoseUnit == it.unit,
                     onClick = {
-                        unit.value = it.unit
+                        glucoseUnit = it.unit
                         onClick(it)
                         },
                     enabled = true,
@@ -142,13 +147,13 @@ fun Glucose(unit: MutableState<String>, onClick: (GlucoseUnits) -> Unit) {
 }
 
 @Composable
-fun Insulin(insulins: List<Insulin>, onAddClick: () -> Unit) {
+fun Insulin(insulins: List<Insulin>, onEdit: (String, Color) -> Unit) {
 
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -162,17 +167,21 @@ fun Insulin(insulins: List<Insulin>, onAddClick: () -> Unit) {
                     .clickable(
                         indication = LocalIndication.current,
                         interactionSource = remember { MutableInteractionSource() },
-                        onClick = {  }
+                        onClick = { onEdit("", Color(Color.Yellow.toArgb())) }
                     ),
                 tint = DiaryTheme.colors.primary,
             )
         }
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(15.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             insulins.forEach { insulin ->
-                InsulinEntry(insulin) {  }
+                InsulinEntry(
+                    insulin = insulin,
+                    onEdit = { onEdit(insulin.name, Color(parseColor(insulin.color))) },
+                    onDelete = {}
+                )
             }
         }
 
@@ -195,18 +204,21 @@ fun CategoryHeader(modifier: Modifier, text: String) {
 }
 
 @Composable
-fun ShowDialog(onAddClick: (String, String) -> Unit) {
+fun ShowDialog(dialog: EditInsulinDialog, onDismiss: () -> Unit, onAddClick: (String, String) -> Unit) {
+    if (!dialog.show) return
     Dialog(
-        onDismissRequest = {},
+        onDismissRequest = { onDismiss() },
     ) {
-        val insulinName = remember { mutableStateOf("") }
-        val insulinColor = remember { mutableStateOf(Color(Color.Yellow.toArgb())) }
+        val insulinName = remember { mutableStateOf(dialog.insulinName) }
+        val insulinColor = remember { mutableStateOf(dialog.insulinColor) }
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
         ) {
             Text(
-                "Edd New",
-                color = DiaryTheme.colors.text
+                if (dialog.insulinName.isEmpty()) "Add Insulin" else "Edit Insulin",
+                color = DiaryTheme.colors.text,
+                modifier = Modifier.padding(start = 10.dp, top = 20.dp),
+                style = DiaryTheme.typography.primaryHeader
             )
 
             val dialogState = rememberMaterialDialogState()
@@ -228,25 +240,38 @@ fun ShowDialog(onAddClick: (String, String) -> Unit) {
                 LinedTextField(
                     value = insulinName,
                     modifier = Modifier
-                        .padding(start = 10.dp, end = 10.dp)
+                        .padding(start = 10.dp)
                         .weight(10f),
                     placeHolder = "Name"
                 )
 
+
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+
                 RoundedOutlinedButton(
-                    modifier = Modifier
-                        .height(35.dp)
-                        .align(Alignment.Bottom)
-                        .weight(3f),
+                    text = "Cancel",
+                    modifier = Modifier.padding(10.dp),
+                    onClick = { onDismiss() }
+                )
+
+                RoundedFilledButton(
+                    text = "Save",
+                    color = DiaryTheme.colors.primary,
+                    modifier = Modifier.padding(10.dp),
                     onClick = {
                         onAddClick(insulinColor.value.toHex(), insulinName.value)
+                        onDismiss()
                     }
                 )
             }
 
-//            AddInsulin(insulinName, insulinColor) {
-//                onAddClick()
-//            }
+
         }
     }
 }

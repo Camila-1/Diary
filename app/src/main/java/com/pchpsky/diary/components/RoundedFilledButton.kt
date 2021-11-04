@@ -22,7 +22,6 @@ fun RoundedFilledButton(text: String, color: Color, modifier: Modifier, onClick:
         ),
         onClick = onClick,
         modifier = modifier
-            .fillMaxWidth()
             .padding(bottom = 12.dp)
             .height(40.dp),
         shape = DiaryTheme.shapes.roundedButton

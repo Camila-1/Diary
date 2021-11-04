@@ -13,11 +13,11 @@ import androidx.compose.ui.unit.sp
 import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
-fun RoundedOutlinedButton(modifier: Modifier, onClick: () -> Unit) {
+fun RoundedOutlinedButton(text: String, modifier: Modifier, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = modifier
-            .height(35.dp),
+            .height(40.dp),
         border = BorderStroke(1.dp, DiaryTheme.colors.unfocusedInputFieldBorder),
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color.Transparent,
@@ -27,7 +27,7 @@ fun RoundedOutlinedButton(modifier: Modifier, onClick: () -> Unit) {
 
     ) {
         Text(
-            text = "Add",
+            text = text,
             fontSize = 12.sp
         )
     }

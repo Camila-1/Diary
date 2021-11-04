@@ -1,5 +1,6 @@
 package com.pchpsky.diary.screens.settings
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.pchpsky.diary.extensions.insulin
 import com.pchpsky.diary.extensions.insulins
@@ -57,6 +58,12 @@ class SettingsViewModel @Inject constructor(
     override suspend fun updateGlucoseUnit(unit: GlucoseUnits) {
         repository.updateGlucoseUnit(unit.name)
     }
+
+    override fun showAddInsulinDialog(show: Boolean, name: String, color: Color) {
+        _uiState.value = _uiState.value.copy(editInsulinDialog = EditInsulinDialog(show, name, color))
+    }
+
+
 }
 
 object FakeSettingsViewModel : SettingsViewModel {
@@ -64,4 +71,5 @@ object FakeSettingsViewModel : SettingsViewModel {
     override suspend fun addInsulin(color: String, name: String) {}
     override suspend fun settings() {}
     override suspend fun updateGlucoseUnit(unit: GlucoseUnits) {}
+    override fun showAddInsulinDialog(show: Boolean, name: String, color: Color) {}
 }
