@@ -63,6 +63,10 @@ class SettingsViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(editInsulinDialog = EditInsulinDialog(show, name, color))
     }
 
+    override fun showDeleteInsulinDialog(show: Boolean, id: String) {
+        _uiState.value = _uiState.value.copy(deleteInsulinDialog = DeleteInsulinDialog(show, id))
+    }
+
     override suspend fun deleteInsulin(id: String) {
         repository.deleteInsulin(id).fold(
             ifLeft = {
@@ -88,4 +92,5 @@ object FakeSettingsViewModel : SettingsViewModel {
     override suspend fun settings() {}
     override suspend fun updateGlucoseUnit(unit: GlucoseUnits) {}
     override fun showAddInsulinDialog(show: Boolean, name: String, color: Color) {}
+    override fun showDeleteInsulinDialog(show: Boolean, id: String) {}
 }

@@ -35,6 +35,7 @@ import com.pchpsky.diary.theme.DiaryTheme
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
 import android.graphics.Color.parseColor
+import com.pchpsky.diary.screens.settings.DeleteInsulinDialog
 
 @ExperimentalComposeUiApi
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -83,9 +84,7 @@ fun Settings(
                         viewModel.showAddInsulinDialog(true, name, color)
                     },
                     onDelete = { id ->
-                        scope.launch {
-                            viewModel.deleteInsulin(id)
-                        }
+                        viewModel.showDeleteInsulinDialog(true, id)
                     }
                 )
             }
@@ -101,6 +100,16 @@ fun Settings(
             viewModel.addInsulin(color, name)
         }
     }
+
+    ShowDeleteInsulinDialog(
+        dialog = viewState.deleteInsulinDialog,
+        onDelete = { id ->
+            scope.launch {
+                viewModel.deleteInsulin(id)
+            }
+        },
+        onDismiss = { viewModel.showDeleteInsulinDialog(false) }
+    )
 
     Screen()
 }
@@ -277,6 +286,47 @@ fun ShowDialog(dialog: EditInsulinDialog, onDismiss: () -> Unit, onAddClick: (St
             }
 
 
+        }
+    }
+}
+
+@Composable
+fun ShowDeleteInsulinDialog(dialog: DeleteInsulinDialog, onDelete: (String) -> Unit, onDismiss: () -> Unit) {
+    if (!dialog.show) return
+    Dialog(
+        onDismissRequest = { onDismiss() }
+    ) {
+        Column(
+            modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
+        ) {
+            Text(
+                text = "Are you sure you want to delete?",
+                color = DiaryTheme.colors.text,
+                modifier = Modifier.padding(start = 10.dp, top = 20.dp),
+                style = DiaryTheme.typography.primaryHeader
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                RoundedOutlinedButton(
+                    text = "Cancel",
+                    modifier = Modifier.padding(10.dp),
+                    onClick = { onDismiss() }
+                )
+
+                RoundedFilledButton(
+                    text = "Delete",
+                    color = DiaryTheme.colors.primary,
+                    modifier = Modifier.padding(10.dp),
+                    onClick = {
+                        onDelete(dialog.insulinId)
+                        onDismiss()
+                    }
+                )
+            }
         }
     }
 }
