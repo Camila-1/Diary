@@ -121,7 +121,11 @@ fun Settings(
         onDismiss = { viewModel.showDeleteInsulinDialog(false) }
     )
 
-    Screen()
+    if (viewState.loading) ProgressBar(true)
+    else {
+        ProgressBar(false)
+        Screen()
+    }
 }
 
 @Composable
