@@ -56,6 +56,7 @@ class SettingsViewModel @Inject constructor(
                 }
                 val insulins = it.insulins()!!
                 _uiState.value = _uiState.value.copy(insulins, glucoseUnit, false)
+                _uiState.value.loading = false
             }
         )
     }

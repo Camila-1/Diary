@@ -81,7 +81,7 @@ fun Settings(
                         viewModel.showAddInsulinDialog(true, name, color)
                     },
                     update = { id, name, color ->
-                             viewModel.showUpdateInsulinDialog(true, id, name, color)
+                        viewModel.showUpdateInsulinDialog(true, id, name, color)
                     },
                     delete = { id ->
                         viewModel.showDeleteInsulinDialog(true, id)
@@ -113,7 +113,7 @@ fun Settings(
 
     DeleteInsulinDialog(
         dialog = viewState.deleteInsulinDialog,
-        onPositive = { id ->
+        delete = { id ->
             scope.launch {
                 viewModel.deleteInsulin(id)
             }
@@ -121,11 +121,13 @@ fun Settings(
         onDismiss = { viewModel.showDeleteInsulinDialog(false) }
     )
 
-    if (viewState.loading) ProgressBar(true)
-    else {
-        ProgressBar(false)
-        Screen()
-    }
+//    if (viewState.loading) ProgressBar(true)
+//    else {
+//        ProgressBar(false)
+//        Screen()
+//    }
+
+    Screen()
 }
 
 @Composable
@@ -175,8 +177,12 @@ fun Glucose(unit: String, onClick: (GlucoseUnits) -> Unit) {
 }
 
 @Composable
-fun Insulin(insulins: List<Insulin>, add: (String, Color) -> Unit, update: (id: String, name: String, color: Color) -> Unit, delete: (String) -> Unit) {
-
+fun Insulin(
+    insulins: List<Insulin>,
+    add: (String, Color) -> Unit,
+    update: (id: String, name: String, color: Color) -> Unit,
+    delete: (String) -> Unit
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(15.dp),
     ) {
@@ -186,19 +192,7 @@ fun Insulin(insulins: List<Insulin>, add: (String, Color) -> Unit, update: (id: 
             verticalAlignment = Alignment.CenterVertically
         ) {
             CategoryHeader(modifier = Modifier, "Insulin")
-
-            Icon(
-                imageVector = Icons.Rounded.AddCircle,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(35.dp)
-                    .clickable(
-                        indication = LocalIndication.current,
-                        interactionSource = remember { MutableInteractionSource() },
-                        onClick = { add("", Color(Color.Yellow.toArgb())) }
-                    ),
-                tint = DiaryTheme.colors.primary,
-            )
+            AddInsulinButton { add("", Color(Color.Yellow.toArgb())) }
         }
 
         Column(
@@ -208,12 +202,10 @@ fun Insulin(insulins: List<Insulin>, add: (String, Color) -> Unit, update: (id: 
                 InsulinEntry(
                     insulin = insulin,
                     update = { update(insulin.id, insulin.name, Color(parseColor(insulin.color))) },
-                    onDelete = { delete(insulin.id) }
+                    delete = { delete(insulin.id) }
                 )
             }
         }
-
-
     }
 }
 
@@ -235,7 +227,7 @@ fun CategoryHeader(modifier: Modifier, text: String) {
 fun AddInsulinDialog(
     dialog: EditInsulinDialog,
     onDismiss: () -> Unit,
-    onEdit: (color: String, name: String) -> Unit,
+    add: (color: String, name: String) -> Unit,
 ) {
     if (!dialog.show) return
     Dialog(
@@ -246,12 +238,7 @@ fun AddInsulinDialog(
         Column(
             modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
         ) {
-            Text(
-                if (dialog.insulinName.isEmpty()) "Add Insulin" else "Edit Insulin",
-                color = DiaryTheme.colors.text,
-                modifier = Modifier.padding(start = 10.dp, top = 20.dp),
-                style = DiaryTheme.typography.primaryHeader
-            )
+            DialogTitle("Add Insulin")
 
             val dialogState = rememberMaterialDialogState()
             ColorPicker(dialogState, insulinColor)
@@ -276,8 +263,6 @@ fun AddInsulinDialog(
                         .weight(10f),
                     placeHolder = "Name"
                 )
-
-
             }
 
             Row(
@@ -286,24 +271,13 @@ fun AddInsulinDialog(
                 horizontalArrangement = Arrangement.End
             ) {
 
-                RoundedOutlinedButton(
-                    text = "Cancel",
-                    modifier = Modifier.padding(10.dp),
-                    onClick = { onDismiss() }
-                )
+                CancelButton { onDismiss() }
 
-                RoundedFilledButton(
-                    text = "Save",
-                    color = DiaryTheme.colors.primary,
-                    modifier = Modifier.padding(10.dp),
-                    onClick = {
-                        onEdit(insulinColor.value.toHex(), insulinName.value)
-                        onDismiss()
-                    }
-                )
+                PositiveButton("Add") {
+                    add(insulinColor.value.toHex(), insulinName.value)
+                    onDismiss()
+                }
             }
-
-
         }
     }
 }
@@ -311,7 +285,7 @@ fun AddInsulinDialog(
 @Composable
 fun DeleteInsulinDialog(
     dialog: DeleteInsulinDialog,
-    onPositive: (String) -> Unit,
+    delete: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
     if (!dialog.show) return
@@ -321,33 +295,19 @@ fun DeleteInsulinDialog(
         Column(
             modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
         ) {
-            Text(
-                text = "Are you sure you want to delete?",
-                color = DiaryTheme.colors.text,
-                modifier = Modifier.padding(start = 10.dp, top = 20.dp),
-                style = DiaryTheme.typography.primaryHeader
-            )
+            DialogTitle("Are you sure you want to delete?")
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                RoundedOutlinedButton(
-                    text = "Cancel",
-                    modifier = Modifier.padding(10.dp),
-                    onClick = { onDismiss() }
-                )
+                CancelButton { onDismiss() }
 
-                RoundedFilledButton(
-                    text = "Delete",
-                    color = DiaryTheme.colors.primary,
-                    modifier = Modifier.padding(10.dp),
-                    onClick = {
-                        onPositive(dialog.insulinId)
-                        onDismiss()
-                    }
-                )
+                PositiveButton("Delete") {
+                    delete(dialog.insulinId)
+                    onDismiss()
+                }
             }
         }
     }
@@ -357,7 +317,7 @@ fun DeleteInsulinDialog(
 fun UpdateInsulinDialog(
     dialog: UpdateInsulinDialog,
     onDismiss: () -> Unit,
-    onPositive: (id: String, name: String, color: String) -> Unit
+    update: (id: String, name: String, color: String) -> Unit
 ) {
     if (!dialog.show) return
     Dialog(
@@ -368,12 +328,7 @@ fun UpdateInsulinDialog(
         Column(
             modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
         ) {
-            Text(
-                text = "Update Insulin",
-                color = DiaryTheme.colors.text,
-                modifier = Modifier.padding(start = 10.dp, top = 20.dp),
-                style = DiaryTheme.typography.primaryHeader
-            )
+            DialogTitle("Update Insulin")
 
             val dialogState = rememberMaterialDialogState()
             ColorPicker(dialogState, insulinColor)
@@ -398,8 +353,6 @@ fun UpdateInsulinDialog(
                         .weight(10f),
                     placeHolder = "Name"
                 )
-
-
             }
 
             Row(
@@ -408,26 +361,62 @@ fun UpdateInsulinDialog(
                 horizontalArrangement = Arrangement.End
             ) {
 
-                RoundedOutlinedButton(
-                    text = "Cancel",
-                    modifier = Modifier.padding(10.dp),
-                    onClick = { onDismiss() }
-                )
+                CancelButton { onDismiss() }
 
-                RoundedFilledButton(
-                    text = "Save",
-                    color = DiaryTheme.colors.primary,
-                    modifier = Modifier.padding(10.dp),
-                    onClick = {
-                        onPositive(dialog.insulinId, insulinColor.value.toHex(), insulinName.value)
-                        onDismiss()
-                    }
-                )
+                PositiveButton(
+                    text = "Save"
+                ) {
+                    update(dialog.insulinId, insulinColor.value.toHex(), insulinName.value)
+                    onDismiss()
+                }
             }
-
-
         }
     }
+}
+
+@Composable
+fun DialogTitle(text: String) {
+    Text(
+        text = text,
+        color = DiaryTheme.colors.text,
+        modifier = Modifier.padding(start = 10.dp, top = 20.dp),
+        style = DiaryTheme.typography.primaryHeader
+    )
+}
+
+@Composable
+fun CancelButton(onClick: () -> Unit) {
+    RoundedOutlinedButton(
+        text = "Cancel",
+        modifier = Modifier.padding(10.dp),
+        onClick = { onClick() }
+    )
+}
+
+@Composable
+fun PositiveButton(text: String, onClick: () -> Unit) {
+    RoundedFilledButton(
+        text = text,
+        color = DiaryTheme.colors.primary,
+        modifier = Modifier.padding(10.dp),
+        onClick = { onClick() }
+    )
+}
+
+@Composable
+fun AddInsulinButton(onClick: () -> Unit) {
+    Icon(
+        imageVector = Icons.Rounded.AddCircle,
+        contentDescription = null,
+        modifier = Modifier
+            .size(35.dp)
+            .clickable(
+                indication = LocalIndication.current,
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = { onClick() }
+            ),
+        tint = DiaryTheme.colors.primary,
+    )
 }
 
 @ExperimentalComposeUiApi

@@ -19,7 +19,7 @@ import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
-fun InsulinEntry(insulin: Insulin, update: () -> Unit, onDelete: () -> Unit) {
+fun InsulinEntry(insulin: Insulin, update: () -> Unit, delete: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,7 +56,7 @@ fun InsulinEntry(insulin: Insulin, update: () -> Unit, onDelete: () -> Unit) {
             modifier = Modifier
                 .weight(1f)
                 .clickable {
-                    onDelete()
+                    delete()
                 },
             tint = Color.White
         )

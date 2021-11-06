@@ -12,7 +12,7 @@ data class SettingsViewState(
         EditInsulinDialog(
             show = false,
             insulinName = "",
-            insulinColor = Color(Color.Yellow.toArgb())
+            insulinColor = Color.Yellow
         ),
     var deleteInsulinDialog: DeleteInsulinDialog =
         DeleteInsulinDialog(
@@ -24,7 +24,7 @@ data class SettingsViewState(
             show = false,
             insulinId = "",
             insulinName = "",
-            insulinColor = Color(Color.Yellow.toArgb())
+            insulinColor = Color.Yellow
         )
 )
 
