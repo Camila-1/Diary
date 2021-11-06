@@ -18,11 +18,25 @@ data class SettingsViewState(
         DeleteInsulinDialog(
             show = false,
             insulinId = ""
+        ),
+    var updateInsulinDialog: UpdateInsulinDialog =
+        UpdateInsulinDialog(
+            show = false,
+            insulinId = "",
+            insulinName = "",
+            insulinColor = Color(Color.Yellow.toArgb())
         )
 )
 
 data class EditInsulinDialog(
     val show: Boolean,
+    val insulinName: String,
+    val insulinColor: Color
+)
+
+data class UpdateInsulinDialog(
+    val show: Boolean,
+    val insulinId: String,
     val insulinName: String,
     val insulinColor: Color
 )

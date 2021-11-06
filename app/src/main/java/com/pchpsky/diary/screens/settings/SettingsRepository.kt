@@ -28,5 +28,8 @@ class SettingsRepository(
         networkClient.updateSettings(unit)
     }
 
+    override suspend fun updateInsulin(id: String, name: String, color: String) =
+        networkClient.updateInsulin(id, color, name)
+
     override suspend fun deleteInsulin(id: String) = networkClient.deleteInsulin(id)
 }

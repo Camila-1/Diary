@@ -4,6 +4,7 @@ import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.schema.CreateInsulinMutation
 import com.pchpsky.schema.InsulinsQuery
 import com.pchpsky.schema.SettingsQuery
+import com.pchpsky.schema.UpdateInsulinMutation
 
 fun CreateInsulinMutation.Data.insulin(): Insulin {
     return Insulin(
@@ -31,4 +32,12 @@ fun SettingsQuery.Data.insulins(): MutableList<Insulin>? {
             name = it.name!!
         )
     }?.toMutableList()
+}
+
+fun UpdateInsulinMutation.Data.insulin(): Insulin {
+    return Insulin(
+        id = insulin?.id!!,
+        name = insulin.name!!,
+        color = insulin.color!!
+    )
 }
