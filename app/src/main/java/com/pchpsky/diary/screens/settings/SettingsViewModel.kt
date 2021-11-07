@@ -1,5 +1,6 @@
 package com.pchpsky.diary.screens.settings
 
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import arrow.core.extensions.list.foldable.find
@@ -36,17 +37,21 @@ class SettingsViewModel @Inject constructor(
 
             },
             {
-                _uiState.value = _uiState.value
-                    .copy(insulins = _uiState.value.insulins.apply { add(it.insulin()) })
+                _uiState.value.insulins.toMutableList().apply { add(it.insulin()) }
+                _uiState.value = _uiState.value.copy()
             }
         )
     }
 
     override suspend fun settings() {
+        Log.d("Settings", "Settings")
         _uiState.value.loading = true
         repository.settings().fold(
-            {},
             {
+                Log.d("Settings", it.toString())
+            },
+            {
+                Log.d("Settings", "right")
                 val glucoseUnit = when (it.settings?.bloodGlucoseUnits?.rawValue!!) {
                     GlucoseUnits.MMOL_PER_L.name -> GlucoseUnits.MMOL_PER_L.unit
                     GlucoseUnits.MG_PER_DL.name -> GlucoseUnits.MG_PER_DL.unit
@@ -75,7 +80,8 @@ class SettingsViewModel @Inject constructor(
                     )
 
                 _uiState.value = _uiState.value.copy(
-                    insulins = _uiState.value.insulins.apply { set(index, data.insulin()) }
+                    insulins = _uiState.value.insulins.apply { toMutableList()[index] = data.insulin() }.toList()
+                    //mutableListOf<Insulin>().plus(_uiState.value.insulins).plus(data.insulin()).toList()
                 )
             }
         )
@@ -83,16 +89,16 @@ class SettingsViewModel @Inject constructor(
 
     override fun showAddInsulinDialog(show: Boolean, name: String, color: Color) {
         _uiState.value =
-            _uiState.value.copy(editInsulinDialog = EditInsulinDialog(show, name, color))
+            _uiState.value.copy(addInsulinDialogStateState = AddInsulinDialogState(show, name, color))
     }
 
     override fun showDeleteInsulinDialog(show: Boolean, id: String) {
-        _uiState.value = _uiState.value.copy(deleteInsulinDialog = DeleteInsulinDialog(show, id))
+        _uiState.value = _uiState.value.copy(deleteInsulinDialogStateState = DeleteInsulinDialogState(show, id))
     }
 
     override fun showUpdateInsulinDialog(show: Boolean, id: String, name: String, color: Color) {
         _uiState.value = _uiState.value
-            .copy(updateInsulinDialog = UpdateInsulinDialog(show, id, name, color))
+            .copy(updateInsulinDialogStateState = UpdateInsulinDialogState(show, id, name, color))
     }
 
     override suspend fun deleteInsulin(id: String) {
@@ -102,8 +108,8 @@ class SettingsViewModel @Inject constructor(
             },
             ifRight = { data ->
                 val newList = _uiState.value.insulins.apply {
-                    removeIf { it.id == data.insulin?.id }
-                }
+                    toMutableList().removeIf { it.id == data.insulin?.id }
+                }.toList()
                 _uiState.value = _uiState.value.copy(insulins = newList)
 
             }

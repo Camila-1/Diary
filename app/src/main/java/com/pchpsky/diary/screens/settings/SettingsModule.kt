@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
 
 @Module
@@ -13,6 +14,7 @@ import dagger.hilt.android.components.ViewModelComponent
 class SettingsModule {
 
     @Provides
+    @ViewModelScoped
     fun provideSettingsRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): SettingsRepository {
         return SettingsRepository(networkClient, dataStoreManager)
     }

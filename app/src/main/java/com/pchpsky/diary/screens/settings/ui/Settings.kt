@@ -45,12 +45,13 @@ fun Settings(
     val viewState by viewModel.uiState.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    scope.launch {
+    LaunchedEffect(true) {
         viewModel.settings()
     }
 
     @Composable
     fun Screen() {
+        if (viewState.loading) return
         ProgressBar(viewState.loading)
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -91,8 +92,11 @@ fun Settings(
         }
     }
 
+    ProgressBar(viewState.loading)
+    Screen()
+
     AddInsulinDialog(
-        dialog = viewState.editInsulinDialog,
+        dialogState = viewState.addInsulinDialogStateState,
         onDismiss = { viewModel.showAddInsulinDialog(false) }
     ) { color, name ->
         keyboardController?.hide()
@@ -102,7 +106,7 @@ fun Settings(
     }
 
     UpdateInsulinDialog(
-        dialog = viewState.updateInsulinDialog,
+        dialogState = viewState.updateInsulinDialogStateState,
         onDismiss = { viewModel.showUpdateInsulinDialog(false) }
     ) { id, name, color ->
         keyboardController?.hide()
@@ -112,7 +116,7 @@ fun Settings(
     }
 
     DeleteInsulinDialog(
-        dialog = viewState.deleteInsulinDialog,
+        dialogState = viewState.deleteInsulinDialogStateState,
         delete = { id ->
             scope.launch {
                 viewModel.deleteInsulin(id)
@@ -120,14 +124,6 @@ fun Settings(
         },
         onDismiss = { viewModel.showDeleteInsulinDialog(false) }
     )
-
-//    if (viewState.loading) ProgressBar(true)
-//    else {
-//        ProgressBar(false)
-//        Screen()
-//    }
-
-    Screen()
 }
 
 @Composable
@@ -225,23 +221,23 @@ fun CategoryHeader(modifier: Modifier, text: String) {
 
 @Composable
 fun AddInsulinDialog(
-    dialog: EditInsulinDialog,
+    dialogState: AddInsulinDialogState,
     onDismiss: () -> Unit,
     add: (color: String, name: String) -> Unit,
 ) {
-    if (!dialog.show) return
+    if (!dialogState.show) return
     Dialog(
         onDismissRequest = { onDismiss() },
     ) {
-        val insulinName = remember { mutableStateOf(dialog.insulinName) }
-        val insulinColor = remember { mutableStateOf(dialog.insulinColor) }
+        val insulinName = remember { mutableStateOf(dialogState.insulinName) }
+        val insulinColor = remember { mutableStateOf(dialogState.insulinColor) }
         Column(
             modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
         ) {
             DialogTitle("Add Insulin")
 
-            val dialogState = rememberMaterialDialogState()
-            ColorPicker(dialogState, insulinColor)
+            val colorPickerDialogState = rememberMaterialDialogState()
+            ColorPicker(colorPickerDialogState, insulinColor)
 
             Row(
                 modifier = Modifier
@@ -253,7 +249,7 @@ fun AddInsulinDialog(
                     insulinColor.value,
                     modifier = Modifier
                         .align(Alignment.Bottom)
-                        .clickable { dialogState.show() }
+                        .clickable { colorPickerDialogState.show() }
                 )
 
                 LinedTextField(
@@ -284,11 +280,11 @@ fun AddInsulinDialog(
 
 @Composable
 fun DeleteInsulinDialog(
-    dialog: DeleteInsulinDialog,
+    dialogState: DeleteInsulinDialogState,
     delete: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    if (!dialog.show) return
+    if (!dialogState.show) return
     Dialog(
         onDismissRequest = { onDismiss() }
     ) {
@@ -305,7 +301,7 @@ fun DeleteInsulinDialog(
                 CancelButton { onDismiss() }
 
                 PositiveButton("Delete") {
-                    delete(dialog.insulinId)
+                    delete(dialogState.insulinId)
                     onDismiss()
                 }
             }
@@ -315,23 +311,23 @@ fun DeleteInsulinDialog(
 
 @Composable
 fun UpdateInsulinDialog(
-    dialog: UpdateInsulinDialog,
+    dialogState: UpdateInsulinDialogState,
     onDismiss: () -> Unit,
     update: (id: String, name: String, color: String) -> Unit
 ) {
-    if (!dialog.show) return
+    if (!dialogState.show) return
     Dialog(
         onDismissRequest = { onDismiss() },
     ) {
-        val insulinName = remember { mutableStateOf(dialog.insulinName) }
-        val insulinColor = remember { mutableStateOf(dialog.insulinColor) }
+        val insulinName = remember { mutableStateOf(dialogState.insulinName) }
+        val insulinColor = remember { mutableStateOf(dialogState.insulinColor) }
         Column(
             modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
         ) {
             DialogTitle("Update Insulin")
 
-            val dialogState = rememberMaterialDialogState()
-            ColorPicker(dialogState, insulinColor)
+            val colorPickerDialogState = rememberMaterialDialogState()
+            ColorPicker(colorPickerDialogState, insulinColor)
 
             Row(
                 modifier = Modifier
@@ -343,7 +339,7 @@ fun UpdateInsulinDialog(
                     insulinColor.value,
                     modifier = Modifier
                         .align(Alignment.Bottom)
-                        .clickable { dialogState.show() }
+                        .clickable { colorPickerDialogState.show() }
                 )
 
                 LinedTextField(
@@ -366,7 +362,7 @@ fun UpdateInsulinDialog(
                 PositiveButton(
                     text = "Save"
                 ) {
-                    update(dialog.insulinId, insulinColor.value.toHex(), insulinName.value)
+                    update(dialogState.insulinId, insulinColor.value.toHex(), insulinName.value)
                     onDismiss()
                 }
             }

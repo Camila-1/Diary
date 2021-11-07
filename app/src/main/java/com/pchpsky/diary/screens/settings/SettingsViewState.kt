@@ -1,26 +1,25 @@
 package com.pchpsky.diary.screens.settings
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import com.pchpsky.diary.datasource.network.model.Insulin
 
 data class SettingsViewState(
-    var insulins: MutableList<Insulin> = mutableListOf(),
-    var glucoseInit: String = "",
+    val insulins: List<Insulin> = listOf(),
+    val glucoseInit: String = "",
     var loading: Boolean = false,
-    var editInsulinDialog: EditInsulinDialog =
-        EditInsulinDialog(
+    val addInsulinDialogStateState: AddInsulinDialogState =
+        AddInsulinDialogState(
             show = false,
             insulinName = "",
             insulinColor = Color.Yellow
         ),
-    var deleteInsulinDialog: DeleteInsulinDialog =
-        DeleteInsulinDialog(
+    val deleteInsulinDialogStateState: DeleteInsulinDialogState =
+        DeleteInsulinDialogState(
             show = false,
             insulinId = ""
         ),
-    var updateInsulinDialog: UpdateInsulinDialog =
-        UpdateInsulinDialog(
+    val updateInsulinDialogStateState: UpdateInsulinDialogState =
+        UpdateInsulinDialogState(
             show = false,
             insulinId = "",
             insulinName = "",
@@ -28,20 +27,20 @@ data class SettingsViewState(
         )
 )
 
-data class EditInsulinDialog(
+data class AddInsulinDialogState(
     val show: Boolean,
     val insulinName: String,
     val insulinColor: Color
 )
 
-data class UpdateInsulinDialog(
+data class UpdateInsulinDialogState(
     val show: Boolean,
     val insulinId: String,
     val insulinName: String,
     val insulinColor: Color
 )
 
-data class DeleteInsulinDialog(
+data class DeleteInsulinDialogState(
     val show: Boolean,
     val insulinId: String
 )
