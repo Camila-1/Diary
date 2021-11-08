@@ -40,7 +40,7 @@ class SettingsViewModel @Inject constructor(
             {
                 val newList = mutableListOf<Insulin>()
                 newList.addAll(_uiState.value.insulins)
-                newList.add(0, it.insulin())
+                newList.add(it.insulin())
                 _uiState.value = _uiState.value.copy(insulins = newList)
             }
         )
