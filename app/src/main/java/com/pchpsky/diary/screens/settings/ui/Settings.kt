@@ -62,7 +62,7 @@ fun Settings(
         ) {
 
             item {
-                Glucose(viewState.glucoseInit) {
+                Glucose(viewState.glucoseUnit) {
                     scope.launch {
                         viewModel.updateGlucoseUnit(it)
                     }

@@ -71,10 +71,5 @@ mutation DeleteInsulin($id: ID!) {
 mutation UpdateSettings($settingsInput: SettingsInput!) {
     settings: updateSettings(input: $settingsInput) {
         bloodGlucoseUnits
-        insulins {
-            id
-            name
-            color
-        }
     }
 }

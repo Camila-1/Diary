@@ -72,7 +72,7 @@ class NetworkClient @Inject constructor(
         }
     }
 
-    suspend fun updateSettings(glucoseUnit: String): Either<NetworkError, UpdateSettingsMutation.Data> {
+    suspend fun updateGlucoseUnit(glucoseUnit: String): Either<NetworkError, UpdateSettingsMutation.Data> {
         val bloodGlucoseUnits = BloodGlucoseUnits.safeValueOf(glucoseUnit)
 
         return errorsHandler.withErrorHandler {

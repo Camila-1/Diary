@@ -9,6 +9,7 @@ import com.pchpsky.diary.screens.settings.interfaces.InsulinRepository
 import com.pchpsky.schema.CreateInsulinMutation
 import com.pchpsky.schema.InsulinsQuery
 import com.pchpsky.schema.SettingsQuery
+import com.pchpsky.schema.UpdateSettingsMutation
 
 class SettingsRepository(
     private val networkClient: NetworkClient,
@@ -24,9 +25,8 @@ class SettingsRepository(
 
     override suspend fun settings(): Either<NetworkError, SettingsQuery.Data> = networkClient.settings()
 
-    override suspend fun updateGlucoseUnit(unit: String) {
-        networkClient.updateSettings(unit)
-    }
+    override suspend fun updateGlucoseUnit(unit: String): Either<NetworkError, UpdateSettingsMutation.Data>
+    = networkClient.updateGlucoseUnit(unit)
 
     override suspend fun updateInsulin(id: String, name: String, color: String) =
         networkClient.updateInsulin(id, color, name)

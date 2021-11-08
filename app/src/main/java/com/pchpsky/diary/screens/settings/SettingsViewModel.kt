@@ -60,14 +60,27 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
                 val insulins = it.insulins()!!
-                _uiState.value = _uiState.value.copy(insulins, glucoseUnit, false)
+                _uiState.value = _uiState.value.copy(
+                    insulins = insulins,
+                    glucoseUnit = glucoseUnit,
+                    loading = false)
                 _uiState.value.loading = false
             }
         )
     }
 
     override suspend fun updateGlucoseUnit(unit: GlucoseUnits) {
-        repository.updateGlucoseUnit(unit.name)
+        repository.updateGlucoseUnit(unit.name).fold(
+            ifLeft = {},
+            ifRight = { data ->
+                val newUnit = data.settings?.bloodGlucoseUnits?.name!!
+
+                _uiState.value = _uiState.value.copy( glucoseUnit =
+                    if(GlucoseUnits.MMOL_PER_L.name == newUnit) GlucoseUnits.MMOL_PER_L.unit
+                    else GlucoseUnits.MG_PER_DL.unit
+                )
+            }
+        )
     }
 
     override suspend fun updateInsulin(id: String, name: String, color: String) {
