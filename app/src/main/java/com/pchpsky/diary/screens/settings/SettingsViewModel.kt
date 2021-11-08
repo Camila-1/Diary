@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import arrow.core.extensions.list.foldable.find
 import arrow.core.getOrElse
+import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.extensions.insulin
 import com.pchpsky.diary.extensions.insulins
 import com.pchpsky.diary.screens.settings.interfaces.SettingsViewModel
@@ -37,8 +38,10 @@ class SettingsViewModel @Inject constructor(
 
             },
             {
-                _uiState.value.insulins.toMutableList().apply { add(it.insulin()) }
-                _uiState.value = _uiState.value.copy()
+                val newList = mutableListOf<Insulin>()
+                newList.addAll(_uiState.value.insulins)
+                newList.add(0, it.insulin())
+                _uiState.value = _uiState.value.copy(insulins = newList)
             }
         )
     }
