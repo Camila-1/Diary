@@ -95,10 +95,11 @@ class SettingsViewModel @Inject constructor(
                         .getOrElse { 0 }
                     )
 
-                _uiState.value = _uiState.value.copy(
-                    insulins = _uiState.value.insulins.apply { toMutableList()[index] = data.insulin() }.toList()
-                    //mutableListOf<Insulin>().plus(_uiState.value.insulins).plus(data.insulin()).toList()
-                )
+                val newList = mutableListOf<Insulin>()
+                newList.addAll(_uiState.value.insulins)
+                newList[index] = data.insulin()
+
+                _uiState.value = _uiState.value.copy(insulins = newList)
             }
         )
     }
@@ -123,9 +124,10 @@ class SettingsViewModel @Inject constructor(
 
             },
             ifRight = { data ->
-                val newList = _uiState.value.insulins.apply {
-                    toMutableList().removeIf { it.id == data.insulin?.id }
-                }.toList()
+                val newList = mutableListOf<Insulin>()
+                newList.addAll(_uiState.value.insulins)
+                newList.removeIf { it.id == data.insulin?.id }
+
                 _uiState.value = _uiState.value.copy(insulins = newList)
 
             }
