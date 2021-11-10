@@ -41,6 +41,13 @@ val typography = DiaryTypography(
         fontSize = 14.sp,
         fontWeight = FontWeight.W300,
         fontFamily = FontFamily.SansSerif
+    ),
+    insulinPoints = TextStyle(
+        fontSize = 80.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.SansSerif,
+        textAlign = TextAlign.Center,
+        color = Color.White
     )
 )
 
@@ -50,7 +57,8 @@ data class DiaryTypography(
     val primaryHeader: TextStyle,
     val body: TextStyle,
     val textField: TextStyle,
-    val basicTextField: TextStyle
+    val basicTextField: TextStyle,
+    val insulinPoints: TextStyle
 )
 
 val LocalDiaryTypography = staticCompositionLocalOf<DiaryTypography> {

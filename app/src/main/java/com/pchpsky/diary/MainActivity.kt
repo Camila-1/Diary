@@ -16,6 +16,7 @@ import com.pchpsky.diary.components.TopBar
 import com.pchpsky.diary.components.drawer.Drawer
 import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.home.Home
+import com.pchpsky.diary.screens.record.insulin.ui.InsulinTakingScreen
 import com.pchpsky.diary.screens.settings.SettingsViewModel
 import com.pchpsky.diary.screens.settings.ui.Settings
 import com.pchpsky.diary.theme.DiaryTheme
@@ -60,7 +61,7 @@ class MainActivity : ComponentActivity() {
 
         val settingsViewModel: SettingsViewModel by viewModels()
 
-        NavHost(navController, MainRout.HOME.route) {
+        NavHost(navController, MainRout.INSULIN.route) {
             composable(MainRout.HOME.route) { Home(navController) }
             composable(MainRout.SETTINGS.route) {
                 Settings(
@@ -68,6 +69,7 @@ class MainActivity : ComponentActivity() {
                     settingsViewModel
                 )
             }
+            composable(MainRout.INSULIN.route) { InsulinTakingScreen() }
         }
     }
 }
