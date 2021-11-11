@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.pchpsky.diary.screens.record.insulin.RecordInsulinViewState
 import com.pchpsky.diary.screens.record.insulin.interfacies.RecordInsulinRepository
 import com.pchpsky.diary.screens.record.insulin.interfacies.RecordInsulinViewModel
-
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,15 +19,25 @@ class RecordViewModel @Inject constructor(
 
     override fun incrementPoints() {
         val points = _uiState.value.points
+        if (points == 100.0) return
         _uiState.value = _uiState.value.copy(points = points + 1)
     }
 
     override fun decrementPoints() {
         val points = _uiState.value.points
+        if (points == 1.0) return
         _uiState.value = _uiState.value.copy(points = points - 1)
     }
 
     override fun setPoints(points: Double) {
+        if (points == 1.0 || points == 100.0) return
         _uiState.value = _uiState.value.copy(points = points)
     }
+}
+
+val FakeRecordInsulinViewModel = object : RecordInsulinViewModel {
+    override val uiState: StateFlow<RecordInsulinViewState> = MutableStateFlow(RecordInsulinViewState())
+    override fun decrementPoints() {}
+    override fun incrementPoints() {}
+    override fun setPoints(points: Double) {}
 }
