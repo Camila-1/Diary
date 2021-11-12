@@ -2,7 +2,6 @@ package com.pchpsky.diary.screens.record.insulin.ui
 
 
 import android.annotation.SuppressLint
-import android.view.MotionEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,11 +17,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -32,11 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.pchpsky.diary.components.DiarySnackbar
 import com.pchpsky.diary.components.RecordInsulinTopBar
 import com.pchpsky.diary.screens.record.FakeRecordInsulinViewModel
 import com.pchpsky.diary.screens.record.RecordViewModel
 import com.pchpsky.diary.screens.record.insulin.interfacies.RecordInsulinViewModel
 import com.pchpsky.diary.theme.DiaryTheme
+import com.pchpsky.diary.theme.blue
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
@@ -59,7 +58,10 @@ fun RecordInsulinScreen(
         scaffoldState = scaffoldState,
         snackbarHost = { SnackbarHost(
             hostState = it,
-            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp)
+            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp),
+            snackbar = {
+                DiarySnackbar(it, blue, Modifier.padding(vertical = 10.dp, horizontal = 15.dp))
+            }
         ) },
         topBar = {
             RecordInsulinTopBar {

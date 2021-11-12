@@ -11,14 +11,16 @@ val shapes = DiaryShapes(
     roundedButton = RoundedCornerShape(50),
     roundedCard = AbsoluteRoundedCornerShape(8.dp),
     roundedTextField = RoundedCornerShape(8),
-    navigationDrawer = CutCornerShape(0.dp)
+    navigationDrawer = CutCornerShape(0.dp),
+    snackbar = AbsoluteRoundedCornerShape(4.dp)
 )
 
 data class DiaryShapes(
     val roundedButton: Shape,
     val roundedCard: Shape,
     val roundedTextField: Shape,
-    val navigationDrawer: Shape
+    val navigationDrawer: Shape,
+    val snackbar: Shape
     )
 
 
