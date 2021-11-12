@@ -2,6 +2,7 @@ package com.pchpsky.diary.components
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -11,11 +12,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.pchpsky.diary.R
 import com.pchpsky.diary.theme.DiaryTheme
+import com.pchpsky.diary.theme.blue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun TopBar(scope: CoroutineScope, scaffoldState: ScaffoldState) {
+fun HomeTopBar(scope: CoroutineScope, scaffoldState: ScaffoldState) {
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name), fontSize = 18.sp) },
         navigationIcon = {
@@ -32,10 +34,60 @@ fun TopBar(scope: CoroutineScope, scaffoldState: ScaffoldState) {
     )
 }
 
+@Composable
+fun RecordInsulinTopBar(onBackClick: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = "Record Insulin", fontSize = 18.sp) },
+        navigationIcon = {
+            IconButton(onClick = {
+                onBackClick()
+            }) {
+                Icon(Icons.Filled.ArrowBack, "")
+            }
+        },
+        backgroundColor = blue,
+        contentColor = Color.White
+    )
+}
+
+@Composable
+fun SettingsTopBar(onBackClick: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = "Settings", fontSize = 18.sp) },
+        navigationIcon = {
+            IconButton(onClick = {
+                onBackClick()
+            }) {
+                Icon(Icons.Filled.ArrowBack, "")
+            }
+        },
+        backgroundColor = Color.Magenta,
+        contentColor = Color.White
+    )
+}
+
 @Preview(showBackground = false)
 @Composable
-fun TopBarPreview() {
+fun HomeTopBarPreview() {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
-    TopBar(scope = scope, scaffoldState = scaffoldState)
+    DiaryTheme {
+        HomeTopBar(scope = scope, scaffoldState = scaffoldState)
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun RecordInsulinTopBarPreview() {
+    DiaryTheme {
+        RecordInsulinTopBar {}
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun SettingsTopBarPreview() {
+    DiaryTheme {
+        SettingsTopBar {}
+    }
 }

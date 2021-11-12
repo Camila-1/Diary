@@ -24,7 +24,8 @@ import kotlinx.coroutines.launch
 fun Drawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: NavController) {
     val items = listOf(
         NavDrawerItem.Home,
-        NavDrawerItem.Settings
+        NavDrawerItem.Settings,
+        NavDrawerItem.RecordInsulin
     )
 
     Column(
@@ -68,5 +69,7 @@ fun DrawerPreview() {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Closed))
     val navController = rememberNavController()
-    Drawer(scope = scope, scaffoldState = scaffoldState, navController = navController)
+    DiaryTheme {
+        Drawer(scope = scope, scaffoldState = scaffoldState, navController = navController)
+    }
 }

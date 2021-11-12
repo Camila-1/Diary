@@ -40,7 +40,7 @@ import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 
 @ExperimentalComposeUiApi
 @Composable
-fun InsulinTakingScreen(viewModel: RecordInsulinViewModel = hiltViewModel<RecordViewModel>()) {
+fun RecordInsulinScreen(viewModel: RecordInsulinViewModel = hiltViewModel<RecordViewModel>()) {
 
     val viewState by viewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
@@ -183,6 +183,6 @@ fun PointsTextField(points: Double, setPoints: (Double) -> Unit) {
 @Preview
 fun InsulinScreenPreview() {
     DiaryTheme {
-        InsulinTakingScreen(FakeRecordInsulinViewModel)
+        RecordInsulinScreen(FakeRecordInsulinViewModel)
     }
 }
