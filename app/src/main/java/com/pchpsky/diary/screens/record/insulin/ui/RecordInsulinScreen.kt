@@ -2,6 +2,7 @@ package com.pchpsky.diary.screens.record.insulin.ui
 
 
 import android.annotation.SuppressLint
+import android.view.MotionEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -9,20 +10,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.RemoveCircle
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -30,6 +30,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.pchpsky.diary.components.RecordInsulinTopBar
 import com.pchpsky.diary.screens.record.FakeRecordInsulinViewModel
 import com.pchpsky.diary.screens.record.RecordViewModel
 import com.pchpsky.diary.screens.record.insulin.interfacies.RecordInsulinViewModel
@@ -37,47 +40,73 @@ import com.pchpsky.diary.theme.DiaryTheme
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalComposeUiApi
 @Composable
-fun RecordInsulinScreen(viewModel: RecordInsulinViewModel = hiltViewModel<RecordViewModel>()) {
+fun RecordInsulinScreen(
+    navController: NavController,
+    viewModel: RecordInsulinViewModel = hiltViewModel<RecordViewModel>()
+) {
 
     val viewState by viewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .background(DiaryTheme.colors.background)
-            .fillMaxSize()
-            .clickable (
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() }
-            ) {focusManager.clearFocus(true) },
-
-
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+    Scaffold(
+        scaffoldState = scaffoldState,
+        snackbarHost = { SnackbarHost(
+            hostState = it,
+            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp)
+        ) },
+        topBar = {
+            RecordInsulinTopBar {
+                navController.popBackStack()
+            }
+        }
     ) {
-        Points(
-            points = viewState.points,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            increment = { viewModel.incrementPoints() },
-            decrement = {
-                viewModel.decrementPoints()
-                        },
-            setPoints = { points -> viewModel.setPoints(points) }
-        )
-    }
+        Column(
+            modifier = Modifier
+                .background(DiaryTheme.colors.background)
+                .fillMaxSize()
+                .clickable (
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {focusManager.clearFocus(true) },
 
+
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            Points(
+                points = viewState.points.toString(),
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                increment = { viewModel.incrementPoints() },
+                decrement = {
+                    viewModel.decrementPoints()
+                },
+                setPoints = { points -> viewModel.setPoints(points) }
+            )
+        }
+
+        if (viewState.pointsInputError.isNotEmpty()) {
+            scope.launch {
+                scaffoldState.snackbarHostState.showSnackbar(viewState.pointsInputError)
+            }
+        }
+    }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @ExperimentalComposeUiApi
 @Composable
 fun Points(
-    points: Double,
+    points: String,
     modifier: Modifier,
     increment: () -> Unit,
     decrement: () -> Unit,
-    setPoints: (Double) -> Unit
+    setPoints: (String) -> Unit
 ) {
 
     Row(
@@ -88,8 +117,8 @@ fun Points(
     ) {
 
         PointsTextField(
-            points = points,
-            setPoints = { points -> setPoints(points) }
+            points = mutableStateOf(points),
+            setPoints = { points -> setPoints(points.toString()) }
         )
 
         Column(
@@ -144,24 +173,25 @@ fun TimePicker(show: Boolean) {
 
 @ExperimentalComposeUiApi
 @Composable
-fun PointsTextField(points: Double, setPoints: (Double) -> Unit) {
+fun PointsTextField(points: MutableState<String>, setPoints: (String) -> Unit) {
 
-    var value = points
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
 
     BasicTextField(
-        value = value.toString(),
+        value = points.value,
         onValueChange = {
-            value = it.toDouble()
+            points.value = it
                         },
         textStyle = DiaryTheme.typography.insulinPoints,
         modifier = Modifier
-            .width(IntrinsicSize.Min)
+            .width(250.dp)
             .height(IntrinsicSize.Min)
-            .padding(0.dp)
+            .padding(horizontal = 10.dp)
             .onFocusChanged {
-                if (!it.hasFocus) setPoints(value)
-                            },
+                if (!it.isCaptured) {
+                    setPoints(points.value)
+                } },
         decorationBox = {
             it()
         },
@@ -171,9 +201,18 @@ fun PointsTextField(points: Double, setPoints: (Double) -> Unit) {
         ),
         keyboardActions = KeyboardActions(
             onDone = {
-                setPoints(value)
+                setPoints(points.value)
                 keyboardController?.hide()
+                focusManager.clearFocus()
             }
+        ),
+        cursorBrush = Brush.verticalGradient(
+            0.00f to Color.Transparent,
+            0.27f to Color.Transparent,
+            0.27f to Color.White,
+            0.80f to Color.White,
+            0.80f to Color.Transparent,
+            1.00f to Color.Transparent
         )
     )
 }
@@ -183,6 +222,6 @@ fun PointsTextField(points: Double, setPoints: (Double) -> Unit) {
 @Preview
 fun InsulinScreenPreview() {
     DiaryTheme {
-        RecordInsulinScreen(FakeRecordInsulinViewModel)
+        RecordInsulinScreen(rememberNavController(), FakeRecordInsulinViewModel)
     }
 }

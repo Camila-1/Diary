@@ -7,5 +7,5 @@ interface RecordInsulinViewModel {
     val uiState: StateFlow<RecordInsulinViewState>
     fun incrementPoints()
     fun decrementPoints()
-    fun setPoints(points: Double)
+    fun setPoints(points: String)
 }

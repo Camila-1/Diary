@@ -13,7 +13,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.components.HomeTopBar
-import com.pchpsky.diary.components.RecordInsulinTopBar
 import com.pchpsky.diary.components.SettingsTopBar
 import com.pchpsky.diary.components.drawer.Drawer
 import com.pchpsky.diary.navigation.MainRout
@@ -89,15 +88,7 @@ class MainActivity : ComponentActivity() {
 
             }
             composable(MainRout.INSULIN.route) {
-                Scaffold(
-                    topBar = {
-                        RecordInsulinTopBar {
-                            navController.popBackStack()
-                        }
-                    }
-                ) {
-                    RecordInsulinScreen()
-                }
+                RecordInsulinScreen(navController)
             }
         }
     }
