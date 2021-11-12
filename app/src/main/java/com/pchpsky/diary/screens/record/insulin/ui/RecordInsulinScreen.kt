@@ -56,13 +56,15 @@ fun RecordInsulinScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        snackbarHost = { SnackbarHost(
-            hostState = it,
-            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp),
-            snackbar = {
-                DiarySnackbar(it, blue, Modifier.padding(vertical = 10.dp, horizontal = 15.dp))
-            }
-        ) },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = it,
+                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp),
+                snackbar = {
+                    DiarySnackbar(it, blue, Modifier.padding(vertical = 10.dp, horizontal = 15.dp))
+                }
+            )
+        },
         topBar = {
             RecordInsulinTopBar {
                 navController.popBackStack()
@@ -73,10 +75,10 @@ fun RecordInsulinScreen(
             modifier = Modifier
                 .background(DiaryTheme.colors.background)
                 .fillMaxSize()
-                .clickable (
+                .clickable(
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
-                ) {focusManager.clearFocus(true) },
+                ) { focusManager.clearFocus(true) },
 
 
             verticalArrangement = Arrangement.spacedBy(20.dp)
@@ -184,7 +186,7 @@ fun PointsTextField(points: MutableState<String>, setPoints: (String) -> Unit) {
         value = points.value,
         onValueChange = {
             points.value = it
-                        },
+        },
         textStyle = DiaryTheme.typography.insulinPoints,
         modifier = Modifier
             .width(250.dp)
@@ -193,7 +195,8 @@ fun PointsTextField(points: MutableState<String>, setPoints: (String) -> Unit) {
             .onFocusChanged {
                 if (!it.isCaptured) {
                     setPoints(points.value)
-                } },
+                }
+            },
         decorationBox = {
             it()
         },

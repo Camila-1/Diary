@@ -61,7 +61,7 @@ fun SettingsTopBar(onBackClick: () -> Unit) {
                 Icon(Icons.Filled.ArrowBack, "")
             }
         },
-        backgroundColor = Color.Magenta,
+        backgroundColor = DiaryTheme.colors.settingsTopBar,
         contentColor = Color.White
     )
 }
