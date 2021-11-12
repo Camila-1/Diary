@@ -92,8 +92,17 @@ fun Settings(
         }
     }
 
-    ProgressBar(viewState.loading)
-    Screen()
+
+
+    Scaffold(
+        topBar = { SettingsTopBar {
+            navController.popBackStack()
+        } }
+    ) {
+        ProgressBar(viewState.loading)
+        Screen()
+    }
+
 
     AddInsulinDialog(
         dialogState = viewState.addInsulinDialogStateState,

@@ -32,25 +32,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             DiaryTheme {
-                Surface {
-                    val scaffoldState =
-                        rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
-                    val scope = rememberCoroutineScope()
-
-                    val navController = rememberNavController()
-
-                    Scaffold(
-                        scaffoldState = scaffoldState,
-                        content = { MainNavHost(navController) },
-                        drawerContent = {
-                            Drawer(
-                                scope = scope,
-                                scaffoldState = scaffoldState,
-                                navController = navController
-                            )
-                        }
-                    )
-                }
+                val navController = rememberNavController()
+                MainNavHost(navController)
             }
         }
     }
@@ -68,24 +51,21 @@ class MainActivity : ComponentActivity() {
                 val scope = rememberCoroutineScope()
 
                 Scaffold(
-                    topBar = { HomeTopBar(scope, scaffoldState) }
+                    topBar = { HomeTopBar(scope, scaffoldState) },
+                    drawerContent = {
+                        Drawer(
+                            scope = scope,
+                            scaffoldState = scaffoldState,
+                            navController = navController
+                        )
+                    }
                 ) {
                     Home(navController)
                 }
 
             }
             composable(MainRout.SETTINGS.route) {
-                Scaffold(
-                    topBar = { SettingsTopBar {
-                        navController.popBackStack()
-                    } }
-                ) {
-                    Settings(
-                        navController,
-                        settingsViewModel
-                    )
-                }
-
+                Settings(navController, settingsViewModel)
             }
             composable(MainRout.INSULIN.route) {
                 RecordInsulinScreen(navController)
