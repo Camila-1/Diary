@@ -13,6 +13,7 @@ val errorRed = Color(0xffb71c1c)
 val yellow = Color(0xffffff00)
 val cardBackground = Color(0xff333333)
 val pink = Color(0xff841111)
+val orange = Color(0xffe65100)
 
 val DarkColors = DiaryColors(
     logo = Color.White,
@@ -29,7 +30,8 @@ val DarkColors = DiaryColors(
     focusedInputFieldLabel = blue,
     cardBackground = cardBackground,
     divider = Color.Gray,
-    settingsTopBar = pink
+    settingsTopBar = pink,
+    recordGlucoseTopBar = orange
 )
 
 val LightColors = DiaryColors(
@@ -47,7 +49,8 @@ val LightColors = DiaryColors(
     focusedInputFieldLabel = blue,
     cardBackground = cardBackground,
     divider = Color.Black,
-    settingsTopBar = pink
+    settingsTopBar = pink,
+    recordGlucoseTopBar = orange
 )
 
 data class DiaryColors(
@@ -65,7 +68,8 @@ data class DiaryColors(
     val focusedInputFieldLabel: Color,
     val cardBackground: Color,
     val divider: Color,
-    val settingsTopBar: Color
+    val settingsTopBar: Color,
+    val recordGlucoseTopBar: Color
     )
 
 

@@ -13,10 +13,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.components.HomeTopBar
-import com.pchpsky.diary.components.SettingsTopBar
 import com.pchpsky.diary.components.drawer.Drawer
 import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.home.Home
+import com.pchpsky.diary.screens.record.glucose.ui.RecordGlucoseScreen
 import com.pchpsky.diary.screens.record.insulin.ui.RecordInsulinScreen
 import com.pchpsky.diary.screens.settings.SettingsViewModel
 import com.pchpsky.diary.screens.settings.ui.Settings
@@ -69,6 +69,9 @@ class MainActivity : ComponentActivity() {
             }
             composable(MainRout.INSULIN.route) {
                 RecordInsulinScreen(navController)
+            }
+            composable(MainRout.RECORD_GLUCOSE.route) {
+                RecordGlucoseScreen(navController)
             }
         }
     }

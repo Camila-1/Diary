@@ -83,20 +83,20 @@ fun RecordInsulinScreen(
 
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Points(
-                points = viewState.points.toString(),
+            Units(
+                units = viewState.units.toString(),
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                increment = { viewModel.incrementPoints() },
+                increment = { viewModel.incrementUnits() },
                 decrement = {
-                    viewModel.decrementPoints()
+                    viewModel.decrementUnits()
                 },
-                setPoints = { points -> viewModel.setPoints(points) }
+                setUnits = { units -> viewModel.setUnits(units) }
             )
         }
 
-        if (viewState.pointsInputError.isNotEmpty()) {
+        if (viewState.unitsInputError.isNotEmpty()) {
             scope.launch {
-                scaffoldState.snackbarHostState.showSnackbar(viewState.pointsInputError)
+                scaffoldState.snackbarHostState.showSnackbar(viewState.unitsInputError)
             }
         }
     }
@@ -105,12 +105,12 @@ fun RecordInsulinScreen(
 @SuppressLint("UnrememberedMutableState")
 @ExperimentalComposeUiApi
 @Composable
-fun Points(
-    points: String,
+fun Units(
+    units: String,
     modifier: Modifier,
     increment: () -> Unit,
     decrement: () -> Unit,
-    setPoints: (String) -> Unit
+    setUnits: (String) -> Unit
 ) {
 
     Row(
@@ -121,8 +121,8 @@ fun Points(
     ) {
 
         PointsTextField(
-            points = mutableStateOf(points),
-            setPoints = { points -> setPoints(points.toString()) }
+            units = mutableStateOf(units),
+            setUnits = { points -> setUnits(points.toString()) }
         )
 
         Column(
@@ -177,24 +177,24 @@ fun TimePicker(show: Boolean) {
 
 @ExperimentalComposeUiApi
 @Composable
-fun PointsTextField(points: MutableState<String>, setPoints: (String) -> Unit) {
+fun PointsTextField(units: MutableState<String>, setUnits: (String) -> Unit) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
     BasicTextField(
-        value = points.value,
+        value = units.value,
         onValueChange = {
-            points.value = it
+            units.value = it
         },
-        textStyle = DiaryTheme.typography.insulinPoints,
+        textStyle = DiaryTheme.typography.insulinUnits,
         modifier = Modifier
             .width(250.dp)
             .height(IntrinsicSize.Min)
             .padding(horizontal = 10.dp)
             .onFocusChanged {
                 if (!it.isCaptured) {
-                    setPoints(points.value)
+                    setUnits(units.value)
                 }
             },
         decorationBox = {
@@ -206,7 +206,7 @@ fun PointsTextField(points: MutableState<String>, setPoints: (String) -> Unit) {
         ),
         keyboardActions = KeyboardActions(
             onDone = {
-                setPoints(points.value)
+                setUnits(units.value)
                 keyboardController?.hide()
                 focusManager.clearFocus()
             }

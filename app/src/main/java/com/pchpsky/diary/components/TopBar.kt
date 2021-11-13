@@ -51,6 +51,22 @@ fun RecordInsulinTopBar(onBackClick: () -> Unit) {
 }
 
 @Composable
+fun RecordGlucoseTopBar(onBackClick: () -> Unit) {
+    TopAppBar(
+        title = { Text(text = "Record Glucose", fontSize = 18.sp) },
+        navigationIcon = {
+            IconButton(onClick = {
+                onBackClick()
+            }) {
+                Icon(Icons.Filled.ArrowBack, "")
+            }
+        },
+        backgroundColor = DiaryTheme.colors.recordGlucoseTopBar,
+        contentColor = Color.White
+    )
+}
+
+@Composable
 fun SettingsTopBar(onBackClick: () -> Unit) {
     TopAppBar(
         title = { Text(text = "Settings", fontSize = 18.sp) },
@@ -89,5 +105,13 @@ fun RecordInsulinTopBarPreview() {
 fun SettingsTopBarPreview() {
     DiaryTheme {
         SettingsTopBar {}
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun RecordGlucoseTopBarPreview() {
+    DiaryTheme {
+        RecordGlucoseTopBar {}
     }
 }

@@ -18,29 +18,29 @@ class RecordViewModel @Inject constructor(
     private var _uiState = MutableStateFlow(RecordInsulinViewState())
     override val uiState: StateFlow<RecordInsulinViewState> = _uiState
 
-    override fun incrementPoints() {
-        val points = _uiState.value.points
+    override fun incrementUnits() {
+        val points = _uiState.value.units
         if (points == 100.0) return
-        _uiState.value = _uiState.value.copy(points = points + 1)
+        _uiState.value = _uiState.value.copy(units = points + 1)
     }
 
-    override fun decrementPoints() {
-        val points = _uiState.value.points
+    override fun decrementUnits() {
+        val points = _uiState.value.units
         if (points == 1.0) return
-        _uiState.value = _uiState.value.copy(points = points - 1)
+        _uiState.value = _uiState.value.copy(units = points - 1)
     }
 
-    override fun setPoints(points: String) {
+    override fun setUnits(points: String) {
         val value = points.toValidDouble()
-        if (value == null) _uiState.value = _uiState.value.copy(pointsInputError = "Points value is invalid")
+        if (value == null) _uiState.value = _uiState.value.copy(unitsInputError = "Units value is invalid")
         else if (value <= 0.0 || value >= 100.0) return
-        else _uiState.value = _uiState.value.copy(points = value, pointsInputError = "")
+        else _uiState.value = _uiState.value.copy(units = value, unitsInputError = "")
     }
 }
 
 val FakeRecordInsulinViewModel = object : RecordInsulinViewModel {
     override val uiState: StateFlow<RecordInsulinViewState> = MutableStateFlow(RecordInsulinViewState())
-    override fun decrementPoints() {}
-    override fun incrementPoints() {}
-    override fun setPoints(points: String) {}
+    override fun decrementUnits() {}
+    override fun incrementUnits() {}
+    override fun setUnits(points: String) {}
 }

@@ -25,7 +25,8 @@ fun Drawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: N
     val items = listOf(
         NavDrawerItem.Home,
         NavDrawerItem.Settings,
-        NavDrawerItem.RecordInsulin
+        NavDrawerItem.RecordInsulin,
+        NavDrawerItem.RecordGlucose
     )
 
     Column(
