@@ -26,11 +26,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.components.DiarySnackbar
+import com.pchpsky.diary.components.InsulinEntry
 import com.pchpsky.diary.components.RecordInsulinTopBar
+import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.screens.record.FakeRecordInsulinViewModel
 import com.pchpsky.diary.screens.record.RecordViewModel
 import com.pchpsky.diary.screens.record.insulin.interfacies.RecordInsulinViewModel
@@ -81,7 +84,8 @@ fun RecordInsulinScreen(
                 ) { focusManager.clearFocus(true) },
 
 
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Units(
                 units = viewState.units.toString(),
@@ -91,6 +95,13 @@ fun RecordInsulinScreen(
                     viewModel.decrementUnits()
                 },
                 setUnits = { units -> viewModel.setUnits(units) }
+            )
+
+            SelectInsulin(
+                insulins = viewState.insulins,
+                show = true,
+                select = {},
+                dismiss = {}
             )
         }
 
@@ -120,7 +131,7 @@ fun Units(
             .padding(vertical = 20.dp)
     ) {
 
-        PointsTextField(
+        UnitsInputTextField(
             units = mutableStateOf(units),
             setUnits = { points -> setUnits(points.toString()) }
         )
@@ -144,6 +155,39 @@ fun Units(
                     modifier = Modifier.size(36.dp),
                     tint = Color.White
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun SelectInsulin(
+    insulins: List<Insulin>,
+    show: Boolean,
+    select: (Insulin) -> Unit,
+    dismiss: () -> Unit
+) {
+
+
+    DropdownMenu(
+        expanded = show,
+        onDismissRequest = {},
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .background(DiaryTheme.colors.secondary)
+            .padding(20.dp),
+        properties = PopupProperties(focusable = true)
+    ) {
+        insulins.forEach {
+            DropdownMenuItem(
+                onClick = {
+                    select(it)
+                    dismiss()
+                },
+                modifier = Modifier
+            ) {
+                InsulinEntry(it, {}, {})
             }
         }
     }
@@ -177,7 +221,7 @@ fun TimePicker(show: Boolean) {
 
 @ExperimentalComposeUiApi
 @Composable
-fun PointsTextField(units: MutableState<String>, setUnits: (String) -> Unit) {
+fun UnitsInputTextField(units: MutableState<String>, setUnits: (String) -> Unit) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
