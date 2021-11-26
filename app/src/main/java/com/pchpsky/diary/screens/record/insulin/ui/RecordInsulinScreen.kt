@@ -31,7 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.components.DiarySnackbar
-import com.pchpsky.diary.components.InsulinEntry
+import com.pchpsky.diary.components.InsulinColorCircle
 import com.pchpsky.diary.components.RecordInsulinTopBar
 import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.screens.record.FakeRecordInsulinViewModel
@@ -56,6 +56,10 @@ fun RecordInsulinScreen(
     val focusManager = LocalFocusManager.current
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(true) {
+        viewModel.insulins()
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -97,11 +101,13 @@ fun RecordInsulinScreen(
                 setUnits = { units -> viewModel.setUnits(units) }
             )
 
-            SelectInsulin(
+            InsulinDropDownMenu(
+                selectedInsulin = viewState.selectedInsulin,
                 insulins = viewState.insulins,
-                show = true,
-                select = {},
-                dismiss = {}
+                show = viewState.dropDownInsulinMenu,
+                onClick = { viewModel.dropInsulinMenu(true) },
+                select = { viewModel.selectInsulin(it) },
+                dismiss = { viewModel.dropInsulinMenu(false) }
             )
         }
 
@@ -161,35 +167,78 @@ fun Units(
 }
 
 @Composable
-fun SelectInsulin(
+fun InsulinDropDownMenu(
+    selectedInsulin: Insulin?,
     insulins: List<Insulin>,
     show: Boolean,
+    onClick: () -> Unit,
     select: (Insulin) -> Unit,
     dismiss: () -> Unit
 ) {
 
-
-    DropdownMenu(
-        expanded = show,
-        onDismissRequest = {},
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .background(DiaryTheme.colors.secondary)
-            .padding(20.dp),
-        properties = PopupProperties(focusable = true)
-    ) {
-        insulins.forEach {
-            DropdownMenuItem(
-                onClick = {
-                    select(it)
-                    dismiss()
-                },
-                modifier = Modifier
+    Box {
+        if (selectedInsulin != null) {
+            Row(
+                modifier =Modifier
+                    .clickable { onClick() }
             ) {
-                InsulinEntry(it, {}, {})
+                InsulinColorCircle(
+                    color = Color(android.graphics.Color.parseColor(selectedInsulin?.color)),
+                    modifier = Modifier
+                        .align(Alignment.Bottom)
+                )
+
+                Text(
+                    text = selectedInsulin?.name ?: "",
+                    style = DiaryTheme.typography.body,
+                    color = Color.White
+                )
+
+            }
+
+        }
+
+        DropdownMenu(
+            expanded = show,
+            onDismissRequest = { dismiss() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(5.dp),
+            properties = PopupProperties(focusable = true)
+        ) {
+            insulins.forEach {
+                DropdownMenuItem(
+                    onClick = {
+                        select(it)
+                        dismiss()
+                    },
+                    modifier = Modifier
+                ) {
+                    InsulinMenuItem(insulin = it)
+                }
             }
         }
+    }
+
+
+}
+
+@Composable
+fun InsulinMenuItem(insulin: Insulin) {
+    
+    Row {
+        InsulinColorCircle(
+            color = Color(android.graphics.Color.parseColor(insulin.color)),
+            modifier = Modifier
+                .align(Alignment.Bottom)
+        )
+        
+        Text(
+            text = insulin.name,
+            style = DiaryTheme.typography.body
+        )
+
     }
 }
 

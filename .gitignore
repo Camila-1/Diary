@@ -76,5 +76,5 @@ lint/tmp/
 /app/app.iml
 CuteTaxi/local.properties
 api_keys.xml
-google-services.json
+app/google-services.json
 /secrets.gradle

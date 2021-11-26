@@ -33,12 +33,12 @@ fun StartScreen(
 
             RoundedFilledButton(
                 stringResource(R.string.login),
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth(),
                 color = lightGreen,
                 onClick = { navController.navigate(AuthRoute.LOGIN.route) })
             RoundedFilledButton(
                 text = stringResource(R.string.sign_up),
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth(),
                 color = green,
                 onClick = { navController.navigate(AuthRoute.SIGNUP.route) })
         }

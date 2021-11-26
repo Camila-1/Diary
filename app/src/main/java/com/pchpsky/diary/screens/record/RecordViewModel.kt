@@ -1,6 +1,8 @@
 package com.pchpsky.diary.screens.record
 
 import androidx.lifecycle.ViewModel
+import com.pchpsky.diary.datasource.network.model.Insulin
+import com.pchpsky.diary.extensions.insulins
 import com.pchpsky.diary.extensions.toValidDouble
 import com.pchpsky.diary.screens.record.insulin.RecordInsulinViewState
 import com.pchpsky.diary.screens.record.insulin.interfacies.RecordInsulinRepository
@@ -36,6 +38,24 @@ class RecordViewModel @Inject constructor(
         else if (value <= 0.0 || value >= 100.0) return
         else _uiState.value = _uiState.value.copy(units = value, unitsInputError = "")
     }
+
+    override suspend fun insulins() {
+        repository.insulins().fold(
+            ifLeft = {},
+            ifRight = {
+                val insulins = it.insulins()
+                _uiState.value = _uiState.value.copy(insulins = insulins!!, selectedInsulin = insulins.first())
+            }
+        )
+    }
+
+    override fun selectInsulin(insulin: Insulin) {
+        _uiState.value = _uiState.value.copy(dropDownInsulinMenu = false, selectedInsulin = insulin)
+    }
+
+    override fun dropInsulinMenu(drop: Boolean) {
+        _uiState.value = _uiState.value.copy(dropDownInsulinMenu = drop)
+    }
 }
 
 val FakeRecordInsulinViewModel = object : RecordInsulinViewModel {
@@ -43,4 +63,7 @@ val FakeRecordInsulinViewModel = object : RecordInsulinViewModel {
     override fun decrementUnits() {}
     override fun incrementUnits() {}
     override fun setUnits(points: String) {}
+    override suspend fun insulins() {}
+    override fun selectInsulin(insulin: Insulin) {}
+    override fun dropInsulinMenu(drop: Boolean) {}
 }
