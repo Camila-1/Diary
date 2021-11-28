@@ -1,20 +1,18 @@
 package com.pchpsky.diary.screens.auth
 
-import com.pchpsky.diary.datasourse.localstorage.DataStoreManager
-import com.pchpsky.diary.datasourse.network.NetworkClient
+import com.pchpsky.diary.datasource.localstorage.DataStoreManager
+import com.pchpsky.diary.datasource.network.NetworkClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
 
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 @Module
 class AuthModule {
 
-    @Singleton
     @Provides
     fun provideAuthRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): AuthRepository {
-        return AppAuthRepository(networkClient, dataStoreManager)
+        return AuthRepository(networkClient, dataStoreManager)
     }
 }

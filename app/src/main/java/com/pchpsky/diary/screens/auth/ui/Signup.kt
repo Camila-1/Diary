@@ -3,13 +3,13 @@ package com.pchpsky.diary.screens.auth.ui
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -17,21 +17,28 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.MainActivity
 import com.pchpsky.diary.R
-import com.pchpsky.diary.composables.AuthButton
-import com.pchpsky.diary.composables.ErrorMessage
-import com.pchpsky.diary.composables.TextField
+import com.pchpsky.diary.components.RoundedFilledButton
+import com.pchpsky.diary.components.OutlinedTextField
 import com.pchpsky.diary.screens.auth.*
-import com.pchpsky.diary.screens.theme.green
+import com.pchpsky.diary.screens.auth.interfaces.SignupViewModel
+import com.pchpsky.diary.theme.DiaryTheme
+import com.pchpsky.diary.theme.green
+import kotlinx.coroutines.launch
+
 
 @Composable
-fun SignUp(viewModel: AuthViewModel) {
+fun SignUp(viewModel: SignupViewModel) {
+
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("") }
     val uiState: AuthState by viewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
 
     fun errorMessageFor(key: String): String? {
         return if (uiState is AuthState.ValidationError)
@@ -44,33 +51,59 @@ fun SignUp(viewModel: AuthViewModel) {
         openHomeScreen(context)
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize().background(Color.Black),
-        contentAlignment = Alignment.Center
+    ConstraintLayout(
+        modifier = Modifier.fillMaxSize().imePadding().background(DiaryTheme.colors.background),
     ) {
+        val (column, button, signUpTitle) = createRefs()
+
+        Text(
+            text = stringResource(R.string.sign_up),
+            style = DiaryTheme.typography.authScreenHeader,
+            modifier = Modifier
+                .constrainAs(signUpTitle) {
+                    top.linkTo(parent.top, 40.dp)
+                    start.linkTo(parent.start, 40.dp)
+                },
+            color = DiaryTheme.colors.text
+        )
+
         Column(
-            modifier = Modifier.width(250.dp),
+            modifier = Modifier
+                .constrainAs(column) {
+                    top.linkTo(signUpTitle.bottom, 20.dp)
+                    start.linkTo(parent.start, 40.dp)
+                    end.linkTo(parent.end, 40.dp)
+                    width = Dimension.fillToConstraints
+                },
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(text = stringResource(R.string.sign_up), color = Color.White, fontSize = 40.sp)
             EmailTextField(email, errorMessageFor(FieldKey.EMAIL.key))
             PasswordTextField(password, errorMessageFor(FieldKey.PASSWORD.key))
             ConfirmPasswordTextField(confirmPassword, errorMessageFor(FieldKey.CONFIRM_PASSWORD.key))
+        }
 
-            AuthButton(
-                stringResource(R.string.submit),
-                onClick = {
-                    viewModel.createUser(email.value, password.value, confirmPassword.value)
+        RoundedFilledButton(
+            stringResource(R.string.submit),
+            modifier = Modifier
+                .constrainAs(button) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start, 40.dp)
+                    end.linkTo(parent.end, 40.dp)
+                    width = Dimension.fillToConstraints
                 },
-                color = green
-            )
+            color = green,
+        ) {
+            scope.launch {
+                viewModel.createUser(email.value, password.value, confirmPassword.value)
+            }
         }
     }
 }
 
 @Composable
 fun EmailTextField(email: MutableState<String>, errorMessage: String?) {
-    TextField(
+    OutlinedTextField(
         email,
         stringResource(R.string.email),
         errorMessage,
@@ -81,7 +114,7 @@ fun EmailTextField(email: MutableState<String>, errorMessage: String?) {
 
 @Composable
 fun PasswordTextField(password: MutableState<String>, errorMessage: String?) {
-    TextField(
+    OutlinedTextField(
         password,
         stringResource(R.string.password),
         errorMessage,
@@ -92,7 +125,7 @@ fun PasswordTextField(password: MutableState<String>, errorMessage: String?) {
 
 @Composable
 fun ConfirmPasswordTextField(confirmPassword: MutableState<String>, errorMessage: String?) {
-    TextField(
+    OutlinedTextField(
         confirmPassword,
         stringResource(R.string.confirm_password),
         errorMessage,
@@ -109,5 +142,7 @@ fun openHomeScreen(context: Context) {
 @Preview
 @Composable
 fun SignUpPreview() {
-    SignUp(FakeViewModel)
+    DiaryTheme(darkTheme = true) {
+        SignUp(FakeAuthViewModel)
+    }
 }

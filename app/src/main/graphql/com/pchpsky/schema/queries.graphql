@@ -5,8 +5,30 @@ query CurrentUser {
     }
 }
 
+query Settings {
+    settings {
+        bloodGlucoseUnits
+        insulins {
+            id
+            name
+            color
+        }
+    }
+}
+
+query Insulins {
+    settings {
+        insulins {
+            id
+            name
+            color
+        }
+    }
+}
+
 mutation CreateSession($email: String!, $password: String!) {
     session: createSession(email: $email, password: $password) {
+        token
         user {
             email
         }
@@ -19,5 +41,35 @@ mutation CreateUser($email: String!, $password: String!) {
         user {
             email
         }
+    }
+}
+
+mutation CreateInsulin($color: String!, $name: String!) {
+    insulin: createInsulin(input: {color: $color, name: $name}) {
+        id
+        color
+        name
+    }
+}
+
+mutation UpdateInsulin($id: ID!, $color: String!, $name: String!) {
+    insulin: updateInsulin(id: $id, input: {name: $name, color: $color}) {
+        id
+        color
+        name
+    }
+}
+
+mutation DeleteInsulin($id: ID!) {
+    insulin: deleteInsulin(id: $id) {
+        id
+        color
+        name
+    }
+}
+
+mutation UpdateSettings($settingsInput: SettingsInput!) {
+    settings: updateSettings(input: $settingsInput) {
+        bloodGlucoseUnits
     }
 }

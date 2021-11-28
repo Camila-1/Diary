@@ -1,19 +1,18 @@
 package com.pchpsky.diary.screens.launch
 
-import com.pchpsky.diary.datasourse.network.NetworkClient
+import com.pchpsky.diary.datasource.localstorage.DataStoreManager
+import com.pchpsky.diary.datasource.network.NetworkClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class LaunchModule {
 
-    @Singleton
     @Provides
-    fun provideLaunchRepository(networkClient: NetworkClient): LaunchRepository {
-        return AppLaunchRepository(networkClient)
+    fun provideLaunchRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): LaunchRepository {
+        return AppLaunchRepository(networkClient, dataStoreManager)
     }
 }

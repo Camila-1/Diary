@@ -1,5 +1,6 @@
 package com.pchpsky.diary.screens.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -11,19 +12,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
-fun Home() {
+fun Home(navController: NavController) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LoginButton("insulin", Color.Blue) {}
-        LoginButton("glucose", Color.Blue) {}
-        LoginButton("water", Color.Blue) {}
-        LoginButton("eating", Color.Blue) {}
-        LoginButton("sport", Color.Blue) {}
+        LoginButton("insulin", Color.Gray) {}
+        LoginButton("glucose", Color.Gray) {}
+        LoginButton("water", Color.Gray) {}
+        LoginButton("eating", Color.Gray) {}
+        LoginButton("sport", Color.Gray) {}
     }
 }
 
@@ -49,5 +53,5 @@ fun LoginButton(text: String, color: Color, onClick: () -> Unit) {
 @Composable
 @Preview
 fun HomePreview() {
-    Home()
+    Home(rememberNavController())
 }
