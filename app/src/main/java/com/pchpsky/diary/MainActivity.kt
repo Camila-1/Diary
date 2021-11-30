@@ -26,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @ExperimentalMaterialApi
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @ExperimentalMaterialApi
     @ExperimentalComposeUiApi
     @Composable
     fun MainNavHost(navController: NavHostController) {

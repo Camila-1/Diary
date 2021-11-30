@@ -1,5 +1,6 @@
 package com.pchpsky.diary.screens.record
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.extensions.insulins
@@ -10,6 +11,8 @@ import com.pchpsky.diary.screens.record.insulin.interfacies.RecordInsulinViewMod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,6 +43,7 @@ class RecordViewModel @Inject constructor(
     }
 
     override suspend fun insulins() {
+        Log.d("debugInsulin", "insulins")
         repository.insulins().fold(
             ifLeft = {},
             ifRight = {
@@ -56,6 +60,15 @@ class RecordViewModel @Inject constructor(
     override fun dropInsulinMenu(drop: Boolean) {
         _uiState.value = _uiState.value.copy(dropDownInsulinMenu = drop)
     }
+
+    override fun showTimePicker(show: Boolean) {
+        _uiState.value = _uiState.value.copy(showTimePicker = show)
+    }
+
+    override fun setTime(localTime: LocalTime) {
+        val time: String = localTime.format(DateTimeFormatter.ISO_TIME)
+        _uiState.value = _uiState.value.copy(time = time)
+    }
 }
 
 val FakeRecordInsulinViewModel = object : RecordInsulinViewModel {
@@ -66,4 +79,6 @@ val FakeRecordInsulinViewModel = object : RecordInsulinViewModel {
     override suspend fun insulins() {}
     override fun selectInsulin(insulin: Insulin) {}
     override fun dropInsulinMenu(drop: Boolean) {}
+    override fun showTimePicker(show: Boolean) {}
+    override fun setTime(localTime: LocalTime) {}
 }
