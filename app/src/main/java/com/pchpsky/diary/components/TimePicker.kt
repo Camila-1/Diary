@@ -39,8 +39,7 @@ fun TimePicker(show: Boolean, close: () -> Unit, selectTime: (LocalTime) -> Unit
                 .wrapContentSize()
         ) {
             timepicker(
-                title = "Select Injection Time",
-                is24HourClock = true
+                title = "Select Injection Time"
             ) {
                 selectedTime = it
             }
