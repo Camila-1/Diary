@@ -1,6 +1,7 @@
 package com.pchpsky.diary
 
 import arrow.core.Left
+import arrow.core.Right
 import com.apollographql.apollo.api.ApolloExperimental
 import com.apollographql.apollo.api.Error
 import com.apollographql.apollo.api.Response
@@ -18,16 +19,12 @@ class NetworkErrorHandlerTest {
 
     private val errorHandler = NetworkErrorHandler()
 
-    fun createError(attributes: Map<String, Any>): List<Error> = listOf(
+    private fun createError(attributes: Map<String, Any>): List<Error> = listOf(
         Error("Error", listOf(Error.Location(1L, 1L)), attributes)
     )
 
-    fun createFields(): Map<String, ArrayList<String>> {
-        return mapOf("fields" to arrayListOf())
-    }
-
     @ApolloExperimental
-    fun createResponse(errors: List<Error>): Response<Any> =
+    private fun createResponse(errors: List<Error>): Response<Any> =
         Response<Any>(Response.builder(CurrentUserQuery())).copy(errors = errors)
 
     private fun errorHandlerResult(response: Response<Any>) =
@@ -57,7 +54,7 @@ class NetworkErrorHandlerTest {
     @ApolloExperimental
     @Test
     fun withErrorHandler_WhenError422_ReturnsLeftValidationError() {
-        val error422 = createError(mapOf("code" to 422, "fields" to mapOf<String, ArrayList<String>>()))
+        val error422 = createError(mapOf("code" to 422, "fields" to mapOf("test" to arrayListOf("error"))))
         val response = Response<Any>(Response.builder(CurrentUserQuery()))
             .copy(
                 errors = error422,
@@ -65,7 +62,18 @@ class NetworkErrorHandlerTest {
             )
         val withErrorHandlerResult = errorHandlerResult(response)
 
-        assertEquals(Left(NetworkError.ValidationError(mapOf())), withErrorHandlerResult)
+        assertEquals(Left(NetworkError.ValidationError(mapOf("test" to arrayListOf("error")))), withErrorHandlerResult)
     }
 
+    @ApolloExperimental
+    @Test
+    fun withErrorHandler_RequestSuccess_ReturnsRightWithData() {
+
+        val response = Response<Any>(Response.builder(CurrentUserQuery()))
+            .copy(data = CurrentUserQuery.Data)
+
+        val withErrorHandlerResult = errorHandlerResult(response)
+
+        assertEquals(Right(CurrentUserQuery.Data), withErrorHandlerResult)
+    }
 }
