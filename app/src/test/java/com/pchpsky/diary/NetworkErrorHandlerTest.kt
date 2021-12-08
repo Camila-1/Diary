@@ -9,7 +9,9 @@ import com.pchpsky.diary.exceptions.NetworkError
 import com.pchpsky.diary.exceptions.handlers.NetworkErrorHandler
 import com.pchpsky.schema.CurrentUserQuery
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.sql.Struct
