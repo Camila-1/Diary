@@ -24,21 +24,21 @@ class RecordViewModel @Inject constructor(
     override val uiState: StateFlow<RecordInsulinViewState> = _uiState
 
     override fun incrementUnits() {
-        val points = _uiState.value.units
-        if (points == 100.0) return
-        _uiState.value = _uiState.value.copy(units = points + 1)
+        val units = _uiState.value.units
+        if (units == 100.0) return
+        _uiState.value = _uiState.value.copy(units = units + 1)
     }
 
     override fun decrementUnits() {
-        val points = _uiState.value.units
-        if (points == 1.0) return
-        _uiState.value = _uiState.value.copy(units = points - 1)
+        val units = _uiState.value.units
+        if (units == 1.0) return
+        _uiState.value = _uiState.value.copy(units = units - 1)
     }
 
-    override fun setUnits(points: String) {
-        val value = points.toValidDouble()
+    override fun setUnits(units: String) {
+        val value = units.toValidDouble()
         if (value == null) _uiState.value = _uiState.value.copy(unitsInputError = "Units value is invalid")
-        else if (value <= 0.0 || value >= 100.0) return
+        else if (value < 1.0 || value > 100.0) return
         else _uiState.value = _uiState.value.copy(units = value, unitsInputError = "")
     }
 
