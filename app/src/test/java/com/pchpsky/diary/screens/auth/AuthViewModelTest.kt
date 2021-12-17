@@ -41,7 +41,7 @@ class AuthViewModelTest {
     }
 
     @Test
-    fun createUser_CreateUserRequest_UserSignedUp() = runBlocking{
+    fun createUser_CreateUserRequest_UserSignedUp() = runBlocking {
         val repository = repository(Right(CreateUserMutation.Data(session = null)))
         val viewModel = AuthViewModel(repository)
         val state = viewModel.uiState

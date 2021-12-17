@@ -6,7 +6,7 @@ import com.pchpsky.diary.screens.auth.AuthRepository
 import com.pchpsky.diary.screens.auth.interfaces.AuthController
 import com.pchpsky.diary.screens.record.RecordRepository
 import com.pchpsky.diary.screens.record.insulin.interfacies.RecordInsulinRepository
-import com.pchpsky.diary.screens.settings.SettingsRepository
+import com.pchpsky.diary.screens.settings.UserSettingsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,8 +19,8 @@ class RepositoriesModule {
 
     @Provides
     @ViewModelScoped
-    fun provideSettingsRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): SettingsRepository {
-        return SettingsRepository(networkClient, dataStoreManager)
+    fun provideSettingsRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): UserSettingsRepository {
+        return UserSettingsRepository(networkClient, dataStoreManager)
     }
 
     @Provides
