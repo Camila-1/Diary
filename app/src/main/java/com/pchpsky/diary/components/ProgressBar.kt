@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.theme.DiaryTheme
 import com.pchpsky.diary.theme.green
@@ -26,7 +27,8 @@ fun ProgressBar(isDisplayed: Boolean) {
                 color = green,
                 modifier = Modifier
                     .size(100.dp)
-                    .align(Alignment.Center),
+                    .align(Alignment.Center)
+                    .testTag("progress_bar"),
                 strokeWidth = 10.dp,
             )
         }
