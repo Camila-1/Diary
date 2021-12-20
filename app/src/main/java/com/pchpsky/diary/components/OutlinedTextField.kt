@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
@@ -53,14 +54,14 @@ fun OutlinedTextField(
             shape = DiaryTheme.shapes.roundedTextField,
             trailingIcon = {
                 if (isError)
-                    Icon(Icons.Filled.Error, "error", tint = DiaryTheme.colors.error)
+                    Icon(Icons.Filled.Error, "error_icon", tint = DiaryTheme.colors.error)
             },
         )
         Text(
             text = if (isError) errorMessage!! else "",
             color = DiaryTheme.colors.error,
             style = MaterialTheme.typography.caption,
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier.padding(start = 8.dp).testTag("error_message_text")
         )
     }
 }
