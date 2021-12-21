@@ -32,6 +32,7 @@ import com.pchpsky.diary.theme.DiaryTheme
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
 import android.graphics.Color.parseColor
+import androidx.compose.ui.platform.testTag
 import com.pchpsky.diary.screens.settings.*
 
 @ExperimentalComposeUiApi
@@ -167,7 +168,7 @@ fun Glucose(unit: String, onClick: (GlucoseUnits) -> Unit) {
                         selectedColor = DiaryTheme.colors.primary,
                         unselectedColor = Color.White
                     ),
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier.size(30.dp).testTag(it.unit)
                 )
 
                 Text(

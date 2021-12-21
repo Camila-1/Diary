@@ -12,6 +12,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -54,7 +55,11 @@ fun Login(viewModel: LoginViewModel) {
         snackbarHost = { SnackbarHost(it, modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 50.dp)) }) {
 
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background).imePadding()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DiaryTheme.colors.background)
+                .imePadding()
+                .testTag("login_screen")
         ) {
             val (column, button, signInTitle) = createRefs()
 

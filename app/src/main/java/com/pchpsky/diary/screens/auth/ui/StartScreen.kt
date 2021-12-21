@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,12 +34,14 @@ fun StartScreen(
 
             RoundedFilledButton(
                 stringResource(R.string.login),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("login_button"),
                 color = lightGreen,
-                onClick = { navController.navigate(AuthRoute.LOGIN.route) })
+                onClick = {
+                    navController.navigate(AuthRoute.LOGIN.route)
+                })
             RoundedFilledButton(
                 text = stringResource(R.string.sign_up),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().testTag("signup_button"),
                 color = green,
                 onClick = { navController.navigate(AuthRoute.SIGNUP.route) })
         }
