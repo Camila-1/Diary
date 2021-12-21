@@ -54,8 +54,8 @@ import java.time.LocalTime
 @ExperimentalComposeUiApi
 @Composable
 fun RecordInsulinScreen(
-    navController: NavController,
-    viewModel: RecordInsulinViewModel = hiltViewModel<RecordViewModel>()
+    viewModel: RecordInsulinViewModel = hiltViewModel<RecordViewModel>(),
+    onBackClick: () -> Unit
 ) {
 
     val viewState by viewModel.uiState.collectAsState()
@@ -80,7 +80,7 @@ fun RecordInsulinScreen(
         },
         topBar = {
             RecordInsulinTopBar {
-                navController.popBackStack()
+                onBackClick()
             }
         }
     ) {
@@ -355,6 +355,6 @@ fun UnitsInputField(units: MutableState<String>, setUnits: (String) -> Unit) {
 @Preview
 fun InsulinScreenPreview() {
     DiaryTheme {
-        RecordInsulinScreen(rememberNavController(), FakeRecordInsulinViewModel)
+        RecordInsulinScreen(FakeRecordInsulinViewModel) {}
     }
 }

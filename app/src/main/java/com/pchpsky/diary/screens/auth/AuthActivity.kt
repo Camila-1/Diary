@@ -50,7 +50,11 @@ class AuthActivity : ComponentActivity() {
     @Composable
     fun AuthNavHost(navController: NavHostController) {
         NavHost(navController, AuthRoute.START.route) {
-            composable(AuthRoute.START.route) { StartScreen(navController) }
+            composable(AuthRoute.START.route) { StartScreen (
+                navigateToLoginScreen = { navController.navigate(AuthRoute.LOGIN.route) },
+                navigateToSignupScreen = {  navController.navigate(AuthRoute.SIGNUP.route)}
+                )
+            }
             composable(AuthRoute.LOGIN.route) { Login(viewModel) }
             composable(AuthRoute.SIGNUP.route) { SignUp(viewModel) }
         }

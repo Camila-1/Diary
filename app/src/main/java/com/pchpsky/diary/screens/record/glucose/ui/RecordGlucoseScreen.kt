@@ -14,13 +14,13 @@ import com.pchpsky.diary.components.RecordGlucoseTopBar
 import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
-fun RecordGlucoseScreen(navController: NavController) {
+fun RecordGlucoseScreen(onBackClick: () -> Unit) {
 
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = { RecordGlucoseTopBar { navController.popBackStack() } }
+        topBar = { RecordGlucoseTopBar { onBackClick() } }
     ) {
         Box(
             modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background)
@@ -32,6 +32,6 @@ fun RecordGlucoseScreen(navController: NavController) {
 @Preview
 fun RecordGlucosePreview() {
     DiaryTheme {
-        RecordGlucoseScreen(rememberNavController())
+        RecordGlucoseScreen {}
     }
 }

@@ -21,7 +21,8 @@ import com.pchpsky.diary.R
 
 @Composable
 fun StartScreen(
-    navController: NavController
+    navigateToLoginScreen: () -> Unit,
+    navigateToSignupScreen: () -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background),
@@ -36,14 +37,14 @@ fun StartScreen(
                 stringResource(R.string.login),
                 modifier = Modifier.fillMaxWidth().testTag("login_button"),
                 color = lightGreen,
-                onClick = {
-                    navController.navigate(AuthRoute.LOGIN.route)
-                })
+                onClick = { navigateToLoginScreen() }
+            )
             RoundedFilledButton(
                 text = stringResource(R.string.sign_up),
                 modifier = Modifier.fillMaxWidth().testTag("signup_button"),
                 color = green,
-                onClick = { navController.navigate(AuthRoute.SIGNUP.route) })
+                onClick = { navigateToSignupScreen() }
+            )
         }
     }
 }
@@ -52,6 +53,6 @@ fun StartScreen(
 @Composable
 fun StartScreenPreview() {
     DiaryTheme {
-        StartScreen(rememberNavController())
+        StartScreen({}, {})
     }
 }

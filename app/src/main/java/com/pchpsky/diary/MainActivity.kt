@@ -62,18 +62,24 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) {
-                    Home(navController)
+                    Home()
                 }
 
             }
             composable(MainRout.SETTINGS.route) {
-                Settings(navController, settingsViewModel)
+                Settings(settingsViewModel) {
+                    navController.popBackStack()
+                }
             }
             composable(MainRout.INSULIN.route) {
-                RecordInsulinScreen(navController)
+                RecordInsulinScreen {
+                    navController.popBackStack()
+                }
             }
             composable(MainRout.RECORD_GLUCOSE.route) {
-                RecordGlucoseScreen(navController)
+                RecordGlucoseScreen {
+                    navController.popBackStack()
+                }
             }
         }
     }

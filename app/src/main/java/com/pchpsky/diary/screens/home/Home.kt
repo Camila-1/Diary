@@ -17,9 +17,11 @@ import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.theme.DiaryTheme
 
 @Composable
-fun Home(navController: NavController) {
+fun Home() {
     Column(
-        modifier = Modifier.fillMaxSize().background(DiaryTheme.colors.background),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(DiaryTheme.colors.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -53,5 +55,7 @@ fun LoginButton(text: String, color: Color, onClick: () -> Unit) {
 @Composable
 @Preview
 fun HomePreview() {
-    Home(rememberNavController())
+    DiaryTheme {
+        Home()
+    }
 }

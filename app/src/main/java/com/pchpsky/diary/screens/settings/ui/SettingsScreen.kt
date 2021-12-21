@@ -39,8 +39,8 @@ import com.pchpsky.diary.screens.settings.*
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun Settings(
-    navController: NavHostController,
-    viewModel: SettingsViewModel
+    viewModel: SettingsViewModel,
+    onBackClick: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val viewState by viewModel.uiState.collectAsState()
@@ -97,7 +97,7 @@ fun Settings(
 
     Scaffold(
         topBar = { SettingsTopBar {
-            navController.popBackStack()
+            onBackClick()
         } }
     ) {
         ProgressBar(viewState.loading)
@@ -430,7 +430,7 @@ fun AddInsulinButton(onClick: () -> Unit) {
 @Composable
 fun SettingsPreview() {
     DiaryTheme {
-        Settings(rememberNavController(), FakeSettingsViewModel)
+        Settings(FakeSettingsViewModel) {}
     }
 }
 
