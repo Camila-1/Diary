@@ -3,10 +3,7 @@ package com.pchpsky.diary.screens.auth.ui
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -14,6 +11,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -21,12 +20,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.R
 import com.pchpsky.diary.components.RoundedFilledButton
 import com.pchpsky.diary.components.ErrorMessage
 import com.pchpsky.diary.components.OutlinedTextField
 import com.pchpsky.diary.screens.auth.AuthState
+import com.pchpsky.diary.screens.auth.AuthViewModel
 import com.pchpsky.diary.screens.auth.FakeAuthViewModel
 import com.pchpsky.diary.screens.auth.interfaces.LoginViewModel
 import com.pchpsky.diary.theme.DiaryTheme
@@ -36,7 +37,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalComposeUiApi
 @Composable
-fun Login(viewModel: LoginViewModel) {
+fun Login(viewModel: LoginViewModel = hiltViewModel<AuthViewModel>()) {
 
     val login = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -59,7 +60,7 @@ fun Login(viewModel: LoginViewModel) {
                 .fillMaxSize()
                 .background(DiaryTheme.colors.background)
                 .imePadding()
-                .testTag("login_screen")
+                .semantics { contentDescription = "Login screen" }
         ) {
             val (column, button, signInTitle) = createRefs()
 
@@ -74,7 +75,8 @@ fun Login(viewModel: LoginViewModel) {
             )
 
             Column(
-                modifier = Modifier.width(250.dp)
+                modifier = Modifier
+                    .width(250.dp)
                     .constrainAs(column) {
                         start.linkTo(parent.start, 40.dp)
                         top.linkTo(signInTitle.bottom, 20.dp)

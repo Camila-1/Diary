@@ -33,9 +33,9 @@ class AuthActivity : ComponentActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            window.attributes.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
-
 
         setContent {
             DiaryTheme(darkTheme = true) {
@@ -45,18 +45,19 @@ class AuthActivity : ComponentActivity() {
             }
         }
     }
+}
 
-    @ExperimentalComposeUiApi
-    @Composable
-    fun AuthNavHost(navController: NavHostController) {
-        NavHost(navController, AuthRoute.START.route) {
-            composable(AuthRoute.START.route) { StartScreen (
+@ExperimentalComposeUiApi
+@Composable
+fun AuthNavHost(navController: NavHostController) {
+    NavHost(navController, AuthRoute.START.route) {
+        composable(AuthRoute.START.route) {
+            StartScreen(
                 navigateToLoginScreen = { navController.navigate(AuthRoute.LOGIN.route) },
-                navigateToSignupScreen = {  navController.navigate(AuthRoute.SIGNUP.route)}
-                )
-            }
-            composable(AuthRoute.LOGIN.route) { Login(viewModel) }
-            composable(AuthRoute.SIGNUP.route) { SignUp(viewModel) }
+                navigateToSignupScreen = { navController.navigate(AuthRoute.SIGNUP.route) }
+            )
         }
+        composable(AuthRoute.LOGIN.route) { Login() }
+        composable(AuthRoute.SIGNUP.route) { SignUp() }
     }
 }
