@@ -25,7 +25,7 @@ enum class GlucoseUnits(val unit: String) {
 }
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
+class UserSettingsViewModel @Inject constructor(
     private val repository: SettingsRepository
 ) : ViewModel(), SettingsViewModel {
 

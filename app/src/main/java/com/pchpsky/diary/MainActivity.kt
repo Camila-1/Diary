@@ -18,7 +18,6 @@ import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.screens.home.Home
 import com.pchpsky.diary.screens.record.glucose.ui.RecordGlucoseScreen
 import com.pchpsky.diary.screens.record.insulin.ui.RecordInsulinScreen
-import com.pchpsky.diary.screens.settings.SettingsViewModel
 import com.pchpsky.diary.screens.settings.ui.Settings
 import com.pchpsky.diary.theme.DiaryTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,48 +37,46 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
 
-    @ExperimentalMaterialApi
-    @ExperimentalComposeUiApi
-    @Composable
-    fun MainNavHost(navController: NavHostController) {
+@ExperimentalMaterialApi
+@ExperimentalComposeUiApi
+@Composable
+fun MainNavHost(navController: NavHostController) {
 
-        val settingsViewModel: SettingsViewModel by viewModels()
+    NavHost(navController, MainRout.HOME.route) {
+        composable(MainRout.HOME.route) {
+            val scaffoldState =
+                rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
+            val scope = rememberCoroutineScope()
 
-        NavHost(navController, MainRout.HOME.route) {
-            composable(MainRout.HOME.route) {
-                val scaffoldState =
-                    rememberScaffoldState(rememberDrawerState(initialValue = DrawerValue.Closed))
-                val scope = rememberCoroutineScope()
-
-                Scaffold(
-                    topBar = { HomeTopBar(scope, scaffoldState) },
-                    drawerContent = {
-                        Drawer(
-                            scope = scope,
-                            scaffoldState = scaffoldState,
-                            navController = navController
-                        )
-                    }
-                ) {
-                    Home()
+            Scaffold(
+                topBar = { HomeTopBar(scope, scaffoldState) },
+                drawerContent = {
+                    Drawer(
+                        scope = scope,
+                        scaffoldState = scaffoldState,
+                        navController = navController
+                    )
                 }
-
+            ) {
+                Home()
             }
-            composable(MainRout.SETTINGS.route) {
-                Settings(settingsViewModel) {
-                    navController.popBackStack()
-                }
+
+        }
+        composable(MainRout.SETTINGS.route) {
+            Settings() {
+                navController.popBackStack()
             }
-            composable(MainRout.INSULIN.route) {
-                RecordInsulinScreen {
-                    navController.popBackStack()
-                }
+        }
+        composable(MainRout.INSULIN.route) {
+            RecordInsulinScreen {
+                navController.popBackStack()
             }
-            composable(MainRout.RECORD_GLUCOSE.route) {
-                RecordGlucoseScreen {
-                    navController.popBackStack()
-                }
+        }
+        composable(MainRout.RECORD_GLUCOSE.route) {
+            RecordGlucoseScreen {
+                navController.popBackStack()
             }
         }
     }

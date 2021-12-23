@@ -58,11 +58,8 @@ class AuthNavHostTest {
                 navController.navigate(AuthRoute.SIGNUP.route)
             }
         }
-        composeTestRule
-            .onNodeWithContentDescription("Signup screen")
-            .assertIsDisplayed()
 
-//        val route = navController.currentBackStackEntry?.destination?.route
-//        assertEquals(route, AuthRoute.SIGNUP.route)
+        val route = navController.currentBackStackEntry?.destination?.route
+        assertEquals(route, AuthRoute.SIGNUP.route)
     }
 }
