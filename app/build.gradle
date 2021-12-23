@@ -69,7 +69,7 @@ android {
 }
 
 kapt {
-    correctErrorTypes true
+    correctErrorTypes = true
 }
 
 dependencies {
@@ -82,7 +82,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Coroutines Tests
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2'
 
     // Local Unit Tests
     testImplementation 'junit:junit:4.13.2'
@@ -101,12 +101,12 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$jetpack_compose_version"
     implementation "androidx.compose.runtime:runtime-rxjava2:$jetpack_compose_version"
     implementation "androidx.compose.compiler:compiler:$jetpack_compose_version"
-    implementation "androidx.compose.foundation:foundation:1.1.0-beta04"
-    implementation "androidx.compose.material:material:1.1.0-beta04"
-    implementation "androidx.compose.material:material-icons-core:1.1.0-beta04"
-    implementation "androidx.compose.material:material-icons-extended:1.1.0-beta04"
-    implementation "androidx.compose.animation:animation:1.1.0-beta04"
-    implementation "androidx.compose.ui:ui:1.1.0-beta04"
+    implementation "androidx.compose.foundation:foundation:1.1.0-rc01"
+    implementation "androidx.compose.material:material:1.1.0-rc01"
+    implementation "androidx.compose.material:material-icons-core:1.1.0-rc01"
+    implementation "androidx.compose.material:material-icons-extended:1.1.0-rc01"
+    implementation "androidx.compose.animation:animation:1.1.0-rc01"
+    implementation "androidx.compose.ui:ui:1.1.0-rc01"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.10.0"
     implementation "com.google.accompanist:accompanist-insets:0.10.0"
