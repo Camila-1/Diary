@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -23,6 +24,7 @@ class NetworkModule {
         return ApolloClient.builder()
             .serverUrl("https://pchpsky-diary.herokuapp.com/graph")
             .okHttpClient(okHttpClient)
+            .subscriptionHeartbeatTimeout(10L, TimeUnit.SECONDS)
             .build()
     }
 

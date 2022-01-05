@@ -2,6 +2,7 @@ package com.pchpsky.diary.screens.auth
 
 import androidx.lifecycle.ViewModel
 import com.pchpsky.diary.exceptions.NetworkError
+import com.pchpsky.diary.screens.auth.interfaces.AuthController
 import com.pchpsky.diary.screens.auth.interfaces.LoginViewModel
 import com.pchpsky.diary.screens.auth.interfaces.SignupViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,7 @@ enum class FieldKey(val key: String) {
 }
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel(), LoginViewModel, SignupViewModel {
+class AuthViewModel @Inject constructor(private val repository: AuthController) : ViewModel(), LoginViewModel, SignupViewModel {
 
     private val _uiState: MutableStateFlow<AuthState> = MutableStateFlow(AuthState.None)
 
@@ -46,10 +47,10 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
         }
         _uiState.value = AuthState.Loading
 
-        repository.createUser(email, password).fold(
+        repository.createUserAndSaveUserToken(email, password).fold(
             {
                 when(it) {
-                    is NetworkError.ServerError -> { AuthState.ServerError }
+                    NetworkError.ServerError -> { AuthState.ServerError }
                     is NetworkError.AuthenticationError -> { AuthState.AuthenticationError(it.message) }
                     is NetworkError.ValidationError -> { AuthState.ValidationError(it.fields) }
                 }

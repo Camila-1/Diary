@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -30,7 +31,10 @@ fun Drawer(scope: CoroutineScope, scaffoldState: ScaffoldState, navController: N
     )
 
     Column(
-        modifier = Modifier.background(color = DiaryTheme.colors.drawerBackground).fillMaxSize()
+        modifier = Modifier
+            .background(color = DiaryTheme.colors.drawerBackground)
+            .fillMaxSize()
+            .testTag("nav_drawer")
     ) {
         LogoGroup(
             modifier = Modifier.padding(top = 50.dp, bottom = 30.dp, start = 10.dp)

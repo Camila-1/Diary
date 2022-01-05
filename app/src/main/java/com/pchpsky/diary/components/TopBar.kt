@@ -26,7 +26,7 @@ fun HomeTopBar(scope: CoroutineScope, scaffoldState: ScaffoldState) {
                     scaffoldState.drawerState.open()
                 }
             }) {
-                Icon(Icons.Filled.Menu, "")
+                Icon(Icons.Filled.Menu, "nav_drawer_menu_icon")
             }
         },
         backgroundColor = DiaryTheme.colors.primary,

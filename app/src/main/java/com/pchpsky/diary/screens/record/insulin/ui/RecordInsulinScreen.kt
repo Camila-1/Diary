@@ -24,15 +24,16 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.components.DiarySnackbar
 import com.pchpsky.diary.components.InsulinColorCircle
 import com.pchpsky.diary.components.RecordInsulinTopBar
+import com.pchpsky.diary.components.TimePicker
 import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.screens.record.FakeRecordInsulinViewModel
 import com.pchpsky.diary.screens.record.RecordViewModel
@@ -40,16 +41,21 @@ import com.pchpsky.diary.screens.record.insulin.interfacies.RecordInsulinViewMod
 import com.pchpsky.diary.theme.DiaryTheme
 import com.pchpsky.diary.theme.blue
 import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.time.TimePickerColors
+import com.vanpra.composematerialdialogs.datetime.time.TimePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
+import java.sql.Time
+import java.time.LocalTime
 
+@ExperimentalMaterialApi
 @SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalComposeUiApi
 @Composable
 fun RecordInsulinScreen(
-    navController: NavController,
-    viewModel: RecordInsulinViewModel = hiltViewModel<RecordViewModel>()
+    viewModel: RecordInsulinViewModel = hiltViewModel<RecordViewModel>(),
+    onBackClick: () -> Unit
 ) {
 
     val viewState by viewModel.uiState.collectAsState()
@@ -74,7 +80,7 @@ fun RecordInsulinScreen(
         },
         topBar = {
             RecordInsulinTopBar {
-                navController.popBackStack()
+                onBackClick()
             }
         }
     ) {
@@ -109,6 +115,16 @@ fun RecordInsulinScreen(
                 select = { viewModel.selectInsulin(it) },
                 dismiss = { viewModel.dropInsulinMenu(false) }
             )
+
+            Text(
+                text = viewState.time,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .clickable {
+                        viewModel.showTimePicker(true)
+                    },
+                color = DiaryTheme.colors.primary
+            )
         }
 
         if (viewState.unitsInputError.isNotEmpty()) {
@@ -116,6 +132,14 @@ fun RecordInsulinScreen(
                 scaffoldState.snackbarHostState.showSnackbar(viewState.unitsInputError)
             }
         }
+
+        TimePicker(
+            show = viewState.showTimePicker,
+            close = { viewModel.showTimePicker(false) },
+            selectTime = {
+                viewModel.setTime(it)
+            }
+        )
     }
 }
 
@@ -137,7 +161,7 @@ fun Units(
             .padding(vertical = 20.dp)
     ) {
 
-        UnitsInputTextField(
+        UnitsInputField(
             units = mutableStateOf(units),
             setUnits = { points -> setUnits(points.toString()) }
         )
@@ -166,6 +190,7 @@ fun Units(
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun InsulinDropDownMenu(
     selectedInsulin: Insulin?,
@@ -176,36 +201,42 @@ fun InsulinDropDownMenu(
     dismiss: () -> Unit
 ) {
 
-    Box {
+    ExposedDropdownMenuBox(
+        expanded = show,
+        onExpandedChange = { dismiss() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(5.dp)
+            .background(Color.Transparent),
+    ) {
+
         if (selectedInsulin != null) {
             Row(
-                modifier =Modifier
+                modifier = Modifier
                     .clickable { onClick() }
             ) {
                 InsulinColorCircle(
-                    color = Color(android.graphics.Color.parseColor(selectedInsulin?.color)),
+                    color = Color(android.graphics.Color.parseColor(selectedInsulin.color)),
                     modifier = Modifier
                         .align(Alignment.Bottom)
                 )
 
                 Text(
-                    text = selectedInsulin?.name ?: "",
+                    text = selectedInsulin.name,
                     style = DiaryTheme.typography.body,
-                    color = Color.White
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 15.dp)
                 )
-
             }
-
         }
 
-        DropdownMenu(
+        ExposedDropdownMenu(
             expanded = show,
             onDismissRequest = { dismiss() },
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(5.dp),
-            properties = PopupProperties(focusable = true)
+                .background(Color.Transparent)
+
         ) {
             insulins.forEach {
                 DropdownMenuItem(
@@ -214,63 +245,66 @@ fun InsulinDropDownMenu(
                         dismiss()
                     },
                     modifier = Modifier
+                        .background(DiaryTheme.colors.background)
                 ) {
                     InsulinMenuItem(insulin = it)
                 }
             }
         }
     }
-
-
 }
 
 @Composable
 fun InsulinMenuItem(insulin: Insulin) {
-    
+
     Row {
         InsulinColorCircle(
             color = Color(android.graphics.Color.parseColor(insulin.color)),
             modifier = Modifier
                 .align(Alignment.Bottom)
         )
-        
+
         Text(
             text = insulin.name,
-            style = DiaryTheme.typography.body
+            style = DiaryTheme.typography.body,
+            color = Color.White,
+            modifier = Modifier.padding(start = 15.dp)
         )
-
     }
 }
 
-@Composable
-fun TimePicker(show: Boolean) {
-    if (!show) return
-
-    val timePickerDialogState = rememberMaterialDialogState()
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(DiaryTheme.colors.background)
-    ) {
-
-        MaterialDialog(
-            dialogState = timePickerDialogState,
-            buttons = {
-                positiveButton("Ok")
-                negativeButton("Cancel")
-            }
-        ) {
-            timepicker { time ->
-            }
-        }
-
-        timePickerDialogState.show()
-    }
-}
+//@Composable
+//fun TimePicker(show: Boolean, close: (LocalTime) -> Unit) {
+//
+//    val timePickerDialogState = rememberMaterialDialogState()
+//    Box(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(DiaryTheme.colors.background)
+//    ) {
+//
+//        MaterialDialog(
+//            dialogState = timePickerDialogState,
+//            buttons = {
+//                positiveButton("Ok")
+//                negativeButton("Cancel")
+//            }
+//        ) {
+//            if (show) timepicker(
+//                title = "Select Time",
+//                colors = TimePickerDefaults.colors(
+//                    activeBackgroundColor = DiaryTheme.colors.primary
+//                )
+//            ) {
+//                close(it)
+//            }
+//        }
+//    }
+//}
 
 @ExperimentalComposeUiApi
 @Composable
-fun UnitsInputTextField(units: MutableState<String>, setUnits: (String) -> Unit) {
+fun UnitsInputField(units: MutableState<String>, setUnits: (String) -> Unit) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -315,11 +349,12 @@ fun UnitsInputTextField(units: MutableState<String>, setUnits: (String) -> Unit)
     )
 }
 
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Composable
 @Preview
 fun InsulinScreenPreview() {
     DiaryTheme {
-        RecordInsulinScreen(rememberNavController(), FakeRecordInsulinViewModel)
+        RecordInsulinScreen(FakeRecordInsulinViewModel) {}
     }
 }

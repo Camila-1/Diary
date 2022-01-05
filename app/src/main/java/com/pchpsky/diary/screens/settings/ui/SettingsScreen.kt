@@ -2,6 +2,7 @@ package com.pchpsky.diary.screens.settings.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color.parseColor
 import android.widget.Toast
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
@@ -19,27 +20,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.pchpsky.diary.components.*
 import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.extensions.toHex
+import com.pchpsky.diary.screens.settings.*
 import com.pchpsky.diary.screens.settings.interfaces.SettingsViewModel
 import com.pchpsky.diary.theme.DiaryTheme
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
-import android.graphics.Color.parseColor
-import com.pchpsky.diary.screens.settings.*
 
 @ExperimentalComposeUiApi
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun Settings(
-    navController: NavHostController,
-    viewModel: SettingsViewModel
+    viewModel: SettingsViewModel = hiltViewModel<UserSettingsViewModel>(),
+    onBackClick: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val viewState by viewModel.uiState.collectAsState()
@@ -96,7 +96,7 @@ fun Settings(
 
     Scaffold(
         topBar = { SettingsTopBar {
-            navController.popBackStack()
+            onBackClick()
         } }
     ) {
         ProgressBar(viewState.loading)
@@ -167,12 +167,16 @@ fun Glucose(unit: String, onClick: (GlucoseUnits) -> Unit) {
                         selectedColor = DiaryTheme.colors.primary,
                         unselectedColor = Color.White
                     ),
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier
+                        .size(30.dp)
+                        .testTag(it.unit)
                 )
 
                 Text(
                     text = it.unit,
-                    modifier = Modifier.padding(start = 25.dp).align(Alignment.CenterVertically),
+                    modifier = Modifier
+                        .padding(start = 25.dp)
+                        .align(Alignment.CenterVertically),
                     style = DiaryTheme.typography.body,
                     color = Color.White,
                 )
@@ -192,7 +196,9 @@ fun Insulin(
         verticalArrangement = Arrangement.spacedBy(15.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -241,7 +247,9 @@ fun AddInsulinDialog(
         val insulinName = remember { mutableStateOf(dialogState.insulinName) }
         val insulinColor = remember { mutableStateOf(dialogState.insulinColor) }
         Column(
-            modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
+            modifier = Modifier
+                .background(Color.DarkGray)
+                .fillMaxWidth()
         ) {
             DialogTitle("Add Insulin")
 
@@ -298,7 +306,9 @@ fun DeleteInsulinDialog(
         onDismissRequest = { onDismiss() }
     ) {
         Column(
-            modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
+            modifier = Modifier
+                .background(Color.DarkGray)
+                .fillMaxWidth()
         ) {
             DialogTitle("Are you sure you want to delete?")
 
@@ -331,7 +341,9 @@ fun UpdateInsulinDialog(
         val insulinName = remember { mutableStateOf(dialogState.insulinName) }
         val insulinColor = remember { mutableStateOf(dialogState.insulinColor) }
         Column(
-            modifier = Modifier.background(Color.DarkGray).fillMaxWidth()
+            modifier = Modifier
+                .background(Color.DarkGray)
+                .fillMaxWidth()
         ) {
             DialogTitle("Update Insulin")
 
@@ -429,7 +441,7 @@ fun AddInsulinButton(onClick: () -> Unit) {
 @Composable
 fun SettingsPreview() {
     DiaryTheme {
-        Settings(rememberNavController(), FakeSettingsViewModel)
+        Settings(FakeSettingsViewModel) {}
     }
 }
 
