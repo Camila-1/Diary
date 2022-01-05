@@ -3,6 +3,7 @@ package com.pchpsky.diary.screens.settings
 import arrow.core.Right
 import com.pchpsky.diary.datasource.network.model.Insulin
 import com.pchpsky.diary.screens.settings.interfaces.SettingsRepository
+import com.pchpsky.diary.screens.settings.interfaces.SettingsViewModel
 import com.pchpsky.schema.CreateInsulinMutation
 import com.pchpsky.schema.DeleteInsulinMutation
 import com.pchpsky.schema.SettingsQuery
@@ -17,11 +18,11 @@ import org.mockito.Mockito.*
 class SettingsViewModelTest {
 
     private val settingsRepository = mock(SettingsRepository::class.java)
-    val vm = SettingsViewModel(settingsRepository)
+    val vm = UserSettingsViewModel(settingsRepository)
 
     @Test
     fun addInsulin_PassNewInsulin_insulinAddedToList() = runBlocking {
-        val viewModel = SettingsViewModel(settingsRepository)
+        val viewModel = UserSettingsViewModel(settingsRepository)
         val createdInsulin = CreateInsulinMutation.Insulin(
             "Insulin",
             "id",
@@ -39,7 +40,7 @@ class SettingsViewModelTest {
 
     @Test
     fun updateGlucoseUnit_PassUnit_UnitUpdated() = runBlocking {
-        val viewModel = SettingsViewModel(settingsRepository)
+        val viewModel = UserSettingsViewModel(settingsRepository)
         val settingsMutation = UpdateSettingsMutation.Settings("Settings", BloodGlucoseUnits.MMOL_PER_L)
         `when`(settingsRepository.updateGlucoseUnit(GlucoseUnits.MMOL_PER_L.name))
             .thenReturn(Right(UpdateSettingsMutation.Data(settingsMutation)))
@@ -51,7 +52,7 @@ class SettingsViewModelTest {
 
     @Test
     fun settings_RequestSettingsReturnsRight_SettingsUpdated() = runBlocking {
-        val viewModel = SettingsViewModel(settingsRepository)
+        val viewModel = UserSettingsViewModel(settingsRepository)
         val settings = SettingsQuery.Settings(
             "Settings",
             BloodGlucoseUnits.MG_PER_DL,
@@ -67,7 +68,7 @@ class SettingsViewModelTest {
 
     @Test
     fun deleteInsulin_PassInsulinId_InsulinDeletedById() = runBlocking {
-        val viewModel = SettingsViewModel(settingsRepository)
+        val viewModel = UserSettingsViewModel(settingsRepository)
         val createdInsulin = CreateInsulinMutation.Insulin(
             "Insulin",
             "id",

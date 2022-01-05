@@ -2,9 +2,8 @@ package com.pchpsky.diary.navigation
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.MainNavHost
@@ -22,7 +21,7 @@ class MainNavHostTest {
     @ExperimentalComposeUiApi
     @ExperimentalMaterialApi
     @Before
-    fun setupAuthNavHost() {
+    fun setupMainNavHost() {
         composeTestRule.setContent {
             navController = rememberNavController()
             DiaryTheme {
@@ -35,6 +34,17 @@ class MainNavHostTest {
     fun mainNavHost() {
         composeTestRule
             .onNodeWithContentDescription("Home screen")
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun openNavigationDrawer() {
+        composeTestRule
+            .onNodeWithContentDescription("Home screen")
+            .performGesture { swipeRight() }
+
+        composeTestRule
+            .onNodeWithTag("nav_drawer")
             .assertIsDisplayed()
     }
 }
