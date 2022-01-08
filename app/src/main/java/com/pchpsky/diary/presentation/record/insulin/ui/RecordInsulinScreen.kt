@@ -97,7 +97,8 @@ fun RecordInsulinScreen(
                     .clickable {
                         viewModel.showTimePicker(true)
                     },
-                color = DiaryTheme.colors.primary
+                color = DiaryTheme.colors.text,
+                style = DiaryTheme.typography.primaryHeader
             )
         }
 

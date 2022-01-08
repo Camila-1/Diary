@@ -66,8 +66,7 @@ class RecordViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(showTimePicker = show)
     }
 
-    override fun setTime(localTime: LocalTime) {
-        val time: String = localTime.format(DateTimeFormatter.ISO_TIME)
+    override fun setTime(time: String) {
         _uiState.value = _uiState.value.copy(time = time)
     }
 }
@@ -81,5 +80,5 @@ val FakeRecordInsulinViewModel = object : RecordInsulinViewModel {
     override fun selectInsulin(insulin: Insulin) {}
     override fun dropInsulinMenu(drop: Boolean) {}
     override fun showTimePicker(show: Boolean) {}
-    override fun setTime(localTime: LocalTime) {}
+    override fun setTime(time: String) {}
 }

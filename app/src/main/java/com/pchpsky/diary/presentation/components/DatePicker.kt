@@ -7,24 +7,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.datetime.time.timepicker
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import java.time.LocalTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun TimePicker(show: Boolean, close: () -> Unit, selectTime: (String) -> Unit) {
+fun DatePicker(show: Boolean, close: () -> Unit, selectDate: (String) -> Unit) {
     if (!show) return
 
-    val timePickerDialogState = rememberMaterialDialogState()
+    val datePickerDialogState = rememberMaterialDialogState()
 
-    var selectedTime = ""
+    var selectedDate: String = ""
 
     MaterialDialog(
-        dialogState = timePickerDialogState,
+        dialogState = datePickerDialogState,
         buttons = {
             positiveButton("Select") {
-                selectTime(selectedTime)
+                selectDate(selectedDate)
                 close()
             }
             negativeButton("Cancel") {
@@ -36,20 +36,20 @@ fun TimePicker(show: Boolean, close: () -> Unit, selectTime: (String) -> Unit) {
             modifier = Modifier
                 .wrapContentSize()
         ) {
-            timepicker(
-                title = "Select Injection Time"
+            datepicker(
+                title = "Select Date"
             ) {
-                selectedTime = it.format(DateTimeFormatter.ofPattern("hh:mm"))
+                selectedDate = it.format(DateTimeFormatter.ofPattern("hh:mm"))
             }
         }
     }
-    timePickerDialogState.show()
+    datePickerDialogState.show()
 }
 
 @Composable
 @Preview
-fun TimePickerPreview() {
+fun DatePickerPreview() {
     DiaryTheme {
-        TimePicker(show = true, close = {}, selectTime = {} )
+        DatePicker(show = true, close = {}, selectDate = {})
     }
 }

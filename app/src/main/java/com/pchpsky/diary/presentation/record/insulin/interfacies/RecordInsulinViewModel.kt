@@ -14,5 +14,5 @@ interface RecordInsulinViewModel {
     fun selectInsulin(insulin: Insulin)
     fun dropInsulinMenu(drop: Boolean)
     fun showTimePicker(show: Boolean)
-    fun setTime(localTime: LocalTime)
+    fun setTime(localTime: String)
 }
