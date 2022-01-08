@@ -6,7 +6,7 @@ import com.pchpsky.diary.data.network.model.Insulin
 data class SettingsViewState(
     val insulins: List<Insulin> = listOf(),
     val glucoseUnit: String = "",
-    var loading: Boolean = false,
+    val loading: Boolean = false,
     val addInsulinDialogStateState: AddInsulinDialogState =
         AddInsulinDialogState(
             show = false,

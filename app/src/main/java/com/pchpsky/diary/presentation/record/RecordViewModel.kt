@@ -44,11 +44,12 @@ class RecordViewModel @Inject constructor(
 
     override suspend fun insulins() {
         Log.d("debugInsulin", "insulins")
+        _uiState.value = _uiState.value.copy(loading = true)
         repository.insulins().fold(
             ifLeft = {},
             ifRight = {
                 val insulins = it.insulins()
-                _uiState.value = _uiState.value.copy(insulins = insulins!!, selectedInsulin = insulins.first())
+                _uiState.value = _uiState.value.copy(insulins = insulins!!, selectedInsulin = insulins.first(), loading = false)
             }
         )
     }

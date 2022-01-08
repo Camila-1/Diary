@@ -28,11 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.pchpsky.diary.presentation.components.DiarySnackbar
-import com.pchpsky.diary.presentation.components.InsulinColorCircle
-import com.pchpsky.diary.presentation.components.RecordInsulinTopBar
-import com.pchpsky.diary.presentation.components.TimePicker
 import com.pchpsky.diary.data.network.model.Insulin
+import com.pchpsky.diary.presentation.components.*
 import com.pchpsky.diary.presentation.record.FakeRecordInsulinViewModel
 import com.pchpsky.diary.presentation.record.RecordViewModel
 import com.pchpsky.diary.presentation.record.insulin.interfacies.RecordInsulinViewModel
@@ -58,23 +55,9 @@ fun RecordInsulinScreen(
         viewModel.insulins()
     }
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        snackbarHost = {
-            SnackbarHost(
-                hostState = it,
-                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp),
-                snackbar = {
-                    DiarySnackbar(it, blue, Modifier.padding(vertical = 10.dp, horizontal = 15.dp))
-                }
-            )
-        },
-        topBar = {
-            RecordInsulinTopBar {
-                onBackClick()
-            }
-        }
-    ) {
+    @Composable
+    fun Screen() {
+        if (viewState.loading) return
         Column(
             modifier = Modifier
                 .background(DiaryTheme.colors.background)
@@ -117,6 +100,28 @@ fun RecordInsulinScreen(
                 color = DiaryTheme.colors.primary
             )
         }
+
+    }
+
+    Scaffold(
+        scaffoldState = scaffoldState,
+        snackbarHost = {
+            SnackbarHost(
+                hostState = it,
+                modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp),
+                snackbar = {
+                    DiarySnackbar(it, blue, Modifier.padding(vertical = 10.dp, horizontal = 15.dp))
+                }
+            )
+        },
+        topBar = {
+            RecordInsulinTopBar {
+                onBackClick()
+            }
+        }
+    ) {
+        ProgressBar(viewState.loading)
+        Screen()
 
         if (viewState.unitsInputError.isNotEmpty()) {
             scope.launch {

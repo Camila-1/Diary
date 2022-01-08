@@ -52,7 +52,6 @@ fun Settings(
     @Composable
     fun Screen() {
         if (viewState.loading) return
-        ProgressBar(viewState.loading)
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier

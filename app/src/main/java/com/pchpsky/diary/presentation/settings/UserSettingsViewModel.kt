@@ -48,7 +48,7 @@ class UserSettingsViewModel @Inject constructor(
 
     override suspend fun settings() {
         Log.d("Settings", "Settings")
-        _uiState.value.loading = true
+        _uiState.value = _uiState.value.copy(loading = true)
         repository.settings().fold(
             {
                 Log.d("Settings", it.toString())
@@ -67,7 +67,7 @@ class UserSettingsViewModel @Inject constructor(
                     insulins = insulins,
                     glucoseUnit = glucoseUnit,
                     loading = false)
-                _uiState.value.loading = false
+                _uiState.value = _uiState.value.copy(loading = false)
             }
         )
     }

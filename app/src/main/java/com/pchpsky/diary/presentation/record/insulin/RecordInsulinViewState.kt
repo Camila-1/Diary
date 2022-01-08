@@ -11,5 +11,6 @@ data class RecordInsulinViewState(
     val unitsInputError: String = "",
     val dropDownInsulinMenu: Boolean = false,
     val showTimePicker: Boolean = false,
-    val time: String = LocalTime.now().format(DateTimeFormatter.ISO_TIME)
+    val time: String = LocalTime.now().format(DateTimeFormatter.ISO_TIME),
+    val loading: Boolean = false
 )
