@@ -100,6 +100,17 @@ fun RecordInsulinScreen(
                 color = DiaryTheme.colors.text,
                 style = DiaryTheme.typography.primaryHeader
             )
+
+            Text(
+                text = viewState.date,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .clickable {
+                        viewModel.showDatePicker(true)
+                    },
+                color = DiaryTheme.colors.text,
+                style = DiaryTheme.typography.primaryHeader
+            )
         }
 
     }
@@ -135,6 +146,14 @@ fun RecordInsulinScreen(
             close = { viewModel.showTimePicker(false) },
             selectTime = {
                 viewModel.setTime(it)
+            }
+        )
+
+        DatePicker(
+            show = viewState.showDatePicker,
+            close = { viewModel.showDatePicker(false) },
+            selectDate = {
+                // TODO: 08.01.22
             }
         )
     }
