@@ -20,11 +20,13 @@ class NetworkModule {
         val okHttpClient = OkHttpClient
             .Builder()
             .addInterceptor(AuthorizationInterceptor(TokenStore()))
+            .connectTimeout(30L, TimeUnit.SECONDS)
+//            .readTimeout(30L, TimeUnit.SECONDS)
+//            .writeTimeout(30L, TimeUnit.SECONDS)
             .build()
         return ApolloClient.builder()
             .serverUrl("https://pchpsky-diary.herokuapp.com/graph")
             .okHttpClient(okHttpClient)
-            .subscriptionHeartbeatTimeout(10L, TimeUnit.SECONDS)
             .build()
     }
 
