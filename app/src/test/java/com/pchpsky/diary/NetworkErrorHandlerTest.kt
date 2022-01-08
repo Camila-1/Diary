@@ -5,17 +5,13 @@ import arrow.core.Right
 import com.apollographql.apollo.api.ApolloExperimental
 import com.apollographql.apollo.api.Error
 import com.apollographql.apollo.api.Response
-import com.pchpsky.diary.exceptions.NetworkError
-import com.pchpsky.diary.exceptions.handlers.NetworkErrorHandler
+import com.pchpsky.diary.data.network.exceptions.NetworkError
+import com.pchpsky.diary.data.network.exceptions.handlers.NetworkErrorHandler
 import com.pchpsky.schema.CurrentUserQuery
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.sql.Struct
-import java.util.jar.Attributes
 
 class NetworkErrorHandlerTest {
 

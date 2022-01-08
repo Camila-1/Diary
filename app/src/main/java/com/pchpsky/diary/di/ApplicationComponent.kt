@@ -1,9 +1,9 @@
 package com.pchpsky.diary.di
 
 import com.pchpsky.diary.MainActivity
-import com.pchpsky.diary.screens.auth.AuthActivity
-import com.pchpsky.diary.datasource.network.NetworkModule
-import com.pchpsky.diary.screens.launch.LaunchActivity
+import com.pchpsky.diary.presentation.auth.AuthActivity
+import com.pchpsky.diary.data.network.NetworkModule
+import com.pchpsky.diary.presentation.launch.LaunchActivity
 import dagger.Component
 
 @Component(modules = [NetworkModule::class])

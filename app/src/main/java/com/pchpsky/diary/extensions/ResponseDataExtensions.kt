@@ -1,6 +1,6 @@
 package com.pchpsky.diary.extensions
 
-import com.pchpsky.diary.datasource.network.model.Insulin
+import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.schema.CreateInsulinMutation
 import com.pchpsky.schema.InsulinsQuery
 import com.pchpsky.schema.SettingsQuery

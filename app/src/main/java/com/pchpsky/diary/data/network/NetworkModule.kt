@@ -1,0 +1,36 @@
+package com.pchpsky.diary.data.network
+
+import com.apollographql.apollo.ApolloClient
+import com.pchpsky.diary.data.localstorage.TokenStore
+import com.pchpsky.diary.data.network.exceptions.handlers.NetworkErrorHandler
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
+
+@InstallIn(SingletonComponent::class)
+@Module
+class NetworkModule {
+
+    @Provides
+    fun provideApolloClient(): ApolloClient {
+
+        val okHttpClient = OkHttpClient
+            .Builder()
+            .addInterceptor(AuthorizationInterceptor(TokenStore()))
+            .build()
+        return ApolloClient.builder()
+            .serverUrl("https://pchpsky-diary.herokuapp.com/graph")
+            .okHttpClient(okHttpClient)
+            .subscriptionHeartbeatTimeout(10L, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Provides
+    fun provideErrorHandler() = NetworkErrorHandler()
+
+    @Provides
+    fun provideNetworkClient(apolloClient: ApolloClient, errorHandler: NetworkErrorHandler) = NetworkClient(apolloClient, errorHandler)
+}

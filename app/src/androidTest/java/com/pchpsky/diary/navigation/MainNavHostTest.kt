@@ -7,7 +7,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.pchpsky.diary.MainNavHost
-import com.pchpsky.diary.theme.DiaryTheme
+import com.pchpsky.diary.presentation.theme.DiaryTheme
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
