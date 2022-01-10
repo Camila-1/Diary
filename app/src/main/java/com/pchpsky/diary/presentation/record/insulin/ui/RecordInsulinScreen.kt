@@ -145,7 +145,7 @@ fun RecordInsulinScreen(
             show = viewState.showTimePicker,
             close = { viewModel.showTimePicker(false) },
             selectTime = {
-                viewModel.setTime(it)
+                viewModel.selectTime(it)
             }
         )
 
@@ -153,7 +153,7 @@ fun RecordInsulinScreen(
             show = viewState.showDatePicker,
             close = { viewModel.showDatePicker(false) },
             selectDate = {
-                // TODO: 08.01.22
+                viewModel.selectDate(it)
             }
         )
     }
@@ -179,7 +179,7 @@ fun Units(
 
         UnitsInputField(
             units = mutableStateOf(units),
-            setUnits = { points -> setUnits(points.toString()) }
+            setUnits = { points -> setUnits(points) }
         )
 
         Column(

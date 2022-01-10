@@ -9,7 +9,6 @@ import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -39,7 +38,7 @@ fun DatePicker(show: Boolean, close: () -> Unit, selectDate: (String) -> Unit) {
             datepicker(
                 title = "Select Date"
             ) {
-                selectedDate = it.format(DateTimeFormatter.ofPattern("hh:mm"))
+                selectedDate = it.format(DateTimeFormatter.ofPattern("dd MMM"))
             }
         }
     }

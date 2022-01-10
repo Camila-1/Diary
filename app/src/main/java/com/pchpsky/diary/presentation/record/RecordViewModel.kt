@@ -11,8 +11,6 @@ import com.pchpsky.diary.presentation.record.insulin.interfacies.RecordInsulinVi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,8 +68,12 @@ class RecordViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(showDatePicker = show)
     }
 
-    override fun setTime(time: String) {
-        _uiState.value = _uiState.value.copy(time = time)
+    override fun selectTime(localTime: String) {
+        _uiState.value = _uiState.value.copy(time = localTime)
+    }
+
+    override fun selectDate(localDate: String) {
+        _uiState.value = _uiState.value.copy(date = localDate)
     }
 }
 
@@ -85,5 +87,6 @@ val FakeRecordInsulinViewModel = object : RecordInsulinViewModel {
     override fun dropInsulinMenu(drop: Boolean) {}
     override fun showTimePicker(show: Boolean) {}
     override fun showDatePicker(show: Boolean) {}
-    override fun setTime(time: String) {}
+    override fun selectTime(time: String) {}
+    override fun selectDate(date: String) {}
 }

@@ -3,7 +3,6 @@ package com.pchpsky.diary.presentation.record.insulin.interfacies
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.presentation.record.insulin.RecordInsulinViewState
 import kotlinx.coroutines.flow.StateFlow
-import java.time.LocalTime
 
 interface RecordInsulinViewModel {
     val uiState: StateFlow<RecordInsulinViewState>
@@ -15,5 +14,6 @@ interface RecordInsulinViewModel {
     fun dropInsulinMenu(drop: Boolean)
     fun showTimePicker(show: Boolean)
     fun showDatePicker(show: Boolean)
-    fun setTime(localTime: String)
+    fun selectTime(localTime: String)
+    fun selectDate(localDate: String)
 }
