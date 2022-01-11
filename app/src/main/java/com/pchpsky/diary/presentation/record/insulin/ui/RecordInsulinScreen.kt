@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.runtime.*
@@ -81,15 +82,6 @@ fun RecordInsulinScreen(
                 setUnits = { units -> viewModel.setUnits(units) }
             )
 
-            InsulinDropDownMenu(
-                selectedInsulin = viewState.selectedInsulin,
-                insulins = viewState.insulins,
-                show = viewState.dropDownInsulinMenu,
-                onClick = { viewModel.dropInsulinMenu(true) },
-                select = { viewModel.selectInsulin(it) },
-                dismiss = { viewModel.dropInsulinMenu(false) }
-            )
-
             Text(
                 text = viewState.time,
                 textAlign = TextAlign.Center,
@@ -110,6 +102,15 @@ fun RecordInsulinScreen(
                     },
                 color = DiaryTheme.colors.text,
                 style = DiaryTheme.typography.primaryHeader
+            )
+
+            InsulinDropDownMenu(
+                selectedInsulin = viewState.selectedInsulin,
+                insulins = viewState.insulins,
+                show = viewState.dropDownInsulinMenu,
+                onClick = { viewModel.dropInsulinMenu(true) },
+                select = { viewModel.selectInsulin(it) },
+                dismiss = { viewModel.dropInsulinMenu(false) }
             )
         }
 
@@ -217,20 +218,13 @@ fun InsulinDropDownMenu(
     dismiss: () -> Unit
 ) {
 
-    ExposedDropdownMenuBox(
-        expanded = show,
-        onExpandedChange = { dismiss() },
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(5.dp)
-            .background(Color.Transparent),
-    ) {
-
+    Box {
         if (selectedInsulin != null) {
             Row(
                 modifier = Modifier
                     .clickable { onClick() }
+                    .width(40.dp),
+                horizontalArrangement = Arrangement.Center
             ) {
                 InsulinColorCircle(
                     color = Color(android.graphics.Color.parseColor(selectedInsulin.color)),
@@ -242,16 +236,25 @@ fun InsulinDropDownMenu(
                     text = selectedInsulin.name,
                     style = DiaryTheme.typography.body,
                     color = Color.White,
-                    modifier = Modifier.padding(start = 15.dp)
+                    modifier = Modifier.padding(start = 15.dp),
+                    textAlign = TextAlign.Center
                 )
+
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = "drop down icon",
+                    modifier = Modifier.padding(start = 20.dp).size(40.dp),
+                    tint = Color.White
+                )
+
             }
         }
 
-        ExposedDropdownMenu(
+        DropdownMenu(
             expanded = show,
             onDismissRequest = { dismiss() },
             modifier = Modifier
-                .background(Color.Transparent)
+                .background(Color.White)
 
         ) {
             insulins.forEach {
@@ -261,7 +264,6 @@ fun InsulinDropDownMenu(
                         dismiss()
                     },
                     modifier = Modifier
-                        .background(DiaryTheme.colors.background)
                 ) {
                     InsulinMenuItem(insulin = it)
                 }
@@ -273,7 +275,9 @@ fun InsulinDropDownMenu(
 @Composable
 fun InsulinMenuItem(insulin: Insulin) {
 
-    Row {
+    Row(
+        horizontalArrangement = Arrangement.Center
+    ) {
         InsulinColorCircle(
             color = Color(android.graphics.Color.parseColor(insulin.color)),
             modifier = Modifier
@@ -283,40 +287,11 @@ fun InsulinMenuItem(insulin: Insulin) {
         Text(
             text = insulin.name,
             style = DiaryTheme.typography.body,
-            color = Color.White,
+            color = Color.Black,
             modifier = Modifier.padding(start = 15.dp)
         )
     }
 }
-
-//@Composable
-//fun TimePicker(show: Boolean, close: (LocalTime) -> Unit) {
-//
-//    val timePickerDialogState = rememberMaterialDialogState()
-//    Box(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(DiaryTheme.colors.background)
-//    ) {
-//
-//        MaterialDialog(
-//            dialogState = timePickerDialogState,
-//            buttons = {
-//                positiveButton("Ok")
-//                negativeButton("Cancel")
-//            }
-//        ) {
-//            if (show) timepicker(
-//                title = "Select Time",
-//                colors = TimePickerDefaults.colors(
-//                    activeBackgroundColor = DiaryTheme.colors.primary
-//                )
-//            ) {
-//                close(it)
-//            }
-//        }
-//    }
-//}
 
 @ExperimentalComposeUiApi
 @Composable
