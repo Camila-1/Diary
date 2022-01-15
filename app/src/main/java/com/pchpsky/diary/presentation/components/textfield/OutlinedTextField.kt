@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -41,7 +42,10 @@ fun OutlinedTextField(
             textStyle = DiaryTheme.typography.textField,
             label = { Text(text = label, color = if (isError) DiaryTheme.colors.error else DiaryTheme.colors.inputText) },
             visualTransformation = visualTransformation,
-            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = keyboardType,
+                imeAction = ImeAction.Next
+            ),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = DiaryTheme.colors.focusedInputFieldBorder,
                 unfocusedBorderColor = DiaryTheme.colors.unfocusedInputFieldBorder,
