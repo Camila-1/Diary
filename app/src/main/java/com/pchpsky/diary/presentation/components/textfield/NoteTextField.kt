@@ -1,6 +1,7 @@
 package com.pchpsky.diary.presentation.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -10,8 +11,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
@@ -20,11 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 
+@ExperimentalComposeUiApi
 @Composable
 fun NoteTextField(
     value: MutableState<String>,
     modifier: Modifier
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = modifier.wrapContentSize(),
@@ -58,6 +63,11 @@ fun NoteTextField(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done
             ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
+                }
+            ),
             shape = DiaryTheme.shapes.roundedTextField,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = Color.White,
@@ -71,6 +81,7 @@ fun NoteTextField(
 
 }
 
+@ExperimentalComposeUiApi
 @Composable
 @Preview
 fun NoteTextFieldPreview() {
