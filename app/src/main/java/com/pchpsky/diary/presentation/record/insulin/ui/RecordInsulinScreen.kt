@@ -11,7 +11,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.runtime.*
@@ -29,8 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.presentation.components.*
+import com.pchpsky.diary.presentation.components.dropdownmenu.DiaryDropDownMenu
 import com.pchpsky.diary.presentation.record.FakeRecordInsulinViewModel
 import com.pchpsky.diary.presentation.record.RecordViewModel
 import com.pchpsky.diary.presentation.record.insulin.interfacies.RecordInsulinViewModel
@@ -104,10 +103,11 @@ fun RecordInsulinScreen(
                 style = DiaryTheme.typography.primaryHeader
             )
 
-            InsulinDropDownMenu(
+            DiaryDropDownMenu(
+                modifier = Modifier,
                 selectedInsulin = viewState.selectedInsulin,
                 insulins = viewState.insulins,
-                show = viewState.dropDownInsulinMenu,
+                expanded = viewState.dropDownInsulinMenu,
                 onClick = { viewModel.dropInsulinMenu(true) },
                 select = { viewModel.selectInsulin(it) },
                 dismiss = { viewModel.dropInsulinMenu(false) }
@@ -204,92 +204,6 @@ fun Units(
                 )
             }
         }
-    }
-}
-
-@ExperimentalMaterialApi
-@Composable
-fun InsulinDropDownMenu(
-    selectedInsulin: Insulin?,
-    insulins: List<Insulin>,
-    show: Boolean,
-    onClick: () -> Unit,
-    select: (Insulin) -> Unit,
-    dismiss: () -> Unit
-) {
-
-    Box {
-        if (selectedInsulin != null) {
-            Row(
-                modifier = Modifier
-                    .clickable { onClick() }
-                    .width(40.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                InsulinColorCircle(
-                    color = Color(android.graphics.Color.parseColor(selectedInsulin.color)),
-                    modifier = Modifier
-                        .align(Alignment.Bottom)
-                )
-
-                Text(
-                    text = selectedInsulin.name,
-                    style = DiaryTheme.typography.body,
-                    color = Color.White,
-                    modifier = Modifier.padding(start = 15.dp),
-                    textAlign = TextAlign.Center
-                )
-
-                Icon(
-                    imageVector = Icons.Filled.ArrowDropDown,
-                    contentDescription = "drop down icon",
-                    modifier = Modifier.padding(start = 20.dp).size(40.dp),
-                    tint = Color.White
-                )
-
-            }
-        }
-
-        DropdownMenu(
-            expanded = show,
-            onDismissRequest = { dismiss() },
-            modifier = Modifier
-                .background(Color.White)
-
-        ) {
-            insulins.forEach {
-                DropdownMenuItem(
-                    onClick = {
-                        select(it)
-                        dismiss()
-                    },
-                    modifier = Modifier
-                ) {
-                    InsulinMenuItem(insulin = it)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun InsulinMenuItem(insulin: Insulin) {
-
-    Row(
-        horizontalArrangement = Arrangement.Center
-    ) {
-        InsulinColorCircle(
-            color = Color(android.graphics.Color.parseColor(insulin.color)),
-            modifier = Modifier
-                .align(Alignment.Bottom)
-        )
-
-        Text(
-            text = insulin.name,
-            style = DiaryTheme.typography.body,
-            color = Color.Black,
-            modifier = Modifier.padding(start = 15.dp)
-        )
     }
 }
 

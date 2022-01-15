@@ -44,7 +44,9 @@ class RecordViewModel @Inject constructor(
         Log.d("debugInsulin", "insulins")
         _uiState.value = _uiState.value.copy(loading = true)
         repository.insulins().fold(
-            ifLeft = {},
+            ifLeft = {
+                Log.d("debugInsulin", "returns left")
+            },
             ifRight = {
                 val insulins = it.insulins()
                 _uiState.value = _uiState.value.copy(insulins = insulins!!, selectedInsulin = insulins.first(), loading = false)
