@@ -5,29 +5,22 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AddCircle
-import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.insets.imePadding
+import com.pchpsky.diary.R
 import com.pchpsky.diary.presentation.components.*
 import com.pchpsky.diary.presentation.components.dropdownmenu.DiaryDropDownMenu
 import com.pchpsky.diary.presentation.record.FakeRecordInsulinViewModel
@@ -35,6 +28,7 @@ import com.pchpsky.diary.presentation.record.RecordViewModel
 import com.pchpsky.diary.presentation.record.insulin.interfacies.RecordInsulinViewModel
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.pchpsky.diary.presentation.theme.blue
+import com.pchpsky.diary.presentation.theme.green
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -50,6 +44,7 @@ fun RecordInsulinScreen(
     val focusManager = LocalFocusManager.current
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    val noteText = remember { mutableStateOf("") }
 
     LaunchedEffect(true) {
         viewModel.insulins()
@@ -58,22 +53,25 @@ fun RecordInsulinScreen(
     @Composable
     fun Screen() {
         if (viewState.loading) return
-        Column(
+        ConstraintLayout(
             modifier = Modifier
                 .background(DiaryTheme.colors.background)
                 .fillMaxSize()
+                .imePadding()
                 .clickable(
                     indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) { focusManager.clearFocus(true) },
-
-
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                    interactionSource = remember { MutableInteractionSource() },
+                    ) { focusManager.clearFocus(true) }
         ) {
+            val (insulinUnits, timePicker, datePicker, dropDownMenu, noteTextField, addRecordButton)
+            = createRefs()
+
             Units(
                 units = viewState.units.toString(),
-                modifier = Modifier.align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .constrainAs(insulinUnits) {
+                        centerHorizontallyTo(parent)
+                    },
                 increment = { viewModel.incrementUnits() },
                 decrement = {
                     viewModel.decrementUnits()
@@ -85,26 +83,34 @@ fun RecordInsulinScreen(
                 text = viewState.time,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .clickable {
-                        viewModel.showTimePicker(true)
+                    .clickable { viewModel.showTimePicker(true) }
+                    .constrainAs(timePicker) {
+                        top.linkTo(insulinUnits.bottom, 20.dp)
+                        start.linkTo(parent.start, 20.dp)
                     },
                 color = DiaryTheme.colors.text,
-                style = DiaryTheme.typography.primaryHeader
+                style = DiaryTheme.typography.pickers
             )
 
             Text(
                 text = viewState.date,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .clickable {
-                        viewModel.showDatePicker(true)
+                    .clickable { viewModel.showDatePicker(true) }
+                    .constrainAs(datePicker) {
+                        top.linkTo(insulinUnits.bottom, 20.dp)
+                        end.linkTo(parent.end, 20.dp)
                     },
                 color = DiaryTheme.colors.text,
-                style = DiaryTheme.typography.primaryHeader
+                style = DiaryTheme.typography.pickers
             )
 
             DiaryDropDownMenu(
-                modifier = Modifier,
+                modifier = Modifier
+                    .constrainAs(dropDownMenu) {
+                        top.linkTo(timePicker.bottom, 20.dp)
+                        centerHorizontallyTo(parent)
+                    },
                 selectedInsulin = viewState.selectedInsulin,
                 insulins = viewState.insulins,
                 expanded = viewState.dropDownInsulinMenu,
@@ -112,8 +118,30 @@ fun RecordInsulinScreen(
                 select = { viewModel.selectInsulin(it) },
                 dismiss = { viewModel.dropInsulinMenu(false) }
             )
-        }
 
+            NoteTextField(
+                value = noteText,
+                modifier = Modifier.constrainAs(noteTextField) {
+                    top.linkTo(dropDownMenu.bottom, 20.dp)
+                    start.linkTo(parent.start, 20.dp)
+                    end.linkTo(parent.end, 20.dp)
+                    width = Dimension.fillToConstraints
+                }
+            )
+
+            RoundedFilledButton(
+                stringResource(R.string.add_record),
+                modifier = Modifier
+                    .constrainAs(addRecordButton) {
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start, 40.dp)
+                        end.linkTo(parent.end, 40.dp)
+                        width = Dimension.fillToConstraints
+                    },
+                color = green,
+                onClick = {}
+            )
+        }
     }
 
     Scaffold(
@@ -158,100 +186,6 @@ fun RecordInsulinScreen(
             }
         )
     }
-}
-
-@SuppressLint("UnrememberedMutableState")
-@ExperimentalComposeUiApi
-@Composable
-fun Units(
-    units: String,
-    modifier: Modifier,
-    increment: () -> Unit,
-    decrement: () -> Unit,
-    setUnits: (String) -> Unit
-) {
-
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(15.dp),
-        modifier = modifier
-            .wrapContentWidth()
-            .padding(vertical = 20.dp)
-    ) {
-
-        UnitsInputField(
-            units = mutableStateOf(units),
-            setUnits = { points -> setUnits(points) }
-        )
-
-        Column(
-            modifier = Modifier.align(Alignment.CenterVertically),
-        ) {
-            IconButton(onClick = { increment() }) {
-                Icon(
-                    imageVector = Icons.Rounded.AddCircle,
-                    contentDescription = "",
-                    modifier = Modifier.size(36.dp),
-                    tint = Color.White
-                )
-            }
-
-            IconButton(onClick = { decrement() }) {
-                Icon(
-                    imageVector = Icons.Rounded.RemoveCircle,
-                    contentDescription = null,
-                    modifier = Modifier.size(36.dp),
-                    tint = Color.White
-                )
-            }
-        }
-    }
-}
-
-@ExperimentalComposeUiApi
-@Composable
-fun UnitsInputField(units: MutableState<String>, setUnits: (String) -> Unit) {
-
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
-
-    BasicTextField(
-        value = units.value,
-        onValueChange = {
-            units.value = it
-        },
-        textStyle = DiaryTheme.typography.insulinUnits,
-        modifier = Modifier
-            .width(250.dp)
-            .height(IntrinsicSize.Min)
-            .padding(horizontal = 10.dp)
-            .onFocusChanged {
-                if (!it.isCaptured) {
-                    setUnits(units.value)
-                }
-            },
-        decorationBox = {
-            it()
-        },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done,
-            keyboardType = KeyboardType.Number
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                setUnits(units.value)
-                keyboardController?.hide()
-                focusManager.clearFocus()
-            }
-        ),
-        cursorBrush = Brush.verticalGradient(
-            0.00f to Color.Transparent,
-            0.27f to Color.Transparent,
-            0.27f to Color.White,
-            0.80f to Color.White,
-            0.80f to Color.Transparent,
-            1.00f to Color.Transparent
-        )
-    )
 }
 
 @ExperimentalMaterialApi

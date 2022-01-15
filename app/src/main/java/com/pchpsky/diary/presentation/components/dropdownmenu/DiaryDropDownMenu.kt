@@ -31,10 +31,12 @@ fun DiaryDropDownMenu(
     select: (Insulin) -> Unit,
     dismiss: () -> Unit
 ) {
-    Box {
+    Box(
+        modifier = modifier
+    ) {
         if (selectedInsulin != null) {
             Row(
-                modifier = modifier
+                modifier = Modifier
                     .clickable { onClick() },
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
@@ -50,16 +52,16 @@ fun DiaryDropDownMenu(
                     modifier = Modifier,
                     textAlign = TextAlign.Center
                 )
-
-                Icon(
-                    imageVector = Icons.Filled.ArrowDropDown,
-                    contentDescription = "drop down icon",
-                    modifier = Modifier
-                        .size(40.dp),
-                    tint = Color.White
-                )
-
             }
+
+            Icon(
+                imageVector = Icons.Filled.ArrowDropDown,
+                contentDescription = "drop down icon",
+                modifier = Modifier
+                    .size(40.dp)
+                    .align(Alignment.CenterEnd),
+                tint = Color.White
+            )
         }
 
         DropdownMenu(

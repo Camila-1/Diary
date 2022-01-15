@@ -1,9 +1,11 @@
 package com.pchpsky.diary.presentation.record
 
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.extensions.insulins
+import com.pchpsky.diary.extensions.toHex
 import com.pchpsky.diary.extensions.toValidDouble
 import com.pchpsky.diary.presentation.record.insulin.RecordInsulinViewState
 import com.pchpsky.diary.presentation.record.insulin.interfacies.RecordInsulinRepository
@@ -80,7 +82,11 @@ class RecordViewModel @Inject constructor(
 }
 
 val FakeRecordInsulinViewModel = object : RecordInsulinViewModel {
-    override val uiState: StateFlow<RecordInsulinViewState> = MutableStateFlow(RecordInsulinViewState())
+    override val uiState: StateFlow<RecordInsulinViewState> =
+        MutableStateFlow(
+            RecordInsulinViewState()
+                .copy(selectedInsulin = Insulin("id", Color.Blue.toHex(), "Test Insulin"))
+        )
     override fun decrementUnits() {}
     override fun incrementUnits() {}
     override fun setUnits(points: String) {}
