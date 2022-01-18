@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.pchpsky.diary.presentation.components.*
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.extensions.toHex
+import com.pchpsky.diary.presentation.components.textfield.LinedTextField
 import com.pchpsky.diary.presentation.settings.*
 import com.pchpsky.diary.presentation.settings.interfaces.SettingsViewModel
 import com.pchpsky.diary.presentation.theme.DiaryTheme

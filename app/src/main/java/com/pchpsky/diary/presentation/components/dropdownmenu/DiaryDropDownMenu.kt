@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.data.network.model.Insulin
@@ -33,12 +34,17 @@ fun DiaryDropDownMenu(
 ) {
     Box(
         modifier = modifier
+            .fillMaxWidth(.6f),
+        contentAlignment = Alignment.Center
     ) {
         if (selectedInsulin != null) {
             Row(
                 modifier = Modifier
-                    .clickable { onClick() },
-                horizontalArrangement = Arrangement.spacedBy(15.dp)
+                    .clickable { onClick() }
+
+                    .padding(end =15.dp),
+                horizontalArrangement = Arrangement.spacedBy(15.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 InsulinColorCircle(
                     color = Color(android.graphics.Color.parseColor(selectedInsulin.color)),
@@ -50,7 +56,9 @@ fun DiaryDropDownMenu(
                     style = DiaryTheme.typography.body,
                     color = Color.White,
                     modifier = Modifier,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
 
@@ -92,13 +100,13 @@ fun DropDownMenuPreview() {
     DiaryTheme {
         Box(
             modifier = Modifier
-                .wrapContentSize()
+                .fillMaxSize()
                 .padding(top = 150.dp)
         ) {
             DiaryDropDownMenu(
                 modifier = Modifier
                     .align(Alignment.Center),
-                selectedInsulin = Insulin("id", Color.Blue.toHex(), "Test Insulin"),
+                selectedInsulin = Insulin("id", Color.Blue.toHex(), "Test Insulinjfjfhfjhfhdfhhjfhjhhfjhhj"),
                 insulins = listOf(
                     Insulin("id", Color.Blue.toHex(), "Test Insulin"),
                     Insulin("id", Color.Red.toHex(), "Test Insulin test test test"),
