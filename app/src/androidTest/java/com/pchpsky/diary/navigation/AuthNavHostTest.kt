@@ -7,8 +7,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.pchpsky.diary.screens.auth.AuthNavHost
-import com.pchpsky.diary.theme.DiaryTheme
+import com.pchpsky.diary.presentation.auth.AuthNavHost
+import com.pchpsky.diary.presentation.theme.DiaryTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
