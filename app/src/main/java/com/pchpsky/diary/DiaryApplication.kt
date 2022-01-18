@@ -5,8 +5,4 @@ import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class DiaryApplication : Application() {
-
-
-
-}
+class DiaryApplication : Application()

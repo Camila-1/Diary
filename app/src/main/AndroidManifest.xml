@@ -13,7 +13,7 @@
         tools:ignore="AllowBackup"
         android:name=".DiaryApplication">
         <activity
-            android:name=".screens.launch.LaunchActivity"
+            android:name="com.pchpsky.diary.presentation.launch.LaunchActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
         </activity>
 
         <activity
-            android:name=".screens.auth.AuthActivity"
+            android:name="com.pchpsky.diary.presentation.auth.AuthActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
         </activity>

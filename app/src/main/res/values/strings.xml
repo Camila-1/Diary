@@ -14,4 +14,7 @@
     <string name="submit">Submit</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+
+    <!-- Record -->
+    <string name="add_record">Add Record</string>
 </resources>
