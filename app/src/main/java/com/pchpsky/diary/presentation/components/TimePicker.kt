@@ -9,7 +9,6 @@ import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable

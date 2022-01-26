@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
@@ -14,17 +13,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.pchpsky.diary.navigation.AuthRoute
-import com.pchpsky.diary.presentation.auth.ui.Login
-import com.pchpsky.diary.presentation.auth.ui.SignUp
-import com.pchpsky.diary.presentation.auth.ui.StartScreen
+import com.pchpsky.diary.presentation.auth.login.LoginScreen
+import com.pchpsky.diary.presentation.auth.signup.SignUpScreen
+import com.pchpsky.diary.presentation.auth.start.StartScreen
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class AuthActivity : ComponentActivity() {
-
-    val viewModel: AuthViewModel by viewModels()
 
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +54,7 @@ fun AuthNavHost(navController: NavHostController) {
                 navigateToSignupScreen = { navController.navigate(AuthRoute.SIGNUP.route) }
             )
         }
-        composable(AuthRoute.LOGIN.route) { Login() }
-        composable(AuthRoute.SIGNUP.route) { SignUp() }
+        composable(AuthRoute.LOGIN.route) { LoginScreen() }
+        composable(AuthRoute.SIGNUP.route) { SignUpScreen() }
     }
 }
