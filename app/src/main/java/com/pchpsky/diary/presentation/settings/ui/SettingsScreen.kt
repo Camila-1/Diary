@@ -25,13 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.pchpsky.diary.presentation.components.*
 import com.pchpsky.diary.data.network.model.Insulin
-import com.pchpsky.diary.extensions.toHex
+import com.pchpsky.diary.presentation.components.*
 import com.pchpsky.diary.presentation.components.textfield.LinedTextField
 import com.pchpsky.diary.presentation.settings.*
 import com.pchpsky.diary.presentation.settings.interfaces.SettingsViewModel
 import com.pchpsky.diary.presentation.theme.DiaryTheme
+import com.pchpsky.diary.utils.extensions.toHex
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.launch
 

@@ -1,19 +1,19 @@
-package com.pchpsky.diary.presentation.settings
+package com.pchpsky.diary.data.repositories
 
 import arrow.core.Either
 import com.pchpsky.diary.data.localstorage.DataStoreManager
 import com.pchpsky.diary.data.network.NetworkClient
 import com.pchpsky.diary.data.network.exceptions.NetworkError
-import com.pchpsky.diary.presentation.settings.interfaces.SettingsRepository
+import com.pchpsky.diary.data.repositories.interfacies.SettingsDataSource
 import com.pchpsky.schema.CreateInsulinMutation
 import com.pchpsky.schema.InsulinsQuery
 import com.pchpsky.schema.SettingsQuery
 import com.pchpsky.schema.UpdateSettingsMutation
 
-class UserSettingsRepository(
+class SettingsRepository(
     private val networkClient: NetworkClient,
     private val dataStoreManager: DataStoreManager
-) : SettingsRepository {
+) : SettingsDataSource {
 
     override suspend fun createInsulin(
         color: String,

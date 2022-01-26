@@ -1,7 +1,7 @@
-package com.pchpsky.diary.presentation.record.insulin.interfacies
+package com.pchpsky.diary.presentation.recordinsulin.interfacies
 
 import com.pchpsky.diary.data.network.model.Insulin
-import com.pchpsky.diary.presentation.record.insulin.RecordInsulinViewState
+import com.pchpsky.diary.presentation.recordinsulin.RecordInsulinViewState
 import kotlinx.coroutines.flow.StateFlow
 
 interface RecordInsulinViewModel {

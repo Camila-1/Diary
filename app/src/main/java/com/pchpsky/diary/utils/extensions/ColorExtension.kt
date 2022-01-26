@@ -1,8 +1,8 @@
-package com.pchpsky.diary.extensions
+package com.pchpsky.diary.utils.extensions
 
+import android.graphics.Color.parseColor
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import android.graphics.Color.parseColor
 
 fun Color.toHex(): String {
     return "#" + Integer.toHexString(toArgb()).drop(2)

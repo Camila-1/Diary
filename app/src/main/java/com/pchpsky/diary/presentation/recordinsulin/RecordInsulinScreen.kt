@@ -23,9 +23,9 @@ import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.R
 import com.pchpsky.diary.presentation.components.*
 import com.pchpsky.diary.presentation.components.dropdownmenu.DiaryDropDownMenu
-import com.pchpsky.diary.presentation.record.FakeRecordInsulinViewModel
-import com.pchpsky.diary.presentation.record.RecordViewModel
-import com.pchpsky.diary.presentation.record.insulin.interfacies.RecordInsulinViewModel
+import com.pchpsky.diary.presentation.recordinsulin.FakeRecordInsulinViewModel
+import com.pchpsky.diary.presentation.recordinsulin.InsulinViewModel
+import com.pchpsky.diary.presentation.recordinsulin.interfacies.RecordInsulinViewModel
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.pchpsky.diary.presentation.theme.blue
 import com.pchpsky.diary.presentation.theme.green
@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 @ExperimentalComposeUiApi
 @Composable
 fun RecordInsulinScreen(
-    viewModel: RecordInsulinViewModel = hiltViewModel<RecordViewModel>(),
+    viewModel: RecordInsulinViewModel = hiltViewModel<InsulinViewModel>(),
     onBackClick: () -> Unit
 ) {
 

@@ -1,4 +1,4 @@
-package com.pchpsky.diary.extensions
+package com.pchpsky.diary.utils.extensions
 
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.schema.CreateInsulinMutation

@@ -1,10 +1,9 @@
-package com.pchpsky.diary.presentation.record.insulin
+package com.pchpsky.diary.presentation.recordinsulin
 
 import com.pchpsky.diary.data.network.model.Insulin
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 data class RecordInsulinViewState(
     val units: Double = 1.0,

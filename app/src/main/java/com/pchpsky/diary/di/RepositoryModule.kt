@@ -2,12 +2,12 @@ package com.pchpsky.diary.di
 
 import com.pchpsky.diary.data.localstorage.DataStoreManager
 import com.pchpsky.diary.data.network.NetworkClient
+import com.pchpsky.diary.data.repositories.RecordInsulinRepository
+import com.pchpsky.diary.data.repositories.SettingsRepository
+import com.pchpsky.diary.data.repositories.interfacies.InsulinDataSource
+import com.pchpsky.diary.data.repositories.interfacies.SettingsDataSource
 import com.pchpsky.diary.presentation.auth.AuthRepository
 import com.pchpsky.diary.presentation.auth.interfaces.AuthController
-import com.pchpsky.diary.presentation.record.RecordRepository
-import com.pchpsky.diary.presentation.record.insulin.interfacies.RecordInsulinRepository
-import com.pchpsky.diary.presentation.settings.UserSettingsRepository
-import com.pchpsky.diary.presentation.settings.interfaces.SettingsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,14 +20,17 @@ class RepositoriesModule {
 
     @Provides
     @ViewModelScoped
-    fun provideSettingsRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): SettingsRepository {
-        return UserSettingsRepository(networkClient, dataStoreManager)
+    fun provideSettingsRepository(networkClient: NetworkClient, dataStoreManager: DataStoreManager): SettingsDataSource {
+        return SettingsRepository(
+            networkClient,
+            dataStoreManager
+        )
     }
 
     @Provides
     @ViewModelScoped
-    fun provideInsulinTakingRepository(networkClient: NetworkClient): RecordInsulinRepository {
-        return RecordRepository(networkClient)
+    fun provideInsulinTakingRepository(networkClient: NetworkClient): InsulinDataSource {
+        return RecordInsulinRepository(networkClient)
     }
 
     @Provides

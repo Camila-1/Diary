@@ -1,6 +1,6 @@
 package com.pchpsky.diary.presentation.theme
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 val lightGreen = Color(0xff5D9A0F)

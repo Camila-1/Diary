@@ -1,7 +1,9 @@
 package com.pchpsky.diary.presentation.components.drawer
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberDrawerState

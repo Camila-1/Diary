@@ -1,6 +1,4 @@
-package com.pchpsky.diary.extensions
-
-import arrow.core.valid
+package com.pchpsky.diary.utils.extensions
 
 fun String.toValidDouble(): Double? {
     return toDoubleOrNull() ?:

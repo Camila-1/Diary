@@ -1,24 +1,24 @@
-package com.pchpsky.diary.presentation.record
+package com.pchpsky.diary.presentation.recordinsulin
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.pchpsky.diary.data.network.model.Insulin
-import com.pchpsky.diary.extensions.insulins
-import com.pchpsky.diary.extensions.toHex
-import com.pchpsky.diary.extensions.toValidDouble
-import com.pchpsky.diary.presentation.record.insulin.RecordInsulinViewState
-import com.pchpsky.diary.presentation.record.insulin.interfacies.RecordInsulinRepository
-import com.pchpsky.diary.presentation.record.insulin.interfacies.RecordInsulinViewModel
+import com.pchpsky.diary.data.repositories.interfacies.InsulinDataSource
+import com.pchpsky.diary.presentation.recordinsulin.interfacies.RecordInsulinViewModel
+import com.pchpsky.diary.utils.extensions.insulins
+import com.pchpsky.diary.utils.extensions.toHex
+import com.pchpsky.diary.utils.extensions.toValidDouble
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class RecordViewModel @Inject constructor(
-    private val repository: RecordInsulinRepository
-    ) : ViewModel(), RecordInsulinViewModel {
+class InsulinViewModel @Inject constructor(
+    private val repository: InsulinDataSource
+    ) : ViewModel(),
+    RecordInsulinViewModel {
 
     private var _uiState = MutableStateFlow(RecordInsulinViewState())
     override val uiState: StateFlow<RecordInsulinViewState> = _uiState
@@ -81,7 +81,8 @@ class RecordViewModel @Inject constructor(
     }
 }
 
-val FakeRecordInsulinViewModel = object : RecordInsulinViewModel {
+val FakeRecordInsulinViewModel = object :
+    RecordInsulinViewModel {
     override val uiState: StateFlow<RecordInsulinViewState> =
         MutableStateFlow(
             RecordInsulinViewState()

@@ -1,4 +1,4 @@
-package com.pchpsky.diary.presentation.record.glucose.ui
+package com.pchpsky.diary.presentation.recordglucose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
