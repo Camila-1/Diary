@@ -1,4 +1,4 @@
-package com.pchpsky.diary.presentation.auth.ui
+package com.pchpsky.diary.presentation.auth.signup
 
 import android.content.Context
 import android.content.Intent
@@ -26,7 +26,7 @@ import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.MainActivity
 import com.pchpsky.diary.R
 import com.pchpsky.diary.presentation.auth.*
-import com.pchpsky.diary.presentation.auth.interfaces.SignupViewModel
+import com.pchpsky.diary.presentation.auth.signup.interfacies.SignupViewModel
 import com.pchpsky.diary.presentation.components.OutlinedTextField
 import com.pchpsky.diary.presentation.components.RoundedFilledButton
 import com.pchpsky.diary.presentation.theme.DiaryTheme
@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun SignUp(viewModel: SignupViewModel = hiltViewModel<AuthViewModel>()) {
+fun SignUpScreen(viewModel: SignupViewModel = hiltViewModel<SignupViewModelImpl>()) {
 
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -150,6 +150,6 @@ fun openHomeScreen(context: Context) {
 @Composable
 fun SignUpPreview() {
     DiaryTheme(darkTheme = true) {
-        SignUp(FakeAuthViewModel)
+        SignUpScreen(FakeAuthViewModel)
     }
 }

@@ -1,4 +1,4 @@
-package com.pchpsky.diary.presentation.auth.ui
+package com.pchpsky.diary.presentation.auth.login
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -26,9 +26,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.R
 import com.pchpsky.diary.presentation.auth.AuthState
-import com.pchpsky.diary.presentation.auth.AuthViewModel
-import com.pchpsky.diary.presentation.auth.FakeAuthViewModel
-import com.pchpsky.diary.presentation.auth.interfaces.LoginViewModel
+import com.pchpsky.diary.presentation.auth.login.interfacies.LoginViewModel
+import com.pchpsky.diary.presentation.auth.signup.openHomeScreen
 import com.pchpsky.diary.presentation.components.ErrorMessage
 import com.pchpsky.diary.presentation.components.OutlinedTextField
 import com.pchpsky.diary.presentation.components.RoundedFilledButton
@@ -39,7 +38,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("CoroutineCreationDuringComposition")
 @ExperimentalComposeUiApi
 @Composable
-fun Login(viewModel: LoginViewModel = hiltViewModel<AuthViewModel>()) {
+fun LoginScreen(viewModel: LoginViewModel = hiltViewModel<LoginViewModelImpl>()) {
 
     val login = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -150,6 +149,6 @@ fun LoginPasswordTextField(password: MutableState<String>, errorMessage: String?
 @Preview
 fun LoginPreview() {
     DiaryTheme(darkTheme = true) {
-        Login(FakeAuthViewModel)
+        LoginScreen(FakeAuthViewModel)
     }
 }

@@ -4,7 +4,6 @@ import arrow.core.Either
 import arrow.core.Right
 import com.apollographql.apollo.api.Operation
 import com.pchpsky.diary.data.network.exceptions.NetworkError
-import com.pchpsky.diary.presentation.auth.interfaces.AuthController
 import com.pchpsky.schema.CreateSessionMutation
 import com.pchpsky.schema.CreateUserMutation
 import kotlinx.coroutines.runBlocking

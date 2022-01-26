@@ -1,4 +1,4 @@
-package com.pchpsky.diary.presentation.auth.interfaces
+package com.pchpsky.diary.presentation.auth.signup.interfacies
 
 import com.pchpsky.diary.presentation.auth.AuthState
 import kotlinx.coroutines.flow.StateFlow

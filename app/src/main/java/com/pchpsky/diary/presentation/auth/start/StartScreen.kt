@@ -1,4 +1,4 @@
-package com.pchpsky.diary.presentation.auth.ui
+package com.pchpsky.diary.presentation.auth.start
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

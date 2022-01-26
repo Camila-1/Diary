@@ -1,10 +1,10 @@
-package com.pchpsky.diary.presentation.auth
+package com.pchpsky.diary.presentation.auth.signup
 
 import androidx.lifecycle.ViewModel
 import com.pchpsky.diary.data.network.exceptions.NetworkError
-import com.pchpsky.diary.presentation.auth.interfaces.AuthController
-import com.pchpsky.diary.presentation.auth.interfaces.LoginViewModel
-import com.pchpsky.diary.presentation.auth.interfaces.SignupViewModel
+import com.pchpsky.diary.data.repositories.interfacies.SignupController
+import com.pchpsky.diary.presentation.auth.AuthState
+import com.pchpsky.diary.presentation.auth.signup.interfacies.SignupViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,28 +17,11 @@ enum class FieldKey(val key: String) {
 }
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(private val repository: AuthController) : ViewModel(), LoginViewModel, SignupViewModel {
+class SignupViewModelImpl @Inject constructor(private val signupController: SignupController) : SignupViewModel, ViewModel() {
 
     private val _uiState: MutableStateFlow<AuthState> = MutableStateFlow(AuthState.None)
 
     override val uiState: StateFlow<AuthState> = _uiState
-
-    override suspend fun login(login: String, password: String) {
-        _uiState.value = AuthState.Loading
-
-        repository.login(login, password).fold(
-            {
-                when(it) {
-                    is NetworkError.ServerError -> { AuthState.ServerError }
-                    is NetworkError.AuthenticationError -> { AuthState.AuthenticationError(it.message) }
-                    is NetworkError.ValidationError -> { AuthState.ValidationError(it.fields) }
-                }
-            },
-            {
-                AuthState.SignupSuccessful
-            }
-        ).also { _uiState.value = it }
-    }
 
     override suspend fun createUser(email: String, password: String, passwordConfirmation: String) {
         if (!password.contentEquals(passwordConfirmation)) {
@@ -47,7 +30,7 @@ class AuthViewModel @Inject constructor(private val repository: AuthController) 
         }
         _uiState.value = AuthState.Loading
 
-        repository.createUserAndSaveUserToken(email, password).fold(
+        signupController.createUserAndSaveUserToken(email, password).fold(
             {
                 when(it) {
                     NetworkError.ServerError -> { AuthState.ServerError }
@@ -62,8 +45,7 @@ class AuthViewModel @Inject constructor(private val repository: AuthController) 
     }
 }
 
-object FakeAuthViewModel : LoginViewModel, SignupViewModel {
+object FakeAuthViewModel : SignupViewModel {
     override val uiState: StateFlow<AuthState> = MutableStateFlow(AuthState.ValidationError(emptyMap()))
     override suspend fun createUser(email: String, password: String, passwordConfirmation: String) {}
-    override suspend fun login(login: String, password: String) {}
 }
