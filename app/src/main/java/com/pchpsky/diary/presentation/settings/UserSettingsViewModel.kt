@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import arrow.core.extensions.list.foldable.find
 import arrow.core.getOrElse
 import com.pchpsky.diary.data.network.model.Insulin
-import com.pchpsky.diary.extensions.insulin
-import com.pchpsky.diary.extensions.insulins
-import com.pchpsky.diary.presentation.settings.interfaces.SettingsRepository
+import com.pchpsky.diary.data.repositories.interfacies.SettingsDataSource
 import com.pchpsky.diary.presentation.settings.interfaces.SettingsViewModel
+import com.pchpsky.diary.utils.extensions.insulin
+import com.pchpsky.diary.utils.extensions.insulins
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +26,7 @@ enum class GlucoseUnits(val unit: String) {
 
 @HiltViewModel
 class UserSettingsViewModel @Inject constructor(
-    private val repository: SettingsRepository
+    private val repository: SettingsDataSource
 ) : ViewModel(), SettingsViewModel {
 
     private var _uiState = MutableStateFlow(SettingsViewState())

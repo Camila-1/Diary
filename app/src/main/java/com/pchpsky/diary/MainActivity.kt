@@ -11,12 +11,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.presentation.components.HomeTopBar
 import com.pchpsky.diary.presentation.components.drawer.Drawer
-import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.presentation.home.Home
-import com.pchpsky.diary.presentation.record.glucose.ui.RecordGlucoseScreen
 import com.pchpsky.diary.presentation.record.insulin.ui.RecordInsulinScreen
+import com.pchpsky.diary.presentation.recordglucose.RecordGlucoseScreen
 import com.pchpsky.diary.presentation.settings.ui.Settings
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import dagger.hilt.android.AndroidEntryPoint

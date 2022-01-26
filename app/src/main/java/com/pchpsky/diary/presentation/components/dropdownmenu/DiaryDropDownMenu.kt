@@ -18,9 +18,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.data.network.model.Insulin
-import com.pchpsky.diary.extensions.toHex
 import com.pchpsky.diary.presentation.components.InsulinColorCircle
 import com.pchpsky.diary.presentation.theme.DiaryTheme
+import com.pchpsky.diary.utils.extensions.toHex
 
 @Composable
 fun DiaryDropDownMenu(
