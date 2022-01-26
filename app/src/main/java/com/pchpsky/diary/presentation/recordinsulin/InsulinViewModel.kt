@@ -50,6 +50,7 @@ class InsulinViewModel @Inject constructor(
                 Log.d("debugInsulin", "returns left")
             },
             ifRight = {
+                Log.d("debugInsulin", "returns right")
                 val insulins = it.insulins()
                 _uiState.value = _uiState.value.copy(insulins = insulins!!, selectedInsulin = insulins.first(), loading = false)
             }

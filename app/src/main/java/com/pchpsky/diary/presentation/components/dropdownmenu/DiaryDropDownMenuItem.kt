@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.data.network.model.Insulin
-import com.pchpsky.diary.presentation.components.InsulinColorCircle
+import com.pchpsky.diary.presentation.components.ColorCircle
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 
 @Composable
@@ -20,8 +20,9 @@ fun DiaryDropDownMenuItem(insulin: Insulin) {
     Row(
         horizontalArrangement = Arrangement.Center
     ) {
-        InsulinColorCircle(
+        ColorCircle(
             color = Color(android.graphics.Color.parseColor(insulin.color)),
+            size = 30.dp,
             modifier = Modifier
                 .align(Alignment.Bottom)
         )

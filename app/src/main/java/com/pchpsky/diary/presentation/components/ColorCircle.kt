@@ -7,17 +7,19 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun InsulinColorCircle(color: Color, modifier: Modifier) {
+fun ColorCircle(color: Color, size: Dp, modifier: Modifier) {
     Box(
         modifier = modifier
             .background(color, CircleShape)
-            .width(30.dp)
-            .height(30.dp)
+            .width(size)
+            .height(size)
     )
 }
 

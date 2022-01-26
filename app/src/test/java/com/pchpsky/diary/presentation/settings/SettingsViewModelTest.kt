@@ -2,6 +2,7 @@ package com.pchpsky.diary.presentation.settings
 
 import arrow.core.Right
 import com.pchpsky.diary.data.network.model.Insulin
+import com.pchpsky.diary.data.repositories.SettingsRepository
 import com.pchpsky.schema.CreateInsulinMutation
 import com.pchpsky.schema.DeleteInsulinMutation
 import com.pchpsky.schema.SettingsQuery
