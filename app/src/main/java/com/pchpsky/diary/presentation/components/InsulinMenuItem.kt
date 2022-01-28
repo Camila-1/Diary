@@ -18,16 +18,16 @@ import com.pchpsky.diary.utils.extensions.toHex
 fun InsulinMenuItem(insulin: Insulin) {
 
     Row(
-        modifier = Modifier.height(50.dp),
+        modifier = Modifier.height(20.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Text(
             text = insulin.name,
-            style = DiaryTheme.typography.recordInsulinMenuItem
+            style = DiaryTheme.typography.body
         )
         ColorCircle(
             color = Color(android.graphics.Color.parseColor(insulin.color)),
-            size = 50.dp,
+            size = 20.dp,
             modifier = Modifier
         )
     }
