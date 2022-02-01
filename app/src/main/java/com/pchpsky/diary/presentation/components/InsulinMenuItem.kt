@@ -1,9 +1,6 @@
 package com.pchpsky.diary.presentation.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,7 +15,8 @@ import com.pchpsky.diary.utils.extensions.toHex
 fun InsulinMenuItem(insulin: Insulin) {
 
     Row(
-        modifier = Modifier.height(20.dp),
+        modifier = Modifier
+            .height(20.dp),
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         Text(

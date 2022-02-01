@@ -1,10 +1,7 @@
 package com.pchpsky.diary.presentation.components.circularlist
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FloatSpringSpec
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.calculateTargetValue
-import androidx.compose.animation.splineBasedDecay
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.verticalDrag
@@ -13,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
@@ -48,6 +46,7 @@ data class CircularListConfig(
 @Stable
 interface CircularListState {
     val verticalOffset: Float
+    val visibility: Float
     val firstVisibleItem: Int
     val lastVisibleItem: Int
 
@@ -62,7 +61,8 @@ class CircularListStateImpl(
     currentOffset: Float = 0f,
 ) : CircularListState {
 
-    private val animatable = Animatable(currentOffset)
+    private val animatableOffset = Animatable(currentOffset)
+    private val animatableVisibility = Animatable(currentOffset)
     private var itemHeight = 0f
     private var config = CircularListConfig()
     private var initialOffset = 0f
@@ -75,7 +75,10 @@ class CircularListStateImpl(
         get() = -(config.numItems - 1) * itemHeight
 
     override val verticalOffset: Float
-        get() = animatable.value
+        get() = animatableOffset.value
+
+    override val visibility: Float
+        get() = animatableVisibility.value
 
     override val firstVisibleItem: Int
         get() = ((-verticalOffset - initialOffset) / itemHeight).toInt().coerceAtLeast(0)
@@ -85,9 +88,10 @@ class CircularListStateImpl(
             .coerceAtMost(config.numItems - 1)
 
     override suspend fun snapTo(value: Float) {
-        val minOvershoot = -(config.numItems - 1 + config.overshootItems) * itemHeight
+        val minOvershoot = -(config.numItems + config.overshootItems) * itemHeight
         val maxOvershoot = config.overshootItems * itemHeight
-        animatable.snapTo(value.coerceIn(minOvershoot, maxOvershoot))
+        animatableOffset.snapTo(value.coerceIn(minOvershoot, maxOvershoot))
+        animatableVisibility.snapTo(value.coerceIn(minOvershoot, maxOvershoot))
     }
 
     override suspend fun decayTo(velocity: Float, value: Float) {
@@ -95,15 +99,23 @@ class CircularListStateImpl(
         val remainder = (constrainedValue / itemHeight) - (constrainedValue / itemHeight).toInt()
         val extra = if (remainder <= 0.5f) 0 else 1
         val target =((constrainedValue / itemHeight).toInt() + extra) * itemHeight
-        animatable.animateTo(
+        animatableOffset.animateTo(
             targetValue = -target,
             initialVelocity = velocity,
             animationSpec = decayAnimationSpec,
         )
+        animatableVisibility.animateTo(
+            targetValue = target,
+            initialVelocity = velocity,
+            animationSpec = FloatSpringSpec(
+                visibilityThreshold = 0.5f
+            ),
+
+        )
     }
 
     override suspend fun stop() {
-        animatable.stop()
+        animatableOffset.stop()
     }
 
     override fun setup(config: CircularListConfig) {
@@ -135,7 +147,7 @@ class CircularListStateImpl(
 
         other as CircularListStateImpl
 
-        if (animatable.value != other.animatable.value) return false
+        if (animatableOffset.value != other.animatableOffset.value) return false
         if (itemHeight != other.itemHeight) return false
         if (config != other.config) return false
         if (initialOffset != other.initialOffset) return false
@@ -145,7 +157,7 @@ class CircularListStateImpl(
     }
 
     override fun hashCode(): Int {
-        var result = animatable.value.hashCode()
+        var result = animatableOffset.value.hashCode()
         result = 31 * result + itemHeight.hashCode()
         result = 31 * result + config.hashCode()
         result = 31 * result + initialOffset.hashCode()
@@ -186,7 +198,8 @@ fun CircularList(
     Layout(
         modifier = modifier
             .clipToBounds()
-            .drag(state).wrapContentWidth(),
+            .drag(state)
+            .wrapContentWidth(),
         content = content,
     ) { measurables, constraints ->
         val itemHeight = constraints.maxHeight / visibleItems
@@ -202,12 +215,38 @@ fun CircularList(
                 overshootItems = overshootItems,
             )
         )
+
+//        AnimatedVisibility(
+//            visible = true,
+//            enter = fadeIn(
+//                // Fade in with the initial alpha of 0.3f.
+//                initialAlpha = 0.3f
+//            ),
+//            exit =  fadeOut()
+//
+//        ) {
+//
+//        }
+
         layout(
             width = constraints.maxWidth,
             height = constraints.maxHeight,
         ) {
             for (i in state.firstVisibleItem..state.lastVisibleItem) {
                 placeables[i].placeRelative(state.offsetFor(placeables[i], i))
+            }
+        }
+    }
+}
+
+fun Modifier.animatedVisibility(state: CircularListState) = pointerInput(Unit) {
+    coroutineScope {
+        while (true) {
+            val pointerId = awaitPointerEventScope { awaitFirstDown().id }
+            awaitPointerEventScope {
+                verticalDrag(pointerId) { change ->
+
+                }
             }
         }
     }
@@ -268,7 +307,13 @@ fun CircularListPreview() {
                 visibleItems = 5,
                 circularFraction = 1.1f,
                 overshootItems = 1,
-                modifier = Modifier.height(180.dp).width(300.dp).background(Color.Red)
+                modifier = Modifier
+                    .height(150.dp)
+                    .width(200.dp)
+                    .background(Color.Red)
+                    .align(
+                        Alignment.CenterEnd
+                    )
             ) {
                 items.forEach {
                     InsulinMenuItem(insulin = it)
