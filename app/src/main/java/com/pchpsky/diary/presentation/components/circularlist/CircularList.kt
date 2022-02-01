@@ -8,13 +8,12 @@ import androidx.compose.animation.splineBasedDecay
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.verticalDrag
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
@@ -26,6 +25,7 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.presentation.components.InsulinMenuItem
 import com.pchpsky.diary.presentation.theme.DiaryTheme
@@ -112,15 +112,15 @@ class CircularListStateImpl(
     }
 
     override fun offsetFor(index: Int): IntOffset {
-        val maxOffset = config.contentHeight / 2f + itemHeight / 2f
+        val maxOffset = config.contentHeight / 15 + itemHeight / 8f
         val y = (verticalOffset + initialOffset + index * itemHeight)
         val deltaFromCenter = (y - initialOffset)
         val radius = config.contentHeight / 2f
-        val scaledY = deltaFromCenter.absoluteValue * (config.contentHeight / 2f / maxOffset)
+        val scaledY = deltaFromCenter.absoluteValue * (config.contentHeight / 5.5f / maxOffset)
         val x = if (scaledY < radius) {
-            sqrt((radius * radius - scaledY * scaledY))
+            sqrt((radius * radius + scaledY * 2 * scaledY))
         } else {
-            0f
+            6f
         }
         return IntOffset(
             x = (x * config.circularFraction).roundToInt(),
@@ -242,22 +242,22 @@ private fun Modifier.drag(
 @Composable
 @Preview
 fun CircularListPreview() {
-    val items = listOf(
-        Insulin("id", Color.Yellow .toHex(), "Test Insulin"),
-        Insulin("id", Color.Blue.toHex(), "Test Insulin"),
-        Insulin("id", Color.Green.toHex(), "Test Insulin"),
-        Insulin("id", Color.Yellow .toHex(), "Test Insulin"),
-        Insulin("id", Color.Blue.toHex(), "Test Insulin"),
-        Insulin("id", Color.Green.toHex(), "Test Insulin"),
-        Insulin("id", Color.Yellow .toHex(), "Test Insulin"),
-        Insulin("id", Color.Blue.toHex(), "Test Insulin"),
-        Insulin("id", Color.Green.toHex(), "Test Insulin"),
-        Insulin("id", Color.Yellow .toHex(), "Test Insulin"),
-        Insulin("id", Color.Blue.toHex(), "Test Insulin"),
-        Insulin("id", Color.Green.toHex(), "Test Insulin")
-    )
-
     DiaryTheme {
+        val items = listOf(
+            Insulin("id", Color.Yellow .toHex(), "Test Insulin"),
+            Insulin("id", Color.Blue.toHex(), "Test Insulin"),
+            Insulin("id", Color.Green.toHex(), "Test Insulin"),
+            Insulin("id", Color.Yellow .toHex(), "Test Insulin"),
+            Insulin("id", Color.Blue.toHex(), "Test Insulin"),
+            Insulin("id", Color.Green.toHex(), "Test Insulin"),
+            Insulin("id", Color.Yellow .toHex(), "Test Insulin"),
+            Insulin("id", Color.Blue.toHex(), "Test Insulin"),
+            Insulin("id", Color.Green.toHex(), "Test Insulin"),
+            Insulin("id", Color.Yellow .toHex(), "Test Insulin"),
+            Insulin("id", Color.Blue.toHex(), "Test Insulin"),
+            Insulin("id", Color.Green.toHex(), "Test Insulin")
+        )
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -267,7 +267,7 @@ fun CircularListPreview() {
                 visibleItems = 5,
                 circularFraction = .5f,
                 overshootItems = 1,
-                modifier = Modifier.wrapContentSize()
+                modifier = Modifier.width(250.dp).height(200.dp).align(Alignment.CenterEnd)
             ) {
                 items.forEach {
                     InsulinMenuItem(insulin = it)
