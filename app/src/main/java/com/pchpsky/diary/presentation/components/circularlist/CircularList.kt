@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
@@ -22,6 +21,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
@@ -38,6 +38,7 @@ import kotlin.math.sqrt
 
 data class CircularListConfig(
     val contentHeight: Float = 0f,
+    val contentWidth: Float = 0f,
     val numItems: Int = 0,
     val visibleItems: Int = 0,
     val circularFraction: Float = 1f,
@@ -53,7 +54,7 @@ interface CircularListState {
     suspend fun snapTo(value: Float)
     suspend fun decayTo(velocity: Float, value: Float)
     suspend fun stop()
-    fun offsetFor(index: Int): IntOffset
+    fun offsetFor(placeable: Placeable, index: Int): IntOffset
     fun setup(config: CircularListConfig)
 }
 
@@ -111,19 +112,19 @@ class CircularListStateImpl(
         initialOffset = (config.contentHeight - itemHeight) / 2f
     }
 
-    override fun offsetFor(index: Int): IntOffset {
-        val maxOffset = config.contentHeight / 15 + itemHeight / 8f
+    override fun offsetFor(placeable: Placeable, index: Int): IntOffset {
+        val maxOffset = config.contentHeight / 2f + itemHeight / 2f
         val y = (verticalOffset + initialOffset + index * itemHeight)
         val deltaFromCenter = (y - initialOffset)
         val radius = config.contentHeight / 2f
-        val scaledY = deltaFromCenter.absoluteValue * (config.contentHeight / 5.5f / maxOffset)
+        val scaledY = deltaFromCenter.absoluteValue * (config.contentHeight / 2f / maxOffset)
         val x = if (scaledY < radius) {
-            sqrt((radius * radius + scaledY * 2 * scaledY))
+            config.contentWidth - sqrt((radius * radius - scaledY * scaledY)) * config.circularFraction
         } else {
-            6f
+            config.contentWidth
         }
         return IntOffset(
-            x = (x * config.circularFraction).roundToInt(),
+            x = x.roundToInt() - placeable.width,
             y = y.roundToInt()
         )
     }
@@ -185,15 +186,16 @@ fun CircularList(
     Layout(
         modifier = modifier
             .clipToBounds()
-            .drag(state),
+            .drag(state).wrapContentWidth(),
         content = content,
     ) { measurables, constraints ->
         val itemHeight = constraints.maxHeight / visibleItems
-        val itemConstraints = Constraints.fixed(width = constraints.maxWidth, height = itemHeight)
+        val itemConstraints = Constraints.fixedHeight(itemHeight)
         val placeables = measurables.map { measurable -> measurable.measure(itemConstraints) }
         state.setup(
             CircularListConfig(
                 contentHeight = constraints.maxHeight.toFloat(),
+                contentWidth = constraints.maxWidth.toFloat(),
                 numItems = placeables.size,
                 visibleItems = visibleItems,
                 circularFraction = circularFraction,
@@ -205,7 +207,7 @@ fun CircularList(
             height = constraints.maxHeight,
         ) {
             for (i in state.firstVisibleItem..state.lastVisibleItem) {
-                placeables[i].placeRelative(state.offsetFor(i))
+                placeables[i].placeRelative(state.offsetFor(placeables[i], i))
             }
         }
     }
@@ -261,13 +263,12 @@ fun CircularListPreview() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DiaryTheme.colors.background)
         ) {
             CircularList(
                 visibleItems = 5,
-                circularFraction = .5f,
+                circularFraction = 1.1f,
                 overshootItems = 1,
-                modifier = Modifier.width(250.dp).height(200.dp).align(Alignment.CenterEnd)
+                modifier = Modifier.height(180.dp).width(300.dp).background(Color.Red)
             ) {
                 items.forEach {
                     InsulinMenuItem(insulin = it)
