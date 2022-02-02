@@ -1,14 +1,16 @@
 package com.pchpsky.diary.presentation.components
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.*
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.RemoveCircle
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -18,32 +20,59 @@ import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.presentation.components.textfield.UnitsInputField
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 
+@OptIn(ExperimentalAnimationApi::class)
 @SuppressLint("UnrememberedMutableState")
 @ExperimentalComposeUiApi
 @Composable
-fun Units(
-    units: String,
+fun UnitsCounter(
+    units: Int,
     modifier: Modifier,
     increment: () -> Unit,
     decrement: () -> Unit,
     setUnits: (String) -> Unit
 ) {
+    val previousValue = remember { mutableStateOf(units) }
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(15.dp),
         modifier = modifier
             .wrapContentWidth()
     ) {
-
-        UnitsInputField(
-            units = mutableStateOf(units),
-            setUnits = { points -> setUnits(points) }
-        )
+        Box(
+            modifier = Modifier
+                .border(1.dp, DiaryTheme.colors.divider, DiaryTheme.shapes.roundedTextField)
+                .wrapContentSize()
+        ) {
+            AnimatedContent(
+                targetState = units,
+                transitionSpec = {
+                    if (targetState < previousValue.value) {
+                        slideInVertically { fullHeight -> fullHeight } + fadeIn() with
+                                slideOutVertically { fullHeight -> -fullHeight } + fadeOut()
+                    } else {
+                        slideInVertically { fullHeight -> -fullHeight } + fadeIn() with
+                                slideOutVertically { fullHeight -> fullHeight } + fadeOut()
+                    }.using(SizeTransform(clip = false))
+                }
+            ) {
+                Text(
+                    text = units.toString(),
+                    style = DiaryTheme.typography.insulinUnits,
+                    modifier = Modifier
+                        .width(160.dp)
+                )
+            }
+        }
 
         Column(
             modifier = Modifier.align(Alignment.CenterVertically),
         ) {
-            IconButton(onClick = { increment() }) {
+            IconButton(
+                onClick = {
+                    previousValue.value = units
+                    increment()
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Rounded.AddCircle,
                     contentDescription = "",
@@ -52,7 +81,12 @@ fun Units(
                 )
             }
 
-            IconButton(onClick = { decrement() }) {
+            IconButton(
+                onClick = {
+                    previousValue.value = units
+                    decrement()
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Rounded.RemoveCircle,
                     contentDescription = null,
@@ -68,12 +102,13 @@ fun Units(
 @Composable
 @Preview
 fun UnitsPreview() {
+    var units by remember { mutableStateOf(1) }
     DiaryTheme {
-        Units(
-            units = "1",
+        UnitsCounter(
+            units = units,
             modifier = Modifier,
-            increment = {},
-            decrement = {},
+            increment = { units++ },
+            decrement = { units-- },
             setUnits = {}
         )
     }
