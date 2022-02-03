@@ -20,7 +20,7 @@ import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.pchpsky.diary.utils.extensions.toHex
 
 @Composable
-fun InsulinMenuButton(selectedInsulin: Insulin, onClick: () -> Unit) {
+fun InsulinMenuButton(selectedInsulin: Insulin, modifier: Modifier,  onClick: () -> Unit) {
     IconButton(
         onClick = { onClick() },
         modifier = Modifier
@@ -28,7 +28,7 @@ fun InsulinMenuButton(selectedInsulin: Insulin, onClick: () -> Unit) {
         Icon(
             imageVector = Icons.Filled.Eco,
             contentDescription = "insulin_menu_button",
-            modifier = Modifier
+            modifier = modifier
                 .background(Color(android.graphics.Color.parseColor(selectedInsulin.color)), shape = CircleShape)
                 .size(70.dp)
                 .padding(10.dp),
@@ -45,6 +45,6 @@ fun InsulinMenuButton(selectedInsulin: Insulin, onClick: () -> Unit) {
 @Preview
 fun InsulinMenuButtonPreview() {
     DiaryTheme {
-        InsulinMenuButton(Insulin("id", Color.Blue.toHex(), "Test Insulin")){}
+        InsulinMenuButton(Insulin("id", Color.Blue.toHex(), "Test Insulin"), Modifier){}
     }
 }

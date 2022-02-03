@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.data.repositories.interfacies.InsulinDataSource
-import com.pchpsky.diary.presentation.recordinsulin.interfacies.RecordInsulinViewModel
+import com.pchpsky.diary.presentation.recordinsulin.viewmodelinterface.RecordInsulinViewModel
 import com.pchpsky.diary.utils.extensions.insulins
 import com.pchpsky.diary.utils.extensions.toHex
 import com.pchpsky.diary.utils.extensions.toValidDouble
@@ -58,11 +58,11 @@ class InsulinViewModel @Inject constructor(
     }
 
     override fun selectInsulin(insulin: Insulin) {
-        _uiState.value = _uiState.value.copy(dropDownInsulinMenu = false, selectedInsulin = insulin)
+        _uiState.value = _uiState.value.copy(showInsulinMenu = false, selectedInsulin = insulin)
     }
 
-    override fun dropInsulinMenu(drop: Boolean) {
-        _uiState.value = _uiState.value.copy(dropDownInsulinMenu = drop)
+    override fun showInsulinMenu(show: Boolean) {
+        _uiState.value = _uiState.value.copy(showInsulinMenu = show)
     }
 
     override fun showTimePicker(show: Boolean) {
@@ -94,7 +94,7 @@ val FakeRecordInsulinViewModel = object :
     override fun setUnits(points: String) {}
     override suspend fun insulins() {}
     override fun selectInsulin(insulin: Insulin) {}
-    override fun dropInsulinMenu(drop: Boolean) {}
+    override fun showInsulinMenu(drop: Boolean) {}
     override fun showTimePicker(show: Boolean) {}
     override fun showDatePicker(show: Boolean) {}
     override fun selectTime(time: String) {}

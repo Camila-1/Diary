@@ -46,7 +46,7 @@ data class CircularListConfig(
 @Stable
 interface CircularListState {
     val verticalOffset: Float
-    val visibility: Float
+    var visible: Boolean
     val firstVisibleItem: Int
     val lastVisibleItem: Int
 
@@ -59,10 +59,10 @@ interface CircularListState {
 
 class CircularListStateImpl(
     currentOffset: Float = 0f,
+    override var visible: Boolean = false
 ) : CircularListState {
 
     private val animatableOffset = Animatable(currentOffset)
-    private val animatableVisibility = Animatable(currentOffset)
     private var itemHeight = 0f
     private var config = CircularListConfig()
     private var initialOffset = 0f
@@ -77,9 +77,6 @@ class CircularListStateImpl(
     override val verticalOffset: Float
         get() = animatableOffset.value
 
-    override val visibility: Float
-        get() = animatableVisibility.value
-
     override val firstVisibleItem: Int
         get() = ((-verticalOffset - initialOffset) / itemHeight).toInt().coerceAtLeast(0)
 
@@ -91,7 +88,6 @@ class CircularListStateImpl(
         val minOvershoot = -(config.numItems + config.overshootItems) * itemHeight
         val maxOvershoot = config.overshootItems * itemHeight
         animatableOffset.snapTo(value.coerceIn(minOvershoot, maxOvershoot))
-        animatableVisibility.snapTo(value.coerceIn(minOvershoot, maxOvershoot))
     }
 
     override suspend fun decayTo(velocity: Float, value: Float) {
@@ -103,14 +99,6 @@ class CircularListStateImpl(
             targetValue = -target,
             initialVelocity = velocity,
             animationSpec = decayAnimationSpec,
-        )
-        animatableVisibility.animateTo(
-            targetValue = target,
-            initialVelocity = velocity,
-            animationSpec = FloatSpringSpec(
-                visibilityThreshold = 0.5f
-            ),
-
         )
     }
 
@@ -186,6 +174,7 @@ fun rememberCircularListState(): CircularListState {
 @Composable
 fun CircularList(
     visibleItems: Int,
+    visible: Boolean,
     modifier: Modifier = Modifier,
     state: CircularListState = rememberCircularListState(),
     circularFraction: Float = 1f,
@@ -195,6 +184,7 @@ fun CircularList(
     check(visibleItems > 0) { "Visible items must be positive" }
     check(circularFraction > 0f) { "Circular fraction must be positive" }
 
+    if (!visible) return
     Layout(
         modifier = modifier
             .clipToBounds()
@@ -215,18 +205,6 @@ fun CircularList(
                 overshootItems = overshootItems,
             )
         )
-
-//        AnimatedVisibility(
-//            visible = true,
-//            enter = fadeIn(
-//                // Fade in with the initial alpha of 0.3f.
-//                initialAlpha = 0.3f
-//            ),
-//            exit =  fadeOut()
-//
-//        ) {
-//
-//        }
 
         layout(
             width = constraints.maxWidth,
@@ -305,6 +283,7 @@ fun CircularListPreview() {
         ) {
             CircularList(
                 visibleItems = 5,
+                visible = true,
                 circularFraction = 1.1f,
                 overshootItems = 1,
                 modifier = Modifier
@@ -316,7 +295,7 @@ fun CircularListPreview() {
                     )
             ) {
                 items.forEach {
-                    InsulinMenuItem(insulin = it)
+                    InsulinMenuItem(insulin = it) {}
                 }
             }
         }

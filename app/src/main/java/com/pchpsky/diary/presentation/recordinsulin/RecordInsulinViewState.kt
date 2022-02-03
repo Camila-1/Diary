@@ -10,7 +10,7 @@ data class RecordInsulinViewState(
     val selectedInsulin: Insulin? = null,
     val insulins: List<Insulin> = listOf(),
     val unitsInputError: String = "",
-    val dropDownInsulinMenu: Boolean = false,
+    val showInsulinMenu: Boolean = false,
     val showTimePicker: Boolean = false,
     val showDatePicker: Boolean = false,
     val time: String = LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm")),
