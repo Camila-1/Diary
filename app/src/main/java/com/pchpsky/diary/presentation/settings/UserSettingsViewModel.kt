@@ -3,8 +3,6 @@ package com.pchpsky.diary.presentation.settings
 import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import arrow.core.extensions.list.foldable.find
-import arrow.core.getOrElse
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.data.repositories.interfacies.SettingsDataSource
 import com.pchpsky.diary.presentation.settings.interfaces.SettingsViewModel
@@ -91,8 +89,7 @@ class UserSettingsViewModel @Inject constructor(
             ifLeft = {},
             ifRight = { data ->
                 val index = _uiState.value.insulins.indexOf(_uiState.value.insulins
-                        .find { it.id == data.insulin?.id!! }
-                        .getOrElse { 0 }
+                        .find { it.id == data.insulin?.id!! } ?: 0
                     )
 
                 val newList = mutableListOf<Insulin>()

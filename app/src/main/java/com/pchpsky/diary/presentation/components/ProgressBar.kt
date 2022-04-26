@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.pchpsky.diary.presentation.theme.green
@@ -20,7 +21,7 @@ fun ProgressBar(isDisplayed: Boolean) {
         modifier = Modifier
             .fillMaxSize()
             .background(DiaryTheme.colors.background)
-            .drawBehind {  },
+            .drawBehind { },
     ) {
         if (isDisplayed) {
             CircularProgressIndicator(
@@ -32,5 +33,13 @@ fun ProgressBar(isDisplayed: Boolean) {
                 strokeWidth = 10.dp,
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun PregressBarPreview(){
+    DiaryTheme {
+        ProgressBar(isDisplayed = true)
     }
 }
