@@ -27,7 +27,7 @@ import com.pchpsky.diary.MainActivity
 import com.pchpsky.diary.R
 import com.pchpsky.diary.presentation.auth.*
 import com.pchpsky.diary.presentation.auth.signup.interfacies.SignupViewModel
-import com.pchpsky.diary.presentation.components.OutlinedTextField
+import com.pchpsky.diary.presentation.components.textfield.OutlinedTextField
 import com.pchpsky.diary.presentation.components.RoundedFilledButton
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.pchpsky.diary.presentation.theme.green

@@ -29,7 +29,7 @@ import com.pchpsky.diary.presentation.auth.AuthState
 import com.pchpsky.diary.presentation.auth.login.interfacies.LoginViewModel
 import com.pchpsky.diary.presentation.auth.signup.openHomeScreen
 import com.pchpsky.diary.presentation.components.ErrorMessage
-import com.pchpsky.diary.presentation.components.OutlinedTextField
+import com.pchpsky.diary.presentation.components.textfield.OutlinedTextField
 import com.pchpsky.diary.presentation.components.RoundedFilledButton
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.pchpsky.diary.presentation.theme.green

@@ -1,13 +1,11 @@
 package com.pchpsky.diary.presentation.auth.signup
 
 import arrow.core.Either
-import arrow.core.Right
 import com.apollographql.apollo.api.Operation
 import com.pchpsky.diary.data.network.exceptions.NetworkError
 import com.pchpsky.diary.data.repositories.interfacies.SignupController
 import com.pchpsky.diary.presentation.auth.AuthState
 import com.pchpsky.schema.CreateUserMutation
-import junit.framework.TestCase
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
@@ -24,7 +22,7 @@ class SignupViewModelTest {
 
     @Test
     fun createUser_CreateUserRequest_UserSignedUp() = runBlocking {
-        val repository = repository(Right(CreateUserMutation.Data(session = null)))
+        val repository = repository(Either.Right(CreateUserMutation.Data(session = null)))
         val viewModel = SignupViewModelImpl(repository)
         val state = viewModel.uiState
         val password = "password"
@@ -35,7 +33,7 @@ class SignupViewModelTest {
 
     @Test
     fun createUser_DoesNotMatchPassword_ValidationError() = runBlocking {
-        val repository = repository(Right(CreateUserMutation.Data(session = null)))
+        val repository = repository(Either.Right(CreateUserMutation.Data(session = null)))
         val viewModel = SignupViewModelImpl(repository)
         val state = viewModel.uiState
 

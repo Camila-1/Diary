@@ -1,5 +1,6 @@
 package com.pchpsky.diary.presentation.components.dropdownmenu
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -15,9 +16,12 @@ import com.pchpsky.diary.presentation.components.ColorCircle
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 
 @Composable
-fun DiaryDropDownMenuItem(insulin: Insulin) {
+fun DropDownMenuItem(insulin: Insulin, onClick: () -> Unit) {
 
     Row(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable { onClick() },
         horizontalArrangement = Arrangement.Center
     ) {
         ColorCircle(

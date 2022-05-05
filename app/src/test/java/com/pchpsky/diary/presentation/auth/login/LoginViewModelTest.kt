@@ -1,13 +1,11 @@
 package com.pchpsky.diary.presentation.auth.login
 
 import arrow.core.Either
-import arrow.core.Right
 import com.apollographql.apollo.api.Operation
 import com.pchpsky.diary.data.network.exceptions.NetworkError
 import com.pchpsky.diary.data.repositories.interfacies.LoginController
 import com.pchpsky.diary.presentation.auth.AuthState
 import com.pchpsky.schema.CreateSessionMutation
-import junit.framework.TestCase
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
@@ -26,7 +24,7 @@ class LoginViewModelTest {
     @Test
     fun login_LoginRequest_UserLoggedIn() = runBlocking {
 
-        val repository = repository(Right(CreateSessionMutation.Data(session = null)))
+        val repository = repository(Either.Right(CreateSessionMutation.Data(session = null)))
         val viewModel = LoginViewModelImpl(repository)
         val state = viewModel.uiState
 

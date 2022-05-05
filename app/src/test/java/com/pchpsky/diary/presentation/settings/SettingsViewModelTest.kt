@@ -1,6 +1,6 @@
 package com.pchpsky.diary.presentation.settings
 
-import arrow.core.Right
+import arrow.core.Either
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.data.repositories.SettingsRepository
 import com.pchpsky.schema.CreateInsulinMutation
@@ -31,7 +31,7 @@ class SettingsViewModelTest {
         val insulinToBeContained = Insulin("id", "color", "insulin name")
 
         `when`(settingsRepository.createInsulin(anyString(), anyString()))
-            .thenReturn(Right(CreateInsulinMutation.Data(createdInsulin)))
+            .thenReturn(Either.Right(CreateInsulinMutation.Data(createdInsulin)))
         viewModel.addInsulin("color", "insulin name")
 
         assertTrue(viewModel.uiState.value.insulins.contains(insulinToBeContained))
@@ -42,7 +42,7 @@ class SettingsViewModelTest {
         val viewModel = UserSettingsViewModel(settingsRepository)
         val settingsMutation = UpdateSettingsMutation.Settings("Settings", BloodGlucoseUnits.MMOL_PER_L)
         `when`(settingsRepository.updateGlucoseUnit(GlucoseUnits.MMOL_PER_L.name))
-            .thenReturn(Right(UpdateSettingsMutation.Data(settingsMutation)))
+            .thenReturn(Either.Right(UpdateSettingsMutation.Data(settingsMutation)))
 
         viewModel.updateGlucoseUnit(GlucoseUnits.MMOL_PER_L)
 
@@ -57,7 +57,7 @@ class SettingsViewModelTest {
             BloodGlucoseUnits.MG_PER_DL,
             listOf(SettingsQuery.Insulin("Insulin", "id", "name", "color"))
         )
-        `when`(settingsRepository.settings()).thenReturn(Right(SettingsQuery.Data(settings)))
+        `when`(settingsRepository.settings()).thenReturn(Either.Right(SettingsQuery.Data(settings)))
 
         viewModel.settings()
 
@@ -82,10 +82,10 @@ class SettingsViewModelTest {
         )
 
         `when`(settingsRepository.createInsulin(anyString(), anyString()))
-            .thenReturn(Right(CreateInsulinMutation.Data(createdInsulin)))
+            .thenReturn(Either.Right(CreateInsulinMutation.Data(createdInsulin)))
         viewModel.addInsulin("color", "insulin name")
         `when`(settingsRepository.deleteInsulin(anyString()))
-            .thenReturn(Right(DeleteInsulinMutation.Data(deletedInsulin)))
+            .thenReturn(Either.Right(DeleteInsulinMutation.Data(deletedInsulin)))
         viewModel.deleteInsulin("id")
 
         assertTrue(viewModel.uiState.value.insulins.isEmpty())

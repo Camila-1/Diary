@@ -5,31 +5,31 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarHost
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.insets.imePadding
+import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.presentation.components.*
-import com.pchpsky.diary.presentation.components.circularlist.CircularList
-import com.pchpsky.diary.presentation.components.circularlist.rememberCircularListState
 import com.pchpsky.diary.presentation.recordinsulin.viewmodelinterface.RecordInsulinViewModel
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.pchpsky.diary.presentation.theme.blue
+import com.pchpsky.diary.utils.extensions.toHex
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
@@ -43,7 +43,6 @@ fun RecordInsulinScreen(
     val viewState by viewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
     val scaffoldState = rememberScaffoldState()
-    val insulinCircularListState = rememberCircularListState()
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(true) {
@@ -52,12 +51,12 @@ fun RecordInsulinScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        snackbarHost = {
+        snackbarHost = { snackbarHostState ->
             SnackbarHost(
-                hostState = it,
+                hostState = snackbarHostState,
                 modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp),
-                snackbar = {
-                    DiarySnackbar(it, blue, Modifier.padding(vertical = 10.dp, horizontal = 15.dp))
+                snackbar = { snackbarData ->
+                    DiarySnackbar(snackbarData, blue, Modifier.padding(vertical = 10.dp, horizontal = 15.dp))
                 }
             )
         },
@@ -79,50 +78,29 @@ fun RecordInsulinScreen(
                     focusManager.clearFocus(true)
                 }
         ) {
-            val (insulinMenuButton, recordButton, circularList) = createRefs()
+            val (insulinMenu, recordButton) = createRefs()
 
-            InsulinMenuButton(
-                selectedInsulin = viewState.selectedInsulin!!,
-                Modifier
-                    .constrainAs(insulinMenuButton) {
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom, 250.dp)
-
-                    }
-            ) {
-                insulinCircularListState.visible = true
-            }
-
-            CircularList(
-                visibleItems = 5,
-                visible = viewState.showInsulinMenu,
-                circularFraction = 1.1f,
-                overshootItems = 1,
-                state = insulinCircularListState,
+            InsulinMenu(
                 modifier = Modifier
-                    .height(150.dp)
-                    .width(200.dp)
-                    .background(Color.Red)
-                    .constrainAs(circularList) {
-                        end.linkTo(insulinMenuButton.start)
-                    }
-            ) {
-                viewState.insulins.forEach {
-                    InsulinMenuItem(insulin = it) {
-                        viewModel.selectInsulin(it)
-                    }
-                }
-            }
+                    .constrainAs(insulinMenu) {
+                        centerHorizontallyTo(parent)
+                        bottom.linkTo(parent.top)
+                        width = Dimension.percent(.5f)
+                        height = Dimension.value(40.dp)
+                    },
+                selectedInsulin = viewState.selectedInsulin,
+                onClick = { /*TODO*/ }
+            )
 
             RoundedFilledButton(
                 text = "Record",
                 color = DiaryTheme.colors.secondary,
                 modifier = Modifier
                     .constrainAs(recordButton) {
-                    centerHorizontallyTo(parent)
-                    bottom.linkTo(parent.bottom)
+                        centerHorizontallyTo(parent)
+                        bottom.linkTo(parent.bottom)
                         width = Dimension.percent(.5f)
-                }
+                    }
             ) {
 
             }
@@ -136,14 +114,63 @@ fun RecordInsulinScreen(
     }
 }
 
+@Composable
+fun InsulinMenu(modifier: Modifier, selectedInsulin: Insulin?, onClick: () -> Unit) {
+    Row(
+        modifier = modifier
+            .clickable { onClick() }
+    ) {
+        ColorCircle(
+            color = Color(android.graphics.Color.parseColor(selectedInsulin?.color)),
+            size = 30.dp,
+            modifier = Modifier
+        )
+
+        Text(
+            text = selectedInsulin?.name ?: "No insulin added",
+            style = DiaryTheme.typography.body,
+            color = Color.White,
+            modifier = Modifier,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
 
 
 @ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Composable
 @Preview
-fun InsulinScreenPreview() {
+fun InsulinScreenPreview(
+    @PreviewParameter(RecordInsulinScreenPreviewParameterProvider::class) viewModel: RecordInsulinViewModel) {
     DiaryTheme {
-        RecordInsulinScreen(FakeRecordInsulinViewModel) {}
+        RecordInsulinScreen(viewModel) {}
     }
+}
+
+class RecordInsulinScreenPreviewParameterProvider :
+    PreviewParameterProvider<RecordInsulinViewModel> {
+
+    override val values: Sequence<RecordInsulinViewModel> = sequenceOf(
+        object : RecordInsulinViewModel {
+            override val uiState: StateFlow<RecordInsulinViewState> =
+                MutableStateFlow(
+                    RecordInsulinViewState()
+                        .copy(selectedInsulin = Insulin("id", Color.Blue.toHex(), "Test Insulin"))
+                )
+
+            override fun decrementUnits() {}
+            override fun incrementUnits() {}
+            override fun setUnits(points: String) {}
+            override suspend fun insulins() {}
+            override fun selectInsulin(insulin: Insulin) {}
+            override fun showInsulinMenu(drop: Boolean) {}
+            override fun showTimePicker(show: Boolean) {}
+            override fun showDatePicker(show: Boolean) {}
+            override fun selectTime(time: String) {}
+            override fun selectDate(date: String) {}
+        }
+    )
 }

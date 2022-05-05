@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
+import com.pchpsky.diary.presentation.components.textfield.OutlinedTextField
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import org.junit.Rule
 import org.junit.Test
