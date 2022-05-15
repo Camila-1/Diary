@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +25,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.insets.imePadding
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.presentation.components.*
+import com.pchpsky.diary.presentation.components.dropdownmenu.InsulinDropDownMenu
+import com.pchpsky.diary.presentation.components.textfield.NoteTextField
 import com.pchpsky.diary.presentation.recordinsulin.viewmodelinterface.RecordInsulinViewModel
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.pchpsky.diary.presentation.theme.blue
@@ -78,18 +81,99 @@ fun RecordInsulinScreen(
                     focusManager.clearFocus(true)
                 }
         ) {
-            val (insulinMenu, recordButton) = createRefs()
+            val (insulin, recordButton, units, insulinMenu, timePicker, datePicker, note) = createRefs()
 
-            InsulinMenu(
+            UnitsCounter(
+                units = viewState.units,
                 modifier = Modifier
-                    .constrainAs(insulinMenu) {
+                    .constrainAs(units) {
+                        top.linkTo(parent.top)
                         centerHorizontallyTo(parent)
-                        bottom.linkTo(parent.top)
-                        width = Dimension.percent(.5f)
-                        height = Dimension.value(40.dp)
+                    }
+                    .padding(vertical = 24.dp),
+                increment = { viewModel.incrementUnits() },
+                decrement = { viewModel.decrementUnits() },
+                setUnits = {}
+            )
+
+            Text(
+                text = viewState.time,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .clickable { viewModel.showTimePicker(true) }
+                    .constrainAs(timePicker) {
+                        top.linkTo(units.bottom, 20.dp)
+                        centerHorizontallyTo(parent)
                     },
-                selectedInsulin = viewState.selectedInsulin,
-                onClick = { /*TODO*/ }
+                color = DiaryTheme.colors.text,
+                style = DiaryTheme.typography.pickers
+            )
+
+            Text(
+                text = viewState.date,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .clickable { viewModel.showDatePicker(true) }
+                    .constrainAs(datePicker) {
+                        top.linkTo(timePicker.bottom, 20.dp)
+                        centerHorizontallyTo(parent)
+                    },
+                color = DiaryTheme.colors.text,
+                style = DiaryTheme.typography.pickers
+            )
+
+            TimePicker(
+                show = viewState.showTimePicker,
+                close = { viewModel.showTimePicker(false) },
+                selectTime = { viewModel.selectTime(it) }
+            )
+
+            DatePicker(
+                show = viewState.showDatePicker,
+                close = { viewModel.showDatePicker(false) },
+                selectDate = { viewModel.selectDate(it) })
+
+            Box(
+                modifier = Modifier
+                    .constrainAs(insulin) {
+                        centerHorizontallyTo(parent)
+                        top.linkTo(datePicker.bottom, 20.dp)
+                        width = Dimension.percent(.7f)
+                        height = Dimension.value(40.dp)
+                    }
+            ) {
+                Insulin(
+                    modifier = Modifier,
+                    selectedInsulin = viewState.selectedInsulin,
+                    onClick = {
+                        viewModel.showInsulinMenu(true)
+                    }
+                )
+
+                InsulinDropDownMenu(
+                    modifier = Modifier,
+                    expanded = viewState.showInsulinMenu,
+                    items = viewState.insulins,
+                    onItemSelected = {
+                        viewModel.selectInsulin(it)
+                    },
+                    onDismiss = {
+                        viewModel.showInsulinMenu(false)
+                    }
+                )
+            }
+
+            NoteTextField(
+                value = viewState.note,
+                modifier = Modifier
+                    .constrainAs(note) {
+                        top.linkTo(insulin.bottom, 20.dp)
+                        centerHorizontallyTo(parent)
+                    }
+                    .padding(horizontal = 16.dp),
+                onValueChanged = {
+                    viewModel
+                }
             )
 
             RoundedFilledButton(
@@ -115,22 +199,25 @@ fun RecordInsulinScreen(
 }
 
 @Composable
-fun InsulinMenu(modifier: Modifier, selectedInsulin: Insulin?, onClick: () -> Unit) {
+fun Insulin(modifier: Modifier, selectedInsulin: Insulin?, onClick: () -> Unit) {
     Row(
         modifier = modifier
-            .clickable { onClick() }
+            .clickable { onClick() },
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         ColorCircle(
-            color = Color(android.graphics.Color.parseColor(selectedInsulin?.color)),
+            color = Color(android.graphics.Color.parseColor(selectedInsulin?.color ?: "#ffffff")),
             size = 30.dp,
             modifier = Modifier
         )
 
         Text(
             text = selectedInsulin?.name ?: "No insulin added",
-            style = DiaryTheme.typography.body,
+            style = DiaryTheme.typography.primaryHeader,
             color = Color.White,
-            modifier = Modifier,
+            modifier = Modifier
+                .padding(start = 8.dp),
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -171,6 +258,7 @@ class RecordInsulinScreenPreviewParameterProvider :
             override fun showDatePicker(show: Boolean) {}
             override fun selectTime(time: String) {}
             override fun selectDate(date: String) {}
+            override fun addNote(note: String) {}
         }
     )
 }

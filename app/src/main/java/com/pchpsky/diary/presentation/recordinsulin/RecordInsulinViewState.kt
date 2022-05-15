@@ -15,5 +15,6 @@ data class RecordInsulinViewState(
     val showDatePicker: Boolean = false,
     val time: String = LocalTime.now().format(DateTimeFormatter.ofPattern("hh:mm")),
     val date: String = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM")),
+    val note: String = "",
     val loading: Boolean = false
 )

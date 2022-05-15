@@ -1,4 +1,4 @@
-package com.pchpsky.diary.presentation.components
+package com.pchpsky.diary.presentation.components.textfield
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -7,9 +7,6 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -26,8 +23,9 @@ import com.pchpsky.diary.presentation.theme.DiaryTheme
 @ExperimentalComposeUiApi
 @Composable
 fun NoteTextField(
-    value: MutableState<String>,
-    modifier: Modifier
+    value: String,
+    modifier: Modifier,
+    onValueChanged: (String) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -36,18 +34,18 @@ fun NoteTextField(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
-            text = "${value.value.length}/280",
+            text = "${value.length}/280",
             modifier = Modifier
                 .align(Alignment.End),
             color = DiaryTheme.colors.inputText
         )
 
         OutlinedTextField(
-            value = value.value,
+            value = value,
             onValueChange = {
-                if (it.length <= 280) value.value = it
+                if (it.length <= 280) onValueChanged(it)
             },
-            modifier = modifier
+            modifier = Modifier
                 .semantics { contentDescription = "email_input_field" }
                 .requiredHeightIn(min = 60.dp, max = 150.dp)
                 .fillMaxWidth(1f),
@@ -86,6 +84,6 @@ fun NoteTextField(
 @Preview
 fun NoteTextFieldPreview() {
     DiaryTheme {
-        NoteTextField(value = remember { mutableStateOf("") }, modifier = Modifier)
+        NoteTextField(value = "Added note", modifier = Modifier) {}
     }
 }

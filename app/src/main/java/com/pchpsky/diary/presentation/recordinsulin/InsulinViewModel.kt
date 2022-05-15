@@ -80,23 +80,9 @@ class InsulinViewModel @Inject constructor(
     override fun selectDate(localDate: String) {
         _uiState.value = _uiState.value.copy(date = localDate)
     }
+
+    override fun addNote(note: String) {
+        _uiState.value = _uiState.value.copy(note = note)
+    }
 }
 
-val FakeRecordInsulinViewModel = object :
-    RecordInsulinViewModel {
-    override val uiState: StateFlow<RecordInsulinViewState> =
-        MutableStateFlow(
-            RecordInsulinViewState()
-                .copy(selectedInsulin = Insulin("id", Color.Blue.toHex(), "Test Insulin"))
-        )
-    override fun decrementUnits() {}
-    override fun incrementUnits() {}
-    override fun setUnits(points: String) {}
-    override suspend fun insulins() {}
-    override fun selectInsulin(insulin: Insulin) {}
-    override fun showInsulinMenu(drop: Boolean) {}
-    override fun showTimePicker(show: Boolean) {}
-    override fun showDatePicker(show: Boolean) {}
-    override fun selectTime(time: String) {}
-    override fun selectDate(date: String) {}
-}

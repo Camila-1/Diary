@@ -25,7 +25,7 @@ import com.pchpsky.diary.presentation.theme.DiaryTheme
 @ExperimentalComposeUiApi
 @Composable
 fun UnitsCounter(
-    units: Int,
+    units: Double,
     modifier: Modifier,
     increment: () -> Unit,
     decrement: () -> Unit,
@@ -102,7 +102,7 @@ fun UnitsCounter(
 @Composable
 @Preview
 fun UnitsPreview() {
-    var units by remember { mutableStateOf(1) }
+    var units by remember { mutableStateOf(1.0) }
     DiaryTheme {
         UnitsCounter(
             units = units,
