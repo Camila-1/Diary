@@ -17,7 +17,7 @@ fun DatePicker(show: Boolean, close: () -> Unit, selectDate: (String) -> Unit) {
 
     val datePickerDialogState = rememberMaterialDialogState()
 
-    var selectedDate: String = ""
+    var selectedDate = ""
 
     MaterialDialog(
         dialogState = datePickerDialogState,
@@ -29,7 +29,8 @@ fun DatePicker(show: Boolean, close: () -> Unit, selectDate: (String) -> Unit) {
             negativeButton("Cancel") {
                 close()
             }
-        }
+        },
+        onCloseRequest = { close() }
     ) {
         Box(
             modifier = Modifier

@@ -29,7 +29,8 @@ fun TimePicker(show: Boolean, close: () -> Unit, selectTime: (String) -> Unit) {
             negativeButton("Cancel") {
                 close()
             }
-        }
+        },
+        onCloseRequest = { close() }
     ) {
         Box(
             modifier = Modifier

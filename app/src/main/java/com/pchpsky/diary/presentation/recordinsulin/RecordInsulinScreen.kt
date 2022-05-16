@@ -81,7 +81,7 @@ fun RecordInsulinScreen(
                     focusManager.clearFocus(true)
                 }
         ) {
-            val (insulin, recordButton, units, insulinMenu, timePicker, datePicker, note) = createRefs()
+            val (insulin, recordButton, units, timePicker, datePicker, note) = createRefs()
 
             UnitsCounter(
                 units = viewState.units,
@@ -250,14 +250,14 @@ class RecordInsulinScreenPreviewParameterProvider :
 
             override fun decrementUnits() {}
             override fun incrementUnits() {}
-            override fun setUnits(points: String) {}
+            override fun setUnits(units: String) {}
             override suspend fun insulins() {}
             override fun selectInsulin(insulin: Insulin) {}
             override fun showInsulinMenu(drop: Boolean) {}
             override fun showTimePicker(show: Boolean) {}
             override fun showDatePicker(show: Boolean) {}
-            override fun selectTime(time: String) {}
-            override fun selectDate(date: String) {}
+            override fun selectTime(localTime: String) {}
+            override fun selectDate(localDate: String) {}
             override fun addNote(note: String) {}
         }
     )
