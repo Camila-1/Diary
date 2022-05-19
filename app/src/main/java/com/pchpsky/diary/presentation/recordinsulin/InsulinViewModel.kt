@@ -1,14 +1,11 @@
 package com.pchpsky.diary.presentation.recordinsulin
 
 import android.util.Log
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.data.repositories.interfacies.InsulinDataSource
 import com.pchpsky.diary.presentation.recordinsulin.viewmodelinterface.RecordInsulinViewModel
 import com.pchpsky.diary.utils.extensions.insulins
-import com.pchpsky.diary.utils.extensions.toHex
-import com.pchpsky.diary.utils.extensions.toValidDouble
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +22,7 @@ class InsulinViewModel @Inject constructor(
 
     override fun incrementUnits() {
         val units = _uiState.value.units
-        if (units == 100.0) return
+        if (units == 99.0) return
         _uiState.value = _uiState.value.copy(units = units + 1)
     }
 
@@ -35,8 +32,8 @@ class InsulinViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(units = units - 1)
     }
 
-    override fun setUnits(units: String) {
-        val value = units.toValidDouble()
+    override fun setUnits(units: Double) {
+        val value = units
         if (value == null) _uiState.value = _uiState.value.copy(unitsInputError = "Units value is invalid")
         else if (value < 1.0 || value > 100.0) return
         else _uiState.value = _uiState.value.copy(units = value, unitsInputError = "")

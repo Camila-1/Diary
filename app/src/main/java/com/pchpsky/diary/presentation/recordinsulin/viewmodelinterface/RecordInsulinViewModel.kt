@@ -8,7 +8,7 @@ interface RecordInsulinViewModel {
     val uiState: StateFlow<RecordInsulinViewState>
     fun incrementUnits()
     fun decrementUnits()
-    fun setUnits(units: String)
+    fun setUnits(units: Double)
     suspend fun insulins()
     fun selectInsulin(insulin: Insulin)
     fun showInsulinMenu(drop: Boolean)

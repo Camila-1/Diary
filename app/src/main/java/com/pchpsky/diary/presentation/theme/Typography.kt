@@ -47,7 +47,7 @@ val typography = DiaryTypography(
         fontSize = 80.sp,
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.SansSerif,
-        textAlign = TextAlign.Center,
+        textAlign = TextAlign.End,
         color = Color.White
     ),
     snackbar = TextStyle(

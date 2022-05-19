@@ -90,10 +90,9 @@ fun RecordInsulinScreen(
                         top.linkTo(parent.top)
                         centerHorizontallyTo(parent)
                     }
-                    .padding(vertical = 24.dp),
-                increment = { viewModel.incrementUnits() },
-                decrement = { viewModel.decrementUnits() },
-                setUnits = {}
+                    .padding(vertical = 24.dp)
+                    .padding(start = 44.dp),
+                onChange = viewModel::setUnits,
             )
 
             Text(
@@ -142,9 +141,9 @@ fun RecordInsulinScreen(
                         height = Dimension.value(40.dp)
                     }
             ) {
-                Insulin(
+                InsulinMenuItem(
                     modifier = Modifier,
-                    selectedInsulin = viewState.selectedInsulin,
+                    insulin = viewState.selectedInsulin,
                     onClick = {
                         viewModel.showInsulinMenu(true)
                     }
@@ -162,6 +161,7 @@ fun RecordInsulinScreen(
                     }
                 )
             }
+
 
             NoteTextField(
                 value = viewState.note,
@@ -245,12 +245,12 @@ class RecordInsulinScreenPreviewParameterProvider :
             override val uiState: StateFlow<RecordInsulinViewState> =
                 MutableStateFlow(
                     RecordInsulinViewState()
-                        .copy(selectedInsulin = Insulin("id", Color.Blue.toHex(), "Test Insulin"))
+                        .copy(selectedInsulin = Insulin("id", Color.Blue.toHex(), "Test Insulin"), units = 10.0)
                 )
 
             override fun decrementUnits() {}
             override fun incrementUnits() {}
-            override fun setUnits(units: String) {}
+            override fun setUnits(units: Double) {}
             override suspend fun insulins() {}
             override fun selectInsulin(insulin: Insulin) {}
             override fun showInsulinMenu(drop: Boolean) {}
