@@ -1,8 +1,6 @@
 package com.pchpsky.diary.data.network.exceptions.handlers
 
 import arrow.core.Either
-import arrow.core.Left
-import arrow.core.Right
 import com.apollographql.apollo.api.Error
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloHttpException
@@ -15,11 +13,11 @@ class NetworkErrorHandler {
             val response = request.invoke()
             if (response.errors != null) {
                 val error = parse(response.errors!!.first())
-                return Left(error)
+                return Either.Left(error)
             }
-            return Right(response.data!!)
+            return Either.Right(response.data!!)
         } catch (exception: ApolloHttpException) {
-            return Left(NetworkError.ServerError)
+            return Either.Left(NetworkError.ServerError)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.pchpsky.diary.presentation.recordinsulin.interfacies
+package com.pchpsky.diary.presentation.recordinsulin.viewmodelinterface
 
 import com.pchpsky.diary.data.network.model.Insulin
 import com.pchpsky.diary.presentation.recordinsulin.RecordInsulinViewState
@@ -8,12 +8,13 @@ interface RecordInsulinViewModel {
     val uiState: StateFlow<RecordInsulinViewState>
     fun incrementUnits()
     fun decrementUnits()
-    fun setUnits(points: String)
+    fun setUnits(units: Double)
     suspend fun insulins()
     fun selectInsulin(insulin: Insulin)
-    fun dropInsulinMenu(drop: Boolean)
+    fun showInsulinMenu(drop: Boolean)
     fun showTimePicker(show: Boolean)
     fun showDatePicker(show: Boolean)
     fun selectTime(localTime: String)
     fun selectDate(localDate: String)
+    fun addNote(note: String)
 }

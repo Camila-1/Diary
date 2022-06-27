@@ -262,8 +262,9 @@ fun AddInsulinDialog(
                     .padding(start = 10.dp, top = 20.dp, end = 20.dp, bottom = 20.dp),
             ) {
 
-                InsulinColorCircle(
+                ColorCircle(
                     insulinColor.value,
+                    size = 30.dp,
                     modifier = Modifier
                         .align(Alignment.Bottom)
                         .clickable { colorPickerDialogState.show() }
@@ -356,8 +357,9 @@ fun UpdateInsulinDialog(
                     .padding(start = 10.dp, top = 20.dp, end = 20.dp, bottom = 20.dp),
             ) {
 
-                InsulinColorCircle(
+                ColorCircle(
                     insulinColor.value,
+                    size = 30.dp,
                     modifier = Modifier
                         .align(Alignment.Bottom)
                         .clickable { colorPickerDialogState.show() }

@@ -33,7 +33,7 @@ class RecordInsulinViewModelTest {
     @Test
     fun incrementUnits_UnitsEqualsOneHundred_UnitsNotIncremented() {
         val viewModel = InsulinViewModel(repository)
-        viewModel.setUnits("100.0")
+        viewModel.setUnits(100.0)
 
         viewModel.incrementUnits()
         assertEquals(100.0, viewModel.uiState.value.units, 0.0)
@@ -42,7 +42,7 @@ class RecordInsulinViewModelTest {
     @Test
     fun setUnits_PassOne_UnitsEqualsOne_UnitsSet() {
         val viewModel = InsulinViewModel(repository)
-        viewModel.setUnits("1.0")
+        viewModel.setUnits(1.0)
 
         assertEquals(1.0, viewModel.uiState.value.units, 0.0)
     }
@@ -50,8 +50,8 @@ class RecordInsulinViewModelTest {
     @Test
     fun setUnits_PassMoreThenOneHundred_UnitsNotSet() {
         val viewModel = InsulinViewModel(repository)
-        viewModel.setUnits("1.0")
-        viewModel.setUnits("101.0")
+        viewModel.setUnits(1.0)
+        viewModel.setUnits(101.0)
 
         assertEquals(1.0, viewModel.uiState.value.units, 0.0)
     }
@@ -59,8 +59,8 @@ class RecordInsulinViewModelTest {
     @Test
     fun setUnits_PassLessThenNull_UnitsNotSet() {
         val viewModel = InsulinViewModel(repository)
-        viewModel.setUnits("1.0")
-        viewModel.setUnits("-1.0")
+        viewModel.setUnits(1.0)
+        viewModel.setUnits(-1.0)
 
         assertEquals(1.0, viewModel.uiState.value.units, 0.0)
     }
@@ -68,7 +68,7 @@ class RecordInsulinViewModelTest {
     @Test
     fun decrementUnits_UnitsEqualsOne_UnitsNotDecremented() {
         val viewModel = InsulinViewModel(repository)
-        viewModel.setUnits("1.0")
+        viewModel.setUnits(1.0)
         viewModel.decrementUnits()
 
         assertEquals(1.0, viewModel.uiState.value.units, 0.0)
@@ -77,7 +77,7 @@ class RecordInsulinViewModelTest {
     @Test
     fun decrementUnits_UnitsMoreThenOne_UnitsDecremented() {
         val viewModel = InsulinViewModel(repository)
-        viewModel.setUnits("5.0")
+        viewModel.setUnits(5.0)
         viewModel.decrementUnits()
 
         assertEquals(4.0, viewModel.uiState.value.units, 0.0)

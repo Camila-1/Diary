@@ -1,7 +1,7 @@
 package com.pchpsky.diary
 
-import arrow.core.Left
-import arrow.core.Right
+import arrow.core.Either
+
 import com.apollographql.apollo.api.ApolloExperimental
 import com.apollographql.apollo.api.Error
 import com.apollographql.apollo.api.Response
@@ -36,7 +36,7 @@ class NetworkErrorHandlerTest {
         val response = createResponse(error400)
         val withErrorHandlerResult = errorHandlerResult(response)
 
-        assertEquals(Left(NetworkError.ServerError), withErrorHandlerResult)
+        assertEquals(Either.Left(NetworkError.ServerError), withErrorHandlerResult)
     }
 
     @ApolloExperimental
@@ -46,7 +46,7 @@ class NetworkErrorHandlerTest {
         val response = createResponse(error401)
         val withErrorHandlerResult = errorHandlerResult(response)
 
-        assertEquals(Left(NetworkError.AuthenticationError("Error")), withErrorHandlerResult)
+        assertEquals(Either.Left(NetworkError.AuthenticationError("Error")), withErrorHandlerResult)
     }
 
     @ApolloExperimental
@@ -60,7 +60,7 @@ class NetworkErrorHandlerTest {
             )
         val withErrorHandlerResult = errorHandlerResult(response)
 
-        assertEquals(Left(NetworkError.ValidationError(mapOf("test" to arrayListOf("error")))), withErrorHandlerResult)
+        assertEquals(Either.Left(NetworkError.ValidationError(mapOf("test" to arrayListOf("error")))), withErrorHandlerResult)
     }
 
     @ApolloExperimental
@@ -72,6 +72,6 @@ class NetworkErrorHandlerTest {
 
         val withErrorHandlerResult = errorHandlerResult(response)
 
-        assertEquals(Right(CurrentUserQuery.Data), withErrorHandlerResult)
+        assertEquals(Either.Right(CurrentUserQuery.Data), withErrorHandlerResult)
     }
 }

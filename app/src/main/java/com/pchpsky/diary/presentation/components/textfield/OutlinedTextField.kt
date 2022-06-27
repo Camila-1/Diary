@@ -1,4 +1,4 @@
-package com.pchpsky.diary.presentation.components
+package com.pchpsky.diary.presentation.components.textfield
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

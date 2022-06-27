@@ -15,7 +15,7 @@ import com.pchpsky.diary.navigation.MainRout
 import com.pchpsky.diary.presentation.components.HomeTopBar
 import com.pchpsky.diary.presentation.components.drawer.Drawer
 import com.pchpsky.diary.presentation.home.Home
-import com.pchpsky.diary.presentation.record.insulin.ui.RecordInsulinScreen
+import com.pchpsky.diary.presentation.recordinsulin.RecordInsulinScreen
 import com.pchpsky.diary.presentation.recordglucose.RecordGlucoseScreen
 import com.pchpsky.diary.presentation.settings.ui.Settings
 import com.pchpsky.diary.presentation.theme.DiaryTheme
@@ -24,8 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @ExperimentalMaterialApi
-    @ExperimentalComposeUiApi
+    @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

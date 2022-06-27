@@ -21,14 +21,16 @@ val typography = DiaryTypography(
         fontFamily = FontFamily.SansSerif
     ),
     primaryHeader = TextStyle(
-        fontSize = 20.sp,
+        fontSize = 24.sp,
         fontWeight = FontWeight.W300,
         fontFamily = FontFamily.SansSerif,
+        color = Color.White
     ),
     body = TextStyle(
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         fontWeight = FontWeight.Normal,
-        fontFamily = FontFamily.SansSerif
+        fontFamily = FontFamily.SansSerif,
+        color = Color.White
     ),
     textField = TextStyle(
         fontSize = 16.sp,
@@ -45,7 +47,7 @@ val typography = DiaryTypography(
         fontSize = 80.sp,
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.SansSerif,
-        textAlign = TextAlign.Center,
+        textAlign = TextAlign.End,
         color = Color.White
     ),
     snackbar = TextStyle(
@@ -56,6 +58,13 @@ val typography = DiaryTypography(
     ),
     pickers = TextStyle(
         fontSize = 50.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.SansSerif,
+        textAlign = TextAlign.Center,
+        color = Color.White
+    ),
+    recordInsulinMenuItem = TextStyle(
+        fontSize = 35.sp,
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.SansSerif,
         textAlign = TextAlign.Center,
@@ -72,7 +81,8 @@ data class DiaryTypography(
     val basicTextField: TextStyle,
     val insulinUnits: TextStyle,
     val snackbar: TextStyle,
-    val pickers: TextStyle
+    val pickers: TextStyle,
+    val recordInsulinMenuItem: TextStyle
 )
 
 val LocalDiaryTypography = staticCompositionLocalOf<DiaryTypography> {

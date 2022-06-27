@@ -26,8 +26,9 @@ fun InsulinEntry(insulin: Insulin, update: () -> Unit, delete: () -> Unit) {
         ,
         horizontalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        InsulinColorCircle(
+        ColorCircle(
             color = Color(parseColor(insulin.color)),
+            size = 30.dp,
             modifier = Modifier
                 .align(Alignment.Bottom)
         )
