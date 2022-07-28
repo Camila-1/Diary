@@ -1,2 +1,9 @@
 rootProject.name = "Diary"
 include ':app'
+include ':feature_insulin'
+include ':core'
+include ':mylibrary'
+include ':core'
+include ':dynamicfeature'
+include ':core'
+include ':mylibrary'

@@ -1,6 +1,6 @@
 package com.pchpsky.diary.presentation.record
 
-import com.pchpsky.diary.data.network.model.Insulin
+import com.pchpsky.diary.data.entities.Insulin
 import com.pchpsky.diary.data.repositories.interfacies.InsulinDataSource
 import com.pchpsky.diary.presentation.recordinsulin.InsulinViewModel
 import org.junit.Assert.assertEquals

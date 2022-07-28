@@ -1,7 +1,7 @@
 package com.pchpsky.diary.presentation.settings
 
 import arrow.core.Either
-import com.pchpsky.diary.data.network.model.Insulin
+import com.pchpsky.diary.data.entities.Insulin
 import com.pchpsky.diary.data.repositories.SettingsRepository
 import com.pchpsky.schema.CreateInsulinMutation
 import com.pchpsky.schema.DeleteInsulinMutation

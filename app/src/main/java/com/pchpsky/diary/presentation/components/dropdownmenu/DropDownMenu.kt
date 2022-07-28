@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.pchpsky.diary.data.network.model.Insulin
+import com.pchpsky.diary.data.entities.Insulin
 import com.pchpsky.diary.presentation.theme.DiaryTheme
 import com.pchpsky.diary.utils.extensions.toHex
 

@@ -17,4 +17,5 @@
 
     <!-- Record -->
     <string name="add_record">Add Record</string>
+    <string name="title_dynamicfeature">core</string>
 </resources>
